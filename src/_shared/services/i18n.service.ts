@@ -29,7 +29,7 @@ export class I18nService {
   }
 
   async loadLanguages() {
-    let url = [environment.API.url, 'ws', 'i18n'].join('/');
+    let url = [environment.API.orient, 'ws', 'i18n'].join('/');
     let languages = await this.http.get(url);
 
     let keys = Object.keys(languages || {});

@@ -53,7 +53,7 @@ export class AuthPage implements OnInit {
     if (this.loading) return;
 
     let obj = Object.assign({}, this.loginForm.value);
-    if (!obj.username && !obj.str_cpf) return;
+    if (!obj.username && !obj.password) return;
 
     this.loading = true;
     try {

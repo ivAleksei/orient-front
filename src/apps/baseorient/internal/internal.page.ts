@@ -74,15 +74,6 @@ export class InternalPage implements OnInit {
     this.typeMenu();
   }
 
-  logNavigation(route) {
-    this.mobile = (this.platform.is('iphone') || this.platform.is('android')) && !this.platform.is('mobileweb');
-    let url = [environment.API.url, 'ws', 'log-navigation'].join('/');
-    this.http.post(url, {
-      route: route,
-      device: this.mobile ? 'mobile' : 'desktop'
-    })
-  }
-
   async ionViewWillEnter() {
     this.getData();
   }
@@ -91,9 +82,9 @@ export class InternalPage implements OnInit {
     if (!environment.production || !route.startsWith('/internal')) return;
 
     let find = (this.menu || []).find(m => {
-      if (m.str_rota && route.startsWith(m.str_rota)) return m;
+      if (m.route && route.startsWith(m.route)) return m;
       return (m.submenu || []).find(p => {
-        if (p.str_rota && route.startsWith(p.str_rota)) return p;
+        if (p.route && route.startsWith(p.route)) return p;
       })
     });
 
@@ -133,8 +124,6 @@ export class InternalPage implements OnInit {
       this.routerSub.unsubscribe();
   }
 
-
-
   ionViewDidEnter() {
     this.menuSidebar?.ionDidClose.subscribe(ev => {
       this.closeMenus();
@@ -142,7 +131,6 @@ export class InternalPage implements OnInit {
 
     this.checkChangePassword();
   }
-
 
   async getData() {
     this.getEnvironmentAPI();
@@ -251,7 +239,7 @@ export class InternalPage implements OnInit {
   routeMenu(pg) {
     if (!pg || pg.bo_desabilitado) return;
     this.closeMenus();
-    this.nav.navigateForward(pg.str_rota);
+    this.nav.navigateForward(pg.route);
   }
 
   logout() {
@@ -308,7 +296,7 @@ export class InternalPage implements OnInit {
 
 
   async getEnvironmentAPI() {
-    let url = [environment.API.url, 'ws', 'env'].join('/');
+    let url = [environment.API.orient, 'ws', 'env'].join('/');
     this.info_api = await this.http.get(url);
   }
 
@@ -323,4 +311,14 @@ export class InternalPage implements OnInit {
 
     window.open(url, '_blank');
   }
+
+  logNavigation(route) {
+    this.mobile = (this.platform.is('iphone') || this.platform.is('android')) && !this.platform.is('mobileweb');
+    let url = [environment.API.orient, 'ws', 'log-navigation'].join('/');
+    this.http.post(url, {
+      route: route,
+      device: this.mobile ? 'mobile' : 'desktop'
+    })
+  }
+
 }

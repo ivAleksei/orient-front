@@ -10,7 +10,7 @@ export class GraphqlService {
   ) { }
 
   query(API_url: string, endpoint: string, payload: any, files?: any, url?: any): any {
-    if (!url) url = [API_url, endpoint].join("/");
+    if (!url) url = API_url;
 
     let content = {
       variables: payload.variables,
@@ -24,7 +24,7 @@ export class GraphqlService {
   }
 
   post(API_url: string, endpoint: string, payload: any): any {
-    let url = [API_url, endpoint].join("/");
+    let url = API_url;
     let content = {
       variables: payload.variables,
       query: payload.query,

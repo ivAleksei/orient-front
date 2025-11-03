@@ -10,5 +10,9 @@
     "AUTH_PASSWORD": "Senha",
     "AUTH_SIGNIN": "Acessar",
     "AUTH_USERNAME": "Usuário",
+    "LOGIN_NO_CONNECTION": "Não é possivel fazer login sem conexão inicial.",
+    "LOGIN_MISSING_DATA": "Dados de login não informados",
+    "LOGIN_USER_NOT_FOUND": "Não conseguimos encontrar seu usuário. Verifique os dados informados.",
+    "LOGIN_USER_PASSWORD_DIFF": "Credenciais incorretas. Verifique os dados informados.",
     "Z": "Z"
 }

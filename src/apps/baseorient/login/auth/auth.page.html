@@ -2,7 +2,7 @@
 
   <form #loginForm="ngForm" novalidate (ngSubmit)="login()">
     <ion-item class="no-border">
-      <input type="text" name="str_cpf" [(ngModel)]="str_cpf" [placeholder]="i18n.lang.AUTH_USERNAME"
+      <input type="text" name="username" [(ngModel)]="username" [placeholder]="i18n.lang.AUTH_USERNAME"
         (keyup)="enterEv($event)" required />
     </ion-item>
     <ion-item class="no-border">

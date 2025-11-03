@@ -4,21 +4,21 @@
     <ion-list class="sidebar-menu">
       <ion-item slot="center" class="user-place">
         <div class="avatar-place">
-          <img src="/assets/imgs/cbm.png" alt="avatar" class="rounded-circle" width="72" />
+          <img src="/assets/imgs/baseorient.png" alt="avatar" class="rounded-circle" width="72" />
         </div>
       </ion-item>
       <div class="side-menu">
         <ng-template ngFor let-it [ngForOf]="menu">
-          <div class="first-page" (click)="toggleMenu(it)" [ngClass]="{in: it.open, block: it.bo_desabilitado}"
-            *ngIf="!it.bo_oculto">
+          <div class="first-page" (click)="toggleMenu(it)" [ngClass]="{in: it.open, block: it.bo_disabled}"
+            *ngIf="!it.bo_hidden">
             <ion-item>
-              <span>{{it.str_label}}</span>
+              <span>{{it.label}}</span>
               <ion-icon name="arrow-down" *ngIf="it.submenu"></ion-icon>
             </ion-item>
             <div class="submenu" *ngIf="it.submenu">
               <ng-template ngFor let-iit [ngForOf]="it.submenu">
-                <ion-item class="second-page" (click)="routeMenu(iit)" *ngIf="!iit.bo_oculto"
-                  [ngClass]="{ block: iit.bo_desabilitado}">{{iit.str_label}}</ion-item>
+                <ion-item class="second-page" (click)="routeMenu(iit)" *ngIf="!iit.bo_hidden"
+                  [ngClass]="{ block: iit.bo_disabled}">{{iit.label}}</ion-item>
               </ng-template>
             </div>
           </div>
@@ -58,8 +58,8 @@
       <!-- // MENU -->
       <ion-buttons class="top-menu-desktop" *ngIf="!side_mode">
         <ng-template ngFor let-it [ngForOf]="menu">
-          <ion-button (click)="toggleMenu(it, $event)" *ngIf="!it.bo_oculto">
-            {{it.str_label}}
+          <ion-button (click)="toggleMenu(it, $event)" *ngIf="!it.bo_hidden">
+            {{it.label}}
           </ion-button>
         </ng-template>
       </ion-buttons>
@@ -71,16 +71,16 @@
       </ion-item>
       <ion-item slot="end" class="no-border user-place">
         <div class="user-info">
-          <p>{{person?.str_nomecurto}}<br><small>{{person?.lotacao_str}}</small></p>
+          <p>{{person?.short_name}}<br><small>{{person?.lotacao_str}}</small></p>
           <div class="avatar-place"
-            [ngStyle]="{'background-image': 'url('+person?.person_img || '/assets/imgs/cbm.png'+')'}">
+            [ngStyle]="{'background-image': 'url('+person?.person_img || '/assets/imgs/baseorient.png'+')'}">
           </div>
         </div>
         <button class="notify-btn" [ngClass]="{active: notifications?.length}" (click)="toggleNotifications()">
           <i class="mdi mdi-bell-outline"></i>
         </button>
         <div class="avatar-place" (click)="toggleTopMenu()">
-          <img src="/assets/imgs/cbm.png" alt="cbm" class="rounded-circle" width="36" />
+          <img src="/assets/imgs/baseorient.png" alt="baseorient" class="rounded-circle" width="36" />
         </div>
       </ion-item>
     </ion-toolbar>
@@ -104,8 +104,8 @@
 
     <div class="header-submenu" [ngClass]="{in: mod && mod.submenu}">
       <ng-template ngFor let-iit [ngForOf]="mod.submenu">
-        <ion-item class="second-page" (click)="routeMenu(iit)" [ngClass]="{ block: iit.bo_desabilitado}"
-          *ngIf="!iit.bo_oculto"><span>{{iit.str_label}}</span></ion-item>
+        <ion-item class="second-page" (click)="routeMenu(iit)" [ngClass]="{ block: iit.bo_disabled}"
+          *ngIf="!iit.bo_hidden"><span>{{iit.label}}</span></ion-item>
       </ng-template>
     </div>
 
@@ -129,9 +129,9 @@
   <ion-tabs *ngIf="menu_type === 'tabs'">
     <ion-tab-bar slot="bottom">
       <ng-template ngFor let-it [ngForOf]="menu">
-        <ion-tab-button [routerLink]="it.str_rota" [ngClass]="" routerLinkActive="active">
+        <ion-tab-button [routerLink]="it.route" [ngClass]="" routerLinkActive="active">
           <i class="{{it.icon}}"></i>
-          {{ it.str_label }}
+          {{ it.label }}
         </ion-tab-button>
       </ng-template>
     </ion-tab-bar>

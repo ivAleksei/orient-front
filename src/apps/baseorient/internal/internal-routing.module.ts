@@ -8,6 +8,10 @@ const routes: Routes = [
     path: '',
     component: InternalPage,
     children: [
+      {
+        path: 'home',
+        loadChildren: () => import('src/apps/baseorient/content/home/home.module').then(m => m.HomePageModule)
+      },
     ]
   }
 ];

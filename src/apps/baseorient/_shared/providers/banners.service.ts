@@ -32,21 +32,20 @@ export class BannersService {
 
 
   async getBanners(args?: any) {
-    return this.graphql.query(environment.API.url, 'graphql', {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query Banners($todos: Boolean){
-        Banners(todos: $todos){
+      query Banners($all: Boolean){
+        Banners(all: $all){
           _id
           url
-          tipo
           img{
             url
           }
           pdf{
             url
           }
-          dt_inicio
-          dt_fim
+          dt_start
+          dt_end
         }
       }`,
       name: "Banners",
@@ -61,7 +60,7 @@ export class BannersService {
 
   newBanner(data) {
     this.loadingService.show();
-    return this.graphql.query(environment.API.url, 'graphql', {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
       mutation CreateBanner($input: BannerInput){
         CreateBanner(input: $input){
@@ -84,7 +83,7 @@ export class BannersService {
   editBanner(data) {
     this.loadingService.show();
 
-    return this.graphql.query(environment.API.url, 'graphql', {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
       mutation UpdateBanner($input: BannerInput){
         UpdateBanner(input: $input){
@@ -110,11 +109,10 @@ export class BannersService {
       .then(confirm => {
         if (!confirm) return;
         this.loadingService.show();
-        return this.graphql.query(environment.API.url, 'graphql', {
+        return this.graphql.query(environment.API.orient, 'graphql', {
           query: `
         mutation deleteBanner($_id: ID){
           deleteBanner(_id: $_id){
-          
             status
             msg
           }
@@ -131,25 +129,5 @@ export class BannersService {
 
   saveBanner(data) {
     return this[data._id ? 'editBanner' : "newBanner"]({ input: data });
-  }
-
-  setInscricao(data) {
-    this.loadingService.show();
-    return this.graphql.query(environment.API.url, 'graphql', {
-      query: `
-      mutation inscricaoBanner($input: BannerSubscriptionInput){
-        inscricaoBanner(input: $input){
-          status
-          msg
-        }
-      }`,
-
-      name: "inscricaoBanner",
-      variables: { input: data }
-    })
-      .then(done => {
-        this.loadingService.hide();
-        return done;
-      });
   }
 }
