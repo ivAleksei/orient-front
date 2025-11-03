@@ -1,0 +1,173 @@
+<ion-menu #menuSidebar type="overlay" contentId="main-content" (ionWillOpen)="closeMenus()"
+  [ngClass]="{'side-mode': side_mode}">
+  <ion-content>
+    <ion-list class="sidebar-menu">
+      <ion-item slot="center" class="user-place">
+        <div class="avatar-place">
+          <img src="/assets/imgs/cbm.png" alt="avatar" class="rounded-circle" width="72" />
+        </div>
+      </ion-item>
+      <div class="side-menu">
+        <ng-template ngFor let-it [ngForOf]="menu">
+          <div class="first-page" (click)="toggleMenu(it)" [ngClass]="{in: it.open, block: it.bo_desabilitado}"
+            *ngIf="!it.bo_oculto">
+            <ion-item>
+              <span>{{it.str_label}}</span>
+              <ion-icon name="arrow-down" *ngIf="it.submenu"></ion-icon>
+            </ion-item>
+            <div class="submenu" *ngIf="it.submenu">
+              <ng-template ngFor let-iit [ngForOf]="it.submenu">
+                <ion-item class="second-page" (click)="routeMenu(iit)" *ngIf="!iit.bo_oculto"
+                  [ngClass]="{ block: iit.bo_desabilitado}">{{iit.str_label}}</ion-item>
+              </ng-template>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <ion-item routerLink="/internal/credits" class="hide-mobile">
+        <span>DLOF/CTIC</span>
+      </ion-item>
+      <ion-item class="logout" (click)="about()">
+        Sobre o Sistema
+      </ion-item>
+      <ion-item class="logout" (click)="logout()">
+        Sair
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+
+<div class="banners-place" [ngClass]="{in: show_banners}">
+  <swiper-container #swiper [pagination]="true">
+    <ng-template ngFor let-it [ngForOf]="banners">
+      <swiper-slide *ngIf="it.img">
+        <div class="img-place" [ngStyle]="{'background-image': 'url('+it?.img?.url+')' }" *ngIf="it.tipo != 'video'"
+          (click)="openUrl(it?.url || null)">
+        </div>
+        <video class="video-place" [src]="it.img?.url" *ngIf="it.tipo == 'video'" autoplay controls></video>
+      </swiper-slide>
+    </ng-template>
+  </swiper-container>
+  <button class="bton" (click)="setSeeBanners()">Fechar</button>
+</div>
+
+<div class="ion-page" id="main-content" [ngClass]="{'side-mode': side_mode}">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons class="menu-toggle" slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <!-- // MENU -->
+      <ion-buttons class="top-menu-desktop" *ngIf="!side_mode">
+        <ng-template ngFor let-it [ngForOf]="menu">
+          <ion-button (click)="toggleMenu(it, $event)" *ngIf="!it.bo_oculto">
+            {{it.str_label}}
+          </ion-button>
+        </ng-template>
+      </ion-buttons>
+
+
+      <!-- // TOP MENU -->
+      <ion-item slot="end" class="no-border" *ngIf="!env?.production">
+        {{info_api?.db}}
+      </ion-item>
+      <ion-item slot="end" class="no-border user-place">
+        <button class="mirror-btn" (click)="mirror()" *ngIf="!env.production">
+          <i class="mdi mdi-vector-selection"></i>
+        </button>
+        <div class="user-info">
+          <p>{{militar?.str_nomecurto}}<br><small>{{militar?.lotacao_str}}</small></p>
+          <div class="avatar-place"
+            [ngStyle]="{'background-image': 'url('+militar?.militar_img || '/assets/imgs/cbm.png'+')'}">
+          </div>
+        </div>
+        <button class="notify-btn" [ngClass]="{active: notifications?.length}" (click)="toggleNotifications()">
+          <i class="mdi mdi-bell-outline"></i>
+        </button>
+        <div class="avatar-place" (click)="toggleTopMenu()">
+          <img src="/assets/imgs/cbm.png" alt="cbm" class="rounded-circle" width="36" />
+        </div>
+      </ion-item>
+    </ion-toolbar>
+
+    <div class="notifications-menu">
+      <ng-template ngFor let-it [ngForOf]="notifications" let-i="index">
+        <ion-item (click)="openNotify(it)" *ngIf="i<5">
+          <div class="card-notification">
+            <p class="title">{{it.title}}</p>
+            <span>{{it.created_at | date : 'diff'}}</span>
+          </div>
+        </ion-item>
+      </ng-template>
+
+      <ion-item (click)="routeNotifications()">
+        <div class="card-notification">
+          <p>Ver todas ...</p>
+        </div>
+      </ion-item>
+    </div>
+
+    <div class="header-submenu" [ngClass]="{in: mod && mod.submenu}">
+      <ng-template ngFor let-iit [ngForOf]="mod.submenu">
+        <ion-item class="second-page" (click)="routeMenu(iit)" [ngClass]="{ block: iit.bo_desabilitado}"
+          *ngIf="!iit.bo_oculto"><span>{{iit.str_label}}</span></ion-item>
+      </ng-template>
+    </div>
+
+    <div class="top-menu">
+      <ion-item (click)="editProfile()">
+        <span> Dados Pessoais</span>
+      </ion-item>
+      <ion-item routerLink="/internal/credits" class="hide-mobile">
+        <span>DLOF/CTIC</span>
+      </ion-item>
+      <ion-item (click)="about()">
+        <span> Sobre o Sistema</span>
+      </ion-item>
+      <ion-item (click)="logout()">
+        <span> Sair </span>
+      </ion-item>
+    </div>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <ion-router-outlet></ion-router-outlet>
+  </ion-content>
+
+  <app-loading></app-loading>
+  <ion-tabs *ngIf="menu_type === 'tabs'">
+    <ion-tab-bar slot="bottom">
+      <ng-template ngFor let-it [ngForOf]="menu">
+        <ion-tab-button [routerLink]="it.str_rota" [ngClass]="" routerLinkActive="active">
+          <i class="{{it.icon}}"></i>
+          {{ it.str_label }}
+        </ion-tab-button>
+      </ng-template>
+    </ion-tab-bar>
+  </ion-tabs>
+</div>
+
+
+<div class="upd-password" [ngClass]="{in: modalPassword}">
+  <div class="card">
+    <h4 class="card-title">Alterar Senha</h4>
+    <form #updPasswordForm="ngForm" novalidate>
+      <ion-item>
+        <ion-input type="password" name="password" [(ngModel)]="password" placeholder="Nova Senha" required
+          minlength="6">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="password" name="confirm_password" [(ngModel)]="confirm_password" placeholder="Confirmar Senha"
+          required minlength="6">
+        </ion-input>
+      </ion-item>
+      <div class="no-border item-btn">
+        <ion-button class="btn-login" type="submit" color="light" (click)="clearUpdPassword()"
+          *ngIf="!force_chg">Cancelar</ion-button>
+        <ion-button class="btn-login" type="submit" color="primary" (click)="updPassword()"
+          [disabled]="loading || !updPasswordForm.valid || updPasswordForm.value.password !== updPasswordForm.value.confirm_password">Salvar</ion-button>
+      </div>
+    </form>
+  </div>
+</div>

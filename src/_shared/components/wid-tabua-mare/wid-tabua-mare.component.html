@@ -1,0 +1,44 @@
+<div class="tbox">
+  <div class="container">
+    <!-- HEADER -->
+    <header class="header">
+      <h1><data>{{today | date:'dddd | DD/MM/YYYY'}} </data>
+      </h1>
+      <!-- <img class="logo" src="/assets/imgs/cbm.png" alt="logo"> -->
+    </header>
+
+    <!-- TIDE CHART DAY -->
+    <article>
+      <div class="bg">
+        <section class="app-tide-chart">
+          <div class="place-chart">
+            <ngx-charts-area-chart [results]='tideData' [xAxis]="false" [yAxis]="true" [legend]="false"
+              [showXAxisLabel]="false" [xAxisLabel]="'Hora'" [showYAxisLabel]="false" [yAxisLabel]="'Altura (m)'"
+              [autoScale]="true" [curve]="curve" [gradient]="true" [yScaleMin]="-0.5" xScaleMin="0"
+              xScaleMax="86400" [scheme]="colorScheme">
+            </ngx-charts-area-chart>
+            <!-- <div class="timeline" [ngStyle]="{left:timeX + 'px'}"></div> -->
+          </div>
+        </section>
+      </div>
+
+      <!-- TIDE TABLE -->
+      <section class="tideTableToday">
+        <table>
+          <thead>
+            <tr>
+              <th>Hora</th>
+              <th>Altura (m)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tide of tideTableToday">
+              <td>{{ tide.time }}</td>
+              <td>{{ tide.height }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </article>
+  </div>
+</div>

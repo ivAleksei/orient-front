@@ -1,0 +1,16 @@
+<div class="floating-buttons">
+  <div class="container">
+    <ng-template ngFor let-b [ngForOf]="buttons" let-i="index">
+      <ion-button [color]="b.color" class="actions {{b.class}} {{b.action}} "
+        [ngClass]="{ 'active': !b.hide, 'hidden': b.hide, 'disabled': b.disabled}"
+        [ngStyle]="{bottom: b.bottom, right: b.right}" (click)="clickEvent(b)">
+        <i class="mdi {{b.icon}}"></i>
+        <span [ngClass]="{show: open}">{{b.label}}</span>
+      </ion-button>
+    </ng-template>
+    <ion-button color="medium" (click)="toggleOpen()" [ngClass]="{'hidden': !toggle}">
+      <i class="mdi mdi-dots-vertical" [ngClass]="{ 'hide': open}"></i>
+      <i class="mdi mdi-dots-horizontal" [ngClass]="{ 'hide': !open}"></i>
+    </ion-button>
+  </div>
+</div>

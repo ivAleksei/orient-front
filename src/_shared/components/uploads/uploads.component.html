@@ -1,0 +1,68 @@
+<ion-item class="no-border">
+  <ion-label for="uploads" position="stacked">{{configs?.label}}</ion-label>
+  <div class="uploads">
+    <input type="file" class="disabled" [attr.id]="_id" [multiple]="configs?.multiple"
+      (change)="handleAction('select',$event)">
+    <div class="up-item new-upload" id="open-action-sheet">
+      <i class="mdi mdi-plus"></i>
+    </div>
+    <!-- {{files | json}} -->
+    <ng-template ngFor let-it [ngForOf]="files">
+      <div class="up-item file" [ngClass]="{open: it.open}" (click)="handleAction('click',it)">
+        <i class="mdi btn mdi-close" (click)="handleAction('remove',it)"></i>
+        <i class="mdi btn mdi-eye" (click)="handleAction('open',it)"></i>
+        <i class="mdi mdi-file"></i>
+        <p>{{it.name}}</p>
+      </div>
+    </ng-template>
+  </div>
+</ion-item>
+
+<ion-action-sheet #selectMethod trigger="open-action-sheet" [attr.id]="'select-' + _id" [buttons]="methods"
+  (didDismiss)="chooseMethod($event)"></ion-action-sheet>
+
+<div [attr.id]="'modal-' + _id" class="card upload-mobile">
+  <h4>Use o seu celular para adicionar uma imagem</h4>
+  <div class="inline-flex">
+    <div class="col">
+      <div class="qrcode-place">
+        <div class="qr-place" *ngIf="configs?.url">
+          <qrcode [qrdata]="configs?.url" [width]="250" [errorCorrectionLevel]="'M'"></qrcode>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="tutorial-place">
+        <p>Para adicionar uma imagem diretamente do seu celular, siga estes passos:</p>
+        <div class="steps">
+          <div class="step step-1">
+            <p class="step-number">1</p>
+            <p>Escaneie o QR code que você visualiza à esquerda. Utilize a câmera do celular ou baixe um aplicativo para
+              a
+              leitura de QR code.</p>
+          </div>
+          <div class="step step-2">
+            <p class="step-number">2</p>
+            <p>Dê um clique na área delimitada e você poderá tirar as fotos que precisa ou selecionar
+              imagens da sua galeria.</p>
+          </div>
+          <div class="step step-3">
+            <p class="step-number">3</p>
+            <p>Clique em "Salvar" na câmera do seu celular</p>
+          </div>
+          <div class="step step-4">
+            <p class="step-number">4</p>
+            <p>Ao salvar as imagens, elas serão enviadas à nossa plataforma.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <p>Se você tiver qualquer problema na leitura do QR Code, por favor copie este link e cole no navegador do seu
+    celular. <a href="javascript:void(0)" (click)="copyClipboard()">Clique aqui para copiar o link <i
+        class="mdi mdi-content-copy"></i></a></p>
+  <div class="footer">
+    <button class="btn btn-primary" (click)="closeModal()">Fechar</button>
+  </div>
+</div>

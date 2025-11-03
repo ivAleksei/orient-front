@@ -1,0 +1,10 @@
+ion-list {
+    max-height: 80vh;
+    overflow-y: auto;
+    --background: transparent;
+
+    ion-item {
+        --background: var(--ion-white);
+        margin-bottom: 16px;
+    }
+}

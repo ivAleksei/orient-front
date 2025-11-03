@@ -1,0 +1,182 @@
+.uploads {
+    padding: 16px 8px;
+    margin: 16px 0;
+    display: inline-flex;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    background: #f5f5f5;
+
+    .up-item {
+        background: #fff;
+        width: 78px;
+        min-width: 78px;
+        height: 78px;
+        text-align: center;
+        padding: 21px 0;
+        font-size: 32px;
+        border: 2px dashed #ccc;
+        color: #ccc;
+        cursor: pointer;
+        margin-right: 16px;
+        position: relative;
+
+        i.mdi.btn {
+            position: absolute;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 20px;
+            margin-top: -13px;
+            margin-right: -13px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all .2s ease-in-out;
+
+            &.mdi-close {
+                right: 0;
+                top: 0;
+                background: var(--ion-color-danger);
+                color: var(--ion-color-danger-contrast);
+                border: 1px solid var(--ion-color-danger-shade);
+            }
+
+            &.mdi-eye {
+                right: 0;
+                top: 26px;
+                background: var(--ion-color-info);
+                color: var(--ion-color-info-contrast);
+                border: 1px solid var(--ion-color-info-shade);
+            }
+
+            &.mdi-pencil {
+                right: 0;
+                top: 54px;
+                background: var(--ion-color-warning);
+                color: var(--ion-color-warning-contrast);
+                border: 1px solid var(--ion-color-warning-shade);
+            }
+        }
+
+        p {
+            width: 64px;
+            text-align: center;
+            text-overflow: ellipsis;
+            font-size: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        &.file {
+            background: white;
+            border: 2px dashed var(--ion-color-primary-tint);
+            color: var(--ion-color-primary);
+
+            padding-top: 12px;
+        }
+
+        &.open {
+            i.mdi.btn {
+                opacity: 1;
+                pointer-events: initial;
+            }
+        }
+    }
+}
+
+.card.upload-mobile {
+    position: fixed;
+    width: 80vw;
+    max-width: 768px;
+    left: 0;
+    right: 0;
+    top: -200vh;
+    z-index: 99999;
+    margin: 0 auto;
+    box-shadow: 0 0 6px var(--ion-color-medium);
+    border-radius: 0 0 16px 16px;
+    transition: top .4s ease-in-out;
+
+    &::before {
+        content: " ";
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        opacity: 0;
+        top: 0;
+        left: 0;
+        z-index: -10;
+        pointer-events: none;
+    }
+
+    .step,
+    .inline-flex {
+        display: flex;
+        width: 100%;
+
+        .col {
+            width: 100%;
+        }
+    }
+
+    hr {
+        width: 100%;
+        border-bottom: 1px solid var(--ion-color-light-shade);
+
+    }
+
+    .step {
+        .step-number {
+            margin: 8px;
+            margin-top: 0;
+            padding: 4px 8px;
+            background-color: var(--ion-color-primary);
+            color: var(--ion-color-primary-contrast);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+
+        p {
+            margin: 3px 0;
+            margin-bottom: 8px;
+        }
+    }
+
+    .footer {
+        width: 100%;
+        text-align: right;
+
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            background-color: var(--ion-color-primary);
+            color: var(--ion-color-primary-contrast);
+        }
+    }
+
+    &.in {
+        top: 0;
+
+        &:before {
+            opacity: .3;
+            pointer-events: initial;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .card.upload-mobile {
+        margin: 0;
+        width: 100%;
+        height: 100vh;
+        overflow-y: auto;
+
+        .inline-flex {
+            flex-direction: column;
+        }
+    }
+}

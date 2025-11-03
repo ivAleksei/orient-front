@@ -1,0 +1,90 @@
+.auth-form {
+  min-height: 578px !important;
+  --min-height: 578px !important;
+  overflow-y: auto;
+}
+
+form {
+  position: relative;
+  width: calc(100% - 16px);
+  max-width: 400px;
+  padding: 16px;
+  padding-bottom: 32px;
+  border-radius: 16px;
+  margin: 0 auto;
+  margin-top: calc(15vh + 206px);
+
+  ion-item,
+  ion-input {
+    overflow: visible;
+    --overflow: visible;
+  }
+
+  input {
+    padding-top: 0;
+  }
+
+  .logo-sei {
+    max-height: 30px;
+    margin: 0 8px;
+  }
+
+  input,
+  ion-input {
+    background: #fff;
+    box-shadow: 0 0 6px var(--ion-color-medium);
+    min-height: 48px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+
+  .btn-login {
+    margin: 0 auto;
+    margin-top: 16px;
+
+    height: 42px;
+    width: 100%;
+  }
+
+  .recover {
+    text-decoration: none;
+    margin: 16px 0;
+  }
+
+  p.tut-login {
+    font-weight: bold;
+  }
+
+  .version {
+    color: var(--ion-color-dark);
+    font-size: 11px;
+    margin: 0;
+    float: right;
+    margin-top: 5px;
+  }
+
+  .footer {
+    position: initial;
+    margin-top: 32px;
+
+    bottom: 32px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
+
+@media screen and (min-height: 689px) {
+  form .footer {
+    margin-top: 0;
+    position: fixed;
+  }
+}
+
+@media screen and (min-width: 400px) {
+  .btn-login {
+    max-width: 400px;
+  }
+}

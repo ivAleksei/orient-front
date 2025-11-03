@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true">
+  <div class="page-layout">
+    <h3 class="page-title">Notificações<br>
+      <small>Veja aqui as notificações recebidas</small>
+    </h3>
+    <br>
+    <div class="content">
+      <div class="card hide-mobile">
+        <div class="card-body">
+          <data-table *ngIf="tableInfo" [tableInfo]="tableInfo" [reload]="reloadTable"
+            (clickEvent)="handleTable($event)"></data-table>
+        </div>
+
+      </div>
+
+      <div class="ft-scroll hide-desktop">
+        <p>
+          <tr *ngIf="!notifications?.length">
+            <td>Nenhum registro encontrado</td>
+          </tr>
+        </p>
+        <ng-template ngFor let-it [ngForOf]="notifications">
+          <div class="card-not " (click)="notificationService.openNotify(it)">
+            <p>{{it.title}}</p>
+            <p class="date">{{it.created_at | date: 'diff'}}</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

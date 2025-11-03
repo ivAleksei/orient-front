@@ -1,0 +1,7 @@
+{
+  "name": "cfap-app",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

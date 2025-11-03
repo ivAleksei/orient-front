@@ -1,0 +1,19 @@
+<div class="ionitem ov-visible">
+  <ion-label for="autocomp" position="stacked">{{ionlabel}}</ion-label>
+  <input type="text" name="autocomp" [(ngModel)]="value" (keyup)="filterData($event)" [disabled]="disabled || !data"
+    autocomplete="off" *ngIf="!multiple" [placeholder]="placeholder || ''" />
+  <div class=" multiple-place" *ngIf="multiple">
+    <input type="text" name="autocomp" [(ngModel)]="value" (keyup)="filterData($event)" [disabled]="disabled || !data"
+      autocomplete="off" />
+    <div class="multiple-list" *ngIf="multiple">
+      <ng-template ngFor let-it [ngForOf]="arr">
+        <p>{{it.short_name_al}} <span (click)="rmArr(it)"><i class="mdi mdi-close-circle"></i></span></p>
+      </ng-template>
+    </div>
+  </div>
+  <ul class="list-autocomplete">
+    <ng-template ngFor let-it [ngForOf]="filter_data">
+      <li (click)="choose(it)">{{it[label]}}</li>
+    </ng-template>
+  </ul>
+</div>

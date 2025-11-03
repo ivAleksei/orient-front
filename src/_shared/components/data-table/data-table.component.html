@@ -1,0 +1,43 @@
+<div [ngClass]="{'hide-mobile':listTemplate}">
+  <table #table id="{{ tableInfo.id }}" datatable class="table table-striped table-hover table-condensed "
+    [dtTrigger]="dtTrigger" [dtOptions]="dtOptions">
+    <tbody>
+      <tr>
+        <td [attr.colspan]="tableInfo.columns.length + 1" class="text-center">
+          Buscando dados da tabela...
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div [ngClass]="{'hidden':!listTemplate, 'hide-desktop':listTemplate}">
+  <ion-list id="list-{{ tableInfo.id }}">
+    <ng-template ngFor let-it [ngForOf]="list">
+      <ion-item-sliding>
+        <ng-template ngFor let-btn [ngForOf]="buttons?.left">
+          <ion-item-options side="start">
+            <ion-item-option *ngIf="!btn.conditional || btn.conditional(it)">{{btn.tooltip}}</ion-item-option>
+          </ion-item-options>
+        </ng-template>
+        <ion-item>
+          <ng-container [ngTemplateOutlet]="listTemplate" [ngTemplateOutletContext]="{it: it}"></ng-container>
+        </ion-item>
+        <ion-item-options side="end">
+          <ng-template ngFor let-btn [ngForOf]="buttons?.right">
+            <ion-item-option *ngIf="!btn.conditional || btn.conditional(it)">{{btn.tooltip}}</ion-item-option>
+          </ng-template>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ng-template>
+  </ion-list>
+</div>
+
+
+<!-- 
+<ng-template #templateRef let-it="it">
+  <div>
+    {{it._ref}} {{it.militar.str_nomeguerra}}
+  </div>
+</ng-template> 
+-->

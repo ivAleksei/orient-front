@@ -1,0 +1,16 @@
+<ion-item class="no-border">
+  <form #recoverForm="ngForm" novalidate (ngSubmit)="recover()">
+    <ion-item class="no-border">
+      <ion-input type="text" name="email" [(ngModel)]="email" placeholder="Email" (keyup)="enterEv($event)">
+      </ion-input>
+    </ion-item>
+    <ion-item class="no-border item-btn">
+      <ion-button class="btn-login" type="submit" color="primary" (click)="recover()" [disabled]="loading">Recuperar
+        Senha</ion-button>
+    </ion-item>
+    <p class="version">v. {{version}}</p>
+    <div class="footer">
+      <a class="recover" routerLink="/login/auth">Voltar para o Login</a>
+    </div>
+  </form>
+</ion-item>

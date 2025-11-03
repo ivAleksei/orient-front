@@ -1,0 +1,166 @@
+.card.taf-indices {
+  background: #FFF1E2;
+  width: 100%;
+  height: 900px;
+  position: relative;
+  transform-origin: top left;
+
+  .tut {
+    display: none;
+  }
+
+  .card-title {
+    font-weight: bold;
+    z-index: 1;
+    position: relative;
+    margin: 16px;
+    font-size: 2em;
+    padding: 0;
+  }
+
+  .grid {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sup,
+  .detsup {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30%;
+  }
+
+  .sup {
+    left: initial;
+    right: 0;
+    width: 70%;
+  }
+
+
+  .inf,
+  .detinf {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 40%;
+  }
+
+  .inf {
+    left: 0;
+    right: initial;
+    width: 60%;
+  }
+
+  .exercicio {
+    z-index: 5;
+    margin-bottom: 32px;
+    transform: scale(.8);
+    text-align: center;
+
+    table {
+      width: fit-content;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 6px #ccc;
+      font-size: 1em;
+
+      tr {
+        td {
+          padding: 2px 8px;
+          border-bottom: 1px solid #ccc;
+        }
+      }
+    }
+
+    &.barras {
+      display: flex;
+      justify-content: space-between;
+
+      img {
+        height: 210px;
+        margin: auto;
+        margin-right: 16px;
+      }
+    }
+  }
+
+  .corrida {
+    position: absolute;
+    top: 80px;
+    left: 16px;
+  }
+
+  .flexoes {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+  }
+
+  .abdominais {
+    position: absolute;
+    top: 80px;
+    right: 16px;
+  }
+
+  .barras {
+    position: absolute;
+    top: 550px;
+    left: 10px;
+  }
+
+  .natacao {
+    position: absolute;
+    top: 490px;
+    right: 10px;
+  }
+}
+
+@media screen and (max-width: 1206px) {
+  .tut {
+    position: relative;
+    z-index: 6;
+    font-size: .7em;
+  }
+
+  .card.taf-indices {
+    height: fit-content;
+    transform: initial;
+
+    .grid {
+      position: relative;
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      z-index: 5;
+    }
+
+    .exercicio {
+      table {
+        min-width: 170px;
+      }
+
+      &.barras {
+        display: initial;
+      }
+    }
+
+    table td{
+    white-space: nowrap;
+    }
+
+    .corrida,
+    .barras,
+    .abdominais,
+    .natacao,
+    .flexoes {
+      position: relative;
+      top: initial;
+      left: initial;
+    }
+
+  }
+}

@@ -1,0 +1,86 @@
+.group-title {
+    color: var(--ion-color-primary-contrast);
+    opacity: 1 !important;
+}
+
+.filter-place {
+    margin: 32px 0;
+}
+
+.btn-place {
+    margin: 8px 0;
+    text-align: right;
+}
+
+
+.old-select {
+    height: 65px;
+    padding-top: 11px;
+}
+
+ion-item {
+    &.checkbox {
+        ion-label {
+            font-size: .9em !important;
+        }
+    }
+}
+
+.daterange-place {
+    display: flex;
+    justify-content: space-between;
+
+    ion-item {
+        width: calc(50% - 16px);
+        margin: 0 auto;
+    }
+
+    ion-col {
+        padding: 0 4px;
+
+        ion-label {
+            margin-top: 6px !important;
+        }
+    }
+}
+
+
+@media screen and (max-width: 768px) {
+    .old-select {
+        height: 65px;
+        padding-top: 13px;
+
+        label {
+            left: 24px
+        }
+    }
+
+    .daterange-place {
+        flex-direction: column;
+        padding-bottom: 16px;
+
+        ion-col {
+            width: 100% !important;
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+        }
+
+        ion-item {
+            width: 100%;
+        }
+    }
+
+    .ion-padding {
+        padding-bottom: 70px;
+
+        .btn-place {
+            position: absolute;
+            bottom: 0;
+            width: calc(100% - 32px);
+
+            ion-button {
+                max-height: 48px;
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+<div class="page-layout">
+  <div class="p-relative">
+    <div class="top-bar">
+      <div class="header">
+        <img src="/assets/imgs/cbm.png" alt="cbm">
+        <div class="title">
+          <h3>REPÚBLICA FEDERATIVA DO BRASIL</h3>
+          <h4>ESTADO DO RIO GRANDE DO NORTE</h4>
+          <h4>CORPO DE BOMBEIROS MILITAR</h4>
+        </div>
+      </div>
+    </div>
+    <div class="content">
+      <input #fileInput type="file" [attr.id]="_id" (change)="handleAction('select',$event)">
+
+      <div class="uploads">
+        <div class="up-item new-upload" (click)="askFile()">
+          <i class="mdi mdi-camera"></i>
+          <p>Clique aqui para enviar um arquivo</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

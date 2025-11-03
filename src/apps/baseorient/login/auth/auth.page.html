@@ -1,0 +1,37 @@
+<ion-item class="no-border auth-form">
+
+  <form #loginForm="ngForm" novalidate (ngSubmit)="login()">
+    <ion-item class="no-border">
+      <input type="text" name="str_cpf" [(ngModel)]="str_cpf" placeholder="Usuário" (keyup)="enterEv($event)"
+        data-mask="cpf" required />
+    </ion-item>
+    <ion-item class="no-border">
+      <ion-input type="password" name="password" [(ngModel)]="password" placeholder="Senha" (keyup)="enterEv($event)"
+        required>
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="no-border item-btn">
+      <ion-button class="btn-login" type="submit" color="primary" (click)="login()"
+        [disabled]="loading || !loginForm.valid">Acessar</ion-button>
+    </ion-item>
+    <p class="tut-login t-center">
+      <span class="t-upper">Efetivo CBM</span><br>
+      Estamos integrados ao <img class="logo-sei" src="/assets/imgs/seirn.png" alt="seirn">,<br>utilize seu usuário e
+      senha para acessar o sistema.
+    </p>
+    <p class="tut-login t-center">
+      <span class="t-upper">usuários externos</span><br>
+      utilize o usuário e senha passados no cadastro.
+    </p>
+
+    <p class="version">v. {{version}}</p>
+    <div class="footer">
+      <a routerLink="/extras/map-cbm">Mapa CBM RN</a><br>
+      <p>
+        Esqueceu a senha? <a class="recover" target="_blank"
+          href="https://www8.defesasocial.rn.gov.br/autenticador/solicitar">Clique aqui</a>
+      </p>
+    </div>
+  </form>
+</ion-item>

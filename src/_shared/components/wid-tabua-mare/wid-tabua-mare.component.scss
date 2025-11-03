@@ -1,0 +1,101 @@
+.container {
+    border: solid #000;
+    border-top: none;
+    // border-radius: 5px;
+    box-shadow: 2px 2px 5px #00000080;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 5px 5px;
+    background-color: #B1272A;
+}
+
+.logo {
+    margin: auto;
+    width: 30px;
+}
+
+
+header>h1 {
+
+    margin: auto;
+    font-family: Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    color: #fff;
+    text-shadow: 2px 2px 2px #00000080;
+
+    data {
+        color: #fff;
+    }
+}
+
+.bg {
+    // BACK GROUND IMAGE
+    // background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXfn-AiQHhJReSpsFsYhAqpsUaZkG6K80rLA&s);
+    // background-image: url(https://as2.ftcdn.net/jpg/02/24/06/59/1000_F_224065933_pKY0HksCj09p6Way1UHW1ZhEuO1ikgpQ.jpg);
+
+    // BACKGROUD WAVYS
+    // background-color: #f4e2d8;
+    // opacity: 0.8;
+    // background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #f4e2d8 10px ), repeating-linear-gradient( #32c8d955, #32c8d9 );
+
+    // BACKGROUND AREIA
+    // background-color: #c6c6c6;
+    // background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+    /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+
+    // BACKGROUND SNOW
+    background-color: #E8E8E8;
+    background-image: url("https://www.transparenttextures.com/patterns/fresh-snow.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+table {
+    width: 100%;
+    background-color: #ffffff;
+    text-align: center;
+
+    tr {
+        td {
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            margin: 0;
+            padding: 4px 8px;
+
+            &:last-child {
+                border-right: none;
+            }
+        }
+
+        &:last-child {
+            td {
+                border-bottom: none;
+            }
+
+        }
+
+    }
+
+}
+
+.place-chart {
+    width: 100%;
+    max-height: 150px;
+    position: relative;
+
+    .timeline {
+        position: absolute;
+        pointer-events: none;
+        background-color: var(--ion-color-primary);
+        top: 10px;
+        left: 0;
+        width: 2px;
+        height: calc(100% - 20px);
+    }
+}

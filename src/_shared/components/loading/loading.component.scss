@@ -1,0 +1,33 @@
+.loading-place {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    background: #ffffffaa;
+    pointer-events: none;
+    opacity: 0;
+    transition: all ease-in-out .2s;
+
+    .limiter {
+        margin: calc(50vh - 106px) auto;
+        max-width: 350px;
+        text-align: center;
+
+        svg {
+            width: 100px;
+            height: 100px;
+            margin: 20px;
+            display: inline-block;
+
+            fill: var(--ion-color-primary);
+        }
+    }
+
+
+    &.in {
+        pointer-events: initial;
+        opacity: 1;
+    }
+}

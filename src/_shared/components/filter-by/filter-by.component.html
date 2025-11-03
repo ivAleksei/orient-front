@@ -1,0 +1,80 @@
+<div class="filter-place" *ngIf="filters">
+  <form #FilterForm="ngForm" novalidate>
+    <ion-accordion-group #filterBy [value]="openTabs">
+      <ion-accordion value="filter">
+        <ion-item slot="header" color="primary">
+          <ion-label class="group-title">Filtrar por:</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-row>
+            <ng-template ngFor let-it [ngForOf]="filters">
+              <ion-col size-xs="12" [attr.size-lg]="it.size" *ngIf="it.type == 'text'">
+                <ion-item>
+                  <ion-label [attr.for]="'input'+it.index" position="stacked">{{it.label}}</ion-label>
+                  <ion-input type="text" [name]="'input'+it.index" [(ngModel)]="this['input' + it.index]"
+                    (ionChange)="changeEv()" (keyup)="keyEvent($event)"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="12" [attr.size-lg]="it.size" *ngIf="it.type == 'month'">
+                <ion-item>
+                  <ion-label [attr.for]="'input'+it.index" position="stacked">{{it.label}}</ion-label>
+                  <ion-input type="month" [name]="'input'+it.index" [(ngModel)]="this['input' + it.index]"
+                    (ionChange)="changeEv()" (keyup)="keyEvent($event)"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="12" [attr.size-lg]="it.size" *ngIf="it.type == 'checkbox'">
+                <ion-item class="checkbox">
+                  <ion-label [attr.for]="'input'+it.index">{{it.label}}</ion-label>
+                  <ion-checkbox [name]="'input'+it.index" [(ngModel)]="this['input' + it.index]"
+                    (ionChange)="changeEv()"></ion-checkbox>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="12" [attr.size-lg]="it.size" *ngIf="it.type == 'date'">
+                <ion-item>
+                  <ion-label [attr.for]="'input'+it.index" position="stacked">{{it.label}}</ion-label>
+                  <ion-input type="date" [name]="'input'+it.index" [(ngModel)]="this['input' + it.index]"
+                    (ionChange)="changeEv()"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="12" [attr.size-lg]="it.size" *ngIf="it.type == 'select'">
+                <ion-item class="old-select">
+                  <label [attr.for]="'input'+it.index" position="stacked">{{it.label}}</label>
+                  <select [name]="'input'+it.index" [(ngModel)]="this['input' + it.index]" (change)="changeEv()">
+                    <option value="">Selecione um item...</option>
+                    <ng-template ngFor let-op [ngForOf]="it.options">
+                      <option [value]="op.value">{{op.label}}</option>
+                    </ng-template>
+                  </select>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="12" [attr.size-lg]="it.size" *ngIf="it.type == 'daterange'">
+                <div class="daterange-place">
+                  <ion-item class="dategroup">
+                    <ion-label [attr.for]="'input'+it.index+'_start'" position="stacked">{{it.label}}
+                      Início</ion-label>
+                    <ion-input type="date" [name]="'input'+it.index+'_start'"
+                      [(ngModel)]="this['input' + it.index+ '_start']" (ionChange)="changeEv()"></ion-input>
+                  </ion-item>
+                  <ion-item class="dategroup">
+                    <ion-label [attr.for]="'input'+it.index+'_end'" position="stacked">{{it.label}} Fim</ion-label>
+                    <ion-input type="date" [name]="'input'+it.index+'_end'"
+                      [(ngModel)]="this['input' + it.index+ '_end']" (ionChange)="changeEv()"></ion-input>
+                  </ion-item>
+                </div>
+              </ion-col>
+            </ng-template>
+          </ion-row>
+
+          <div class="btn-place">
+            <ion-button color="medium" (click)="clearFilter()">Limpar <span class="hide-mobile">
+                &nbsp;Filtros</span></ion-button>
+            <ion-button color="primary" (click)="applyFilter()">Aplicar <span class="hide-mobile">
+                &nbsp;Filtros</span></ion-button>
+          </div>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+  </form>
+
+</div>
+<!-- <div>{{FilterForm.value | json}}</div> -->
