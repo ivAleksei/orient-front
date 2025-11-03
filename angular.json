@@ -93,10 +93,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "sisbom:build:production"
+              "buildTarget": "baseorient:build:production"
             },
             "development": {
-              "buildTarget": "sisbom:build:development"
+              "buildTarget": "baseorient:build:development"
             },
             "ci": {
               "progress": false
@@ -107,7 +107,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "sisbom:build"
+            "buildTarget": "baseorient:build"
           }
         },
         "test": {

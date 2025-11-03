@@ -9,7 +9,6 @@ import { EllipsisPipe } from './ellipsis.pipe';
 import { ObjKeyPipe } from './obj-key.pipe';
 import { QraPipe } from './qra.pipe';
 import { StatusPipe } from './status.pipe';
-import { NumeralExtPipe } from './numeral_ext.pipe';
 import { BgNumPipe } from './bg_num.pipe';
 import { SizePipe } from './size.pipe';
 import { PatentePipe } from './patente.pipe';
@@ -31,7 +30,6 @@ import { TimePipe } from './time.pipe';
     PatentePipe,
     SizePipe,
     TimePipe,
-    NumeralExtPipe
   ],
   imports: [
     CommonModule
@@ -49,7 +47,6 @@ import { TimePipe } from './time.pipe';
     StatusPipe,
     SizePipe,
     TimePipe,
-    NumeralExtPipe
   ],
   exports: [
     CurrencyPipe,
@@ -63,7 +60,6 @@ import { TimePipe } from './time.pipe';
     TimePipe,
     QraPipe,
     StatusPipe,
-    NumeralExtPipe
   ],
 })
 export class PipesModule { }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalStorageService } from 'src/_shared/services/local-storage.service';
-import { UserService } from 'src/apps/cfap/_shared/providers/user.service';
+import { UserService } from 'src/apps/baseorient/_shared/providers/user.service';
 import { NavController } from '@ionic/angular';
 
 @Component({

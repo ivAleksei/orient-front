@@ -1,9 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuController } from '@ionic/angular';
-import { UserService } from 'src/apps/sisbom_web/_shared/providers/user.service';
+import { UserService } from 'src/apps/baseorient/_shared/providers/user.service';
 import { AlertsService } from 'src/_shared/services/alerts.service';
-import { AppLoadingStrategy } from 'src/apps/sisbom_web/app-loading-strategy';
-import { environment } from 'src/apps/sisbom_web/environments/environment';
+import { AppLoadingStrategy } from 'src/apps/baseorient/app-loading-strategy';
+import { environment } from 'src/apps/baseorient/environments/environment';
 
 @Component({
   selector: 'app-recover',

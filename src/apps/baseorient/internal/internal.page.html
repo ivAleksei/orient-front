@@ -24,9 +24,6 @@
           </div>
         </ng-template>
       </div>
-      <ion-item routerLink="/internal/credits" class="hide-mobile">
-        <span>DLOF/CTIC</span>
-      </ion-item>
       <ion-item class="logout" (click)="about()">
         Sobre o Sistema
       </ion-item>
@@ -73,13 +70,10 @@
         {{info_api?.db}}
       </ion-item>
       <ion-item slot="end" class="no-border user-place">
-        <button class="mirror-btn" (click)="mirror()" *ngIf="!env.production">
-          <i class="mdi mdi-vector-selection"></i>
-        </button>
         <div class="user-info">
-          <p>{{militar?.str_nomecurto}}<br><small>{{militar?.lotacao_str}}</small></p>
+          <p>{{person?.str_nomecurto}}<br><small>{{person?.lotacao_str}}</small></p>
           <div class="avatar-place"
-            [ngStyle]="{'background-image': 'url('+militar?.militar_img || '/assets/imgs/cbm.png'+')'}">
+            [ngStyle]="{'background-image': 'url('+person?.person_img || '/assets/imgs/cbm.png'+')'}">
           </div>
         </div>
         <button class="notify-btn" [ngClass]="{active: notifications?.length}" (click)="toggleNotifications()">
@@ -118,9 +112,6 @@
     <div class="top-menu">
       <ion-item (click)="editProfile()">
         <span> Dados Pessoais</span>
-      </ion-item>
-      <ion-item routerLink="/internal/credits" class="hide-mobile">
-        <span>DLOF/CTIC</span>
       </ion-item>
       <ion-item (click)="about()">
         <span> Sobre o Sistema</span>

@@ -9,11 +9,11 @@ export const environment = {
   menu_type: 'side',
   portal: {
     sisbom: "https://sisbom.cbm.rn.gov.br",
-    url: "http://10.91.9.22:8100",
+    url: "http://192.168.1.76:8100",
     valida: "https://sistemas.cbm.rn.gov.br"
   },
   API: {
-    url: "http://10.91.9.22:3030",
+    url: "http://192.168.1.76:3030",
     storage: "https://storage.cbm.rn.gov.br",
     bg: "https://us-central1-cfap-app.cloudfunctions.net/api_bg",
     cfap: "https://us-central1-cfap-app.cloudfunctions.net/api_cfap",

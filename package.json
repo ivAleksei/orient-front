@@ -33,7 +33,7 @@
     "local-ip": "node local_ip.js",
 
     "prestart": "npm run git-setup && npm run local-ip",
-    "start": "npm run start:cfap",
+    "start": "npm run start:baseorient",
     "prestart:baseorient": "npm run prestart",
     "start:baseorient": "ionic serve --project=baseorient --livereload --external",
     "deploy:baseorient": "node tasks/deploy --env=prod --app=baseorient",

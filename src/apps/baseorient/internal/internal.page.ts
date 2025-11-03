@@ -1,21 +1,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../_shared/providers/user.service';
-import { ModalController, NavController, Platform } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import $ from 'jquery';
 import { SocketService } from 'src/_shared/services/socket.service';
 import { LocalStorageService } from 'src/_shared/services/local-storage.service';
-import { UsersService } from '../_shared/providers/users.service';
 import { ScreenOrientation } from '@awesome-cordova-plugins/screen-orientation/ngx';
 import { LoadingService } from 'src/_shared/services/loading.service';
-import { environment } from 'src/apps/sisbom_web/environments/environment';
+import { environment } from 'src/apps/baseorient/environments/environment';
 import { HttpService } from 'src/_shared/services/http.service';
-import { NotificationsService } from '../_shared/providers/notifications.service';
 import { NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { BannersService } from '../_shared/providers/banners.service';
 import moment from 'moment';
-import { PersonsService } from '../_shared/providers/persons.service';
-import { DocsService } from '../_shared/providers/docs.service';
+
+import { NotificationsService } from 'src/apps/baseorient/_shared/providers/notifications.service';
+import { BannersService } from 'src/apps/baseorient/_shared/providers/banners.service';
 
 @Component({
   selector: 'app-internal',
@@ -32,31 +30,28 @@ export class InternalPage implements OnInit {
   loading: any = false;
 
   mobile: any = false;
-  militar: any = {};
+  person: any = {};
   user: any = {};
+  
+  menu_type: any = environment.menu_type;
+  menu: any = [];
   mod: any = {};
 
-  menu: any = [];
+  show_banners: any;
   banners: any = [];
   notifications: any = [];
-  menu_type: any = environment.menu_type;
 
-  show_banners: any;
-  modal: any;
   info_api: any;
 
   routerSub: Subscription;
 
   constructor(
     private http: HttpService,
-    private modalCtrl: ModalController,
     private bannersService: BannersService,
     private storage: LocalStorageService,
     private socket: SocketService,
     private nav: NavController,
     private platform: Platform,
-    private personsService: PersonsService,
-    private docsService: DocsService,
     private userService: UserService,
     private loadingService: LoadingService,
     private screenOrientation: ScreenOrientation,
@@ -71,10 +66,8 @@ export class InternalPage implements OnInit {
     })
     this.routerSub = router.events.pipe().subscribe((e: any) => {
       if (e instanceof NavigationStart) {
-        // this.logNavigation(e.url)
         this.checkPermission(e.url)
         this.closeMenus();
-        this.checkLastUpdate();
       }
     });
 
@@ -91,22 +84,7 @@ export class InternalPage implements OnInit {
   }
 
   async ionViewWillEnter() {
-    await this.checkLastUpdate();
     this.getData();
-  }
-
-  async checkLastUpdate() {
-    let _user = await this.storage.get('user_id');
-    let militar = await this.personsService.getMilitarInfo({ _id: _user }, `
-        _id
-        updated_at
-      `);
-
-    let last_upd = moment(militar?.updated_at, 'x');
-    if (last_upd.isSameOrBefore(moment('2025-01-04 09:50', 'YYYY-MM-DD HH:mm').startOf('day'), 'minutes')) {
-      return this.nav.navigateForward('/internal/crh/ficha-pessoal');
-    }
-    return false;
   }
 
   async checkPermission(route) {
@@ -173,15 +151,7 @@ export class InternalPage implements OnInit {
     this.setupMenu();
     this.getNotifications();
     this.getBanners();
-    this.preloadData();
   }
-
-  // CARREGA DADOS EM SEGUNDO PLANO
-  async preloadData() {
-    await this.personsService.getMilitaresCBMRN();
-    await this.docsService.getAllDocs();
-  }
-
 
   async getBanners() {
     let last_see_banners = await this.storage.get('last_see_banners');
@@ -231,7 +201,7 @@ export class InternalPage implements OnInit {
   side_mode: boolean = false;
 
   async setupMenu() {
-    this.militar = await this.storage.get('person');
+    this.person = await this.storage.get('person');
     let user = await this.storage.get('user');
 
     if (user?.menu?.length > 13)
@@ -334,6 +304,9 @@ export class InternalPage implements OnInit {
     return;
   }
 
+
+
+
   async getEnvironmentAPI() {
     let url = [environment.API.url, 'ws', 'env'].join('/');
     this.info_api = await this.http.get(url);
@@ -345,16 +318,6 @@ export class InternalPage implements OnInit {
     this.closeMenus();
   }
 
-  async mirror() {
-    let url;
-    this.loadingService.show();
-    url = [environment.API.url, 'mirror'].join('/');
-    await this.http.get(url);
-    // url = [environment.API.bg, 'mirror'].join('/');
-    // await this.http.get(url);
-    this.loadingService.hide();
-    window.location.reload();
-  }
   openUrl(url) {
     if (!url) return;
 

@@ -4,7 +4,7 @@ import moment from 'moment';
 import $ from 'jquery';
 
 import { register } from 'swiper/element/bundle';
-import { environment } from 'src/apps/sisbom_web/environments/environment';
+import { environment } from 'src/apps/baseorient/environments/environment';
 import { HttpService } from 'src/_shared/services/http.service';
 import { LocalStorageService } from 'src/_shared/services/local-storage.service';
 import { LocationService } from 'src/_shared/services/location.service';
@@ -31,12 +31,7 @@ export class AppComponent {
     this.setupApp();
     this.checkVersionUpdate();
   }
-  /**
-   * Comentado por : SD Aleksei em 2024-03-01
-   * A PRIORI, SÃO CONSIDERADOS MOBILE OS 2 AMBIENTES (iphone, android)
-   * QUANDO EM AMBIENTE mobileweb SERÁ CONSIDERADO BROWSER 
-   */
-
+  
   async setupApp() {
     await this.platform.ready();
     await this.checkSSL();

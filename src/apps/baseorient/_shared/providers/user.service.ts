@@ -10,13 +10,13 @@ import { GraphqlService } from 'src/_shared/services/graphql.service';
 import { StatusConnectionService } from 'src/_shared/services/status-connection.service';
 import { NetworkInterface } from '@awesome-cordova-plugins/network-interface/ngx';
 
-import { environment } from 'src/apps/sisbom_web/environments/environment';
+import { environment } from 'src/apps/baseorient/environments/environment';
 import { UtilsService } from 'src/_shared/services/utils.service';
 import { HttpService } from 'src/_shared/services/http.service';
-import { PersonsService } from './persons.service';
 import { LoadingService } from 'src/_shared/services/loading.service';
 import { CustomFormatPipe } from 'src/_shared/pipes/custom-format.pipe';
 import { OneSignalService } from 'src/_shared/services/onesignal.service';
+import { PersonsService } from './persons.service';
 
 @Injectable({
   providedIn: 'root'

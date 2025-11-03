@@ -7,9 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { InternalPageRoutingModule } from './internal-routing.module';
 
 import { InternalPage } from './internal.page';
+import { RouterModule } from '@angular/router';
 import { ComponentsModule } from 'src/_shared/components/components.module';
 import { PipesModule } from 'src/_shared/pipes/pipes.module';
-import { RouterModule } from '@angular/router';
 
 
 @NgModule({

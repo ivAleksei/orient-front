@@ -13,13 +13,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { QRCodeModule } from 'angularx-qrcode';
 import { SummernoteComponent } from './summernote/summernote.component';
 import { UploadsComponent } from './uploads/uploads.component';
-import { WidWheatherComponent } from './wid-wheather/wid-wheather.component';
-import { WidTabuaMareComponent } from './wid-tabua-mare/wid-tabua-mare.component';
 import { PipesModule } from '../pipes/pipes.module';
-import { WidTafIndicesComponent } from './wid-taf-indices/wid-taf-indices.component';
-
-
-
 
 @NgModule({
   declarations: [
@@ -30,9 +24,6 @@ import { WidTafIndicesComponent } from './wid-taf-indices/wid-taf-indices.compon
     FilterByComponent,
     SummernoteComponent,
     UploadsComponent,
-    WidTafIndicesComponent,
-    WidWheatherComponent,
-    WidTabuaMareComponent,
   ],
   imports: [
     IonicModule,
@@ -59,9 +50,6 @@ import { WidTafIndicesComponent } from './wid-taf-indices/wid-taf-indices.compon
     NgxChartsModule,
     FilterByComponent,
     UploadsComponent,
-    WidWheatherComponent,
-    WidTafIndicesComponent,
-    WidTabuaMareComponent,
   ]
 })
 export class ComponentsModule { }
