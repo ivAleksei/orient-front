@@ -12,6 +12,7 @@ export const environment = {
   },
   API: {
     auth: "http://192.168.1.76:3003/api_auth",
+    admin: "http://192.168.1.76:3003/api_admin",
     orient: "http://192.168.1.76:3003/api_orient",
   },
   Socket: {

@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { GraphqlService } from 'src/_shared/services/graphql.service';
+import { AlertsService } from 'src/_shared/services/alerts.service';
+import { environment } from 'src/apps/baseorient/environments/environment';
+import { LoadingService } from 'src/_shared/services/loading.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,18 +13,19 @@ export class PermissionsService {
   public watch: Observable<any>;
 
   constructor(
+    private loadingService: LoadingService,
+    private alertsService: AlertsService,
     private graphql: GraphqlService
   ) {
     this._watch = <BehaviorSubject<any>>new BehaviorSubject(false);
     this.watch = this._watch.asObservable();
   }
-
   trigger() {
     this._watch.next(true);
   }
 
-  async getPermissions(environment) {
-    return this.graphql.query(environment.API.url, 'graphql', {
+  async getPermissions(args?) {
+    return this.graphql.query(environment.API.admin, 'graphql', {
       query: `
       query Permissions{
         Permissions{
@@ -29,12 +33,11 @@ export class PermissionsService {
         }
       }`,
       name: "Permissions",
-      variables: {}
+      variables: args || {}
     });
   }
-
-  async getPermissionById(environment, _id) {
-    return this.graphql.query(environment.API.url, 'graphql', {
+  async getPermissionById(args?) {
+    return this.graphql.query(environment.API.admin, 'graphql', {
       query: `
       query PermissionById($_id: String){
         PermissionById(_id: $_id){
@@ -42,41 +45,75 @@ export class PermissionsService {
         }
       }`,
       name: "PermissionById",
-      variables: { _id: _id }
+      variables: args || {}
     });
   }
 
-  editPermission(environment, data) {
-    return this.graphql.query(environment.API.url, 'graphql', {
+  newPermission(data) {
+    this.loadingService.show();
+    return this.graphql.query(environment.API.admin, 'graphql', {
       query: `
-      mutation UpdatePermission(
-        $input: PermissionInput
-      ){
-        UpdatePermission(
-          input: $input,
-        ){
+      mutation CreatePermission($input: PermissionInput){
+        CreatePermission(input: $input){
           status
+          msg
         }
       }`,
+      name: "CreatePermission",
+      variables: data
+    })
+      .then(done => {
+        this.loadingService.hide();
+        return done;
+      });
+  }
+
+  editPermission(data) {
+    this.loadingService.show();
+
+    return this.graphql.query(environment.API.admin, 'graphql', {
+      query: `
+      mutation UpdatePermission($input: PermissionInput){
+        UpdatePermission(input: $input){
+          status
+          msg
+        }
+      }`,
+
       name: "UpdatePermission",
       variables: data
-    });
+    })
+      .then(done => {
+        this.loadingService.hide();
+        return done;
+      });
   }
 
-  delPermission(environment, data) {
-    return this.graphql.query(environment.API.url, 'graphql', {
-      query: `
-      mutation deletePermission($_id: String){
-        deletePermission(_id: $_id){
-          status
-        }
-      }`,
-      name: "deletePermission",
-      variables: data
-    });
+  delPermission(data) {
+    return this.alertsService.confirmDel()
+      .then(confirm => {
+        if (!confirm) return;
+        this.loadingService.show();
+        return this.graphql.query(environment.API.admin, 'graphql', {
+          query: `
+        mutation deletePermission($_id: String){
+          deletePermission(_id: $_id){
+            status
+            msg
+          }
+        }`,
+          name: "deletePermission",
+          variables: data
+        });
+      })
+      .then(done => {
+        this.loadingService.hide();
+        return done;
+      });
   }
 
-  savePermission(environment, data) {
-    return this.editPermission(environment, { input: data });
+  savePermission(data) {
+    return this[data._id ? 'editPermission' : "newPermission"]({ input: data });
   }
+
 }

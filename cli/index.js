@@ -38,7 +38,7 @@ let handleError = args => {
     let split = _page.split('.');
     let new_page = split.slice(-1)[0];
     console.log(split);
-    const CONTENT_FOLDER = path.join('src', 'apps', _project, 'content', split.join('/'));
+    const CONTENT_FOLDER = path.join('src', 'apps', _project, 'content', split.join('/'))+'s';
     console.log(CONTENT_FOLDER);
 
     try {
@@ -60,7 +60,7 @@ let handleError = args => {
 
         // COPIA ARQUIVOS
         let files = [];
-        let BLANK_DIR = path.join(__dirname, 'blank');
+        let BLANK_DIR = path.join(__dirname, 'blanks');
         files = fs.readdirSync(BLANK_DIR)
         await loopArrayPromise(files, async it => fs.copyFileSync(path.join(BLANK_DIR, it), path.join(CONTENT_FOLDER, it.replace('blank', new_page))));
         // RENOMEIA ARQUIVOS
@@ -75,6 +75,7 @@ let handleError = args => {
             }
 
             data = data.replace(new RegExp(/Blank/, 'g'), capitalize);
+            data = data.replace(new RegExp(/BLANK/, 'g'), new_page.toLocaleUpperCase());
 
             fs.writeFileSync(path.join(CONTENT_FOLDER, it), data, 'utf8')
         });

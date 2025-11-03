@@ -29,7 +29,7 @@ export class PersonsService {
   }
 
   getPersonInfo(_id, fields) {
-    return this.graphql.query(environment.API.orient, 'graphql', {
+    return this.graphql.query(environment.API.admin, 'graphql', {
       query: `
       query PersonById($_id: ID){
         PersonById(_id: $_id){
@@ -42,8 +42,8 @@ export class PersonsService {
     });
   }
 
-  getPersons(args) {
-    return this.graphql.query(environment.API.orient, 'graphql', {
+  getPersons(args?) {
+    return this.graphql.query(environment.API.admin, 'graphql', {
       query: `
       query Persons{
         Persons{
@@ -58,10 +58,10 @@ export class PersonsService {
   newPerson(data) {
     this.loadingService.show();
 
-    return this.graphql.query(environment.API.orient, 'graphql', {
+    return this.graphql.query(environment.API.admin, 'graphql', {
       query: `
       mutation CreatePerson(
-        $input: NewPersonInput!
+        $input: PersonInput!
       ){
         CreatePerson(
           input: $input
@@ -80,7 +80,7 @@ export class PersonsService {
 
   editPerson(data) {
     this.loadingService.show();
-    return this.graphql.query(environment.API.orient, 'graphql', {
+    return this.graphql.query(environment.API.admin, 'graphql', {
       query: `
       mutation UpdatePerson(
         $input: PersonInput!
@@ -105,10 +105,13 @@ export class PersonsService {
       .then(confirm => {
         if (!confirm) return;
         this.loadingService.show();
-        return this.graphql.query(environment.API.orient, 'graphql', {
+        return this.graphql.query(environment.API.admin, 'graphql', {
           query: `
           mutation deletePerson($_id: ID){
-            deletePerson(_id: $_id)
+            deletePerson(_id: $_id){
+              status
+              msg
+            }
           }`,
           name: "deletePerson",
           variables: data
@@ -120,6 +123,6 @@ export class PersonsService {
   }
 
   savePerson(data) {
-    return this[data.input._id ? 'editPerson' : "newPerson"](data);
+    return this[data._id ? 'editPerson' : "newPerson"]({ input: data });
   }
 }

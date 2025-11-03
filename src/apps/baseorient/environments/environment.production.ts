@@ -8,6 +8,7 @@ export const environment = {
   },
   API: {
     auth: "http://192.168.1.76/api_auth",
+    admin: "http://192.168.1.76/api_admin",
     orient: "http://192.168.1.76/api_orient",
   },
   Socket: {

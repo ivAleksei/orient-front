@@ -8,7 +8,7 @@ import { LoadingService } from 'src/_shared/services/loading.service';
 @Injectable({
   providedIn: 'root'
 })
-export class RolesService {
+export class BlanksService {
   private _watch: BehaviorSubject<any>;
   public watch: Observable<any>;
 
@@ -24,42 +24,42 @@ export class RolesService {
     this._watch.next(true);
   }
 
-  async getRoles(args?) {
-    return this.graphql.query(environment.API.admin, 'graphql', {
+  async getBlanks(args?) {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query Roles{
-        Roles{
+      query Blanks{
+        Blanks{
           _id
         }
       }`,
-      name: "Roles",
+      name: "Blanks",
       variables: args || {}
     });
   }
-  async getRoleById(args?) {
-    return this.graphql.query(environment.API.admin, 'graphql', {
+  async getBlankById(args?) {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query RoleById($_id: String){
-        RoleById(_id: $_id){
+      query BlankById($_id: String){
+        BlankById(_id: $_id){
           _id
         }
       }`,
-      name: "RoleById",
+      name: "BlankById",
       variables: args || {}
     });
   }
 
-  newRole(data) {
+  newBlank(data) {
     this.loadingService.show();
-    return this.graphql.query(environment.API.admin, 'graphql', {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation CreateRole($input: RoleInput){
-        CreateRole(input: $input){
+      mutation CreateBlank($input: BlankInput){
+        CreateBlank(input: $input){
           status
           msg
         }
       }`,
-      name: "CreateRole",
+      name: "CreateBlank",
       variables: data
     })
       .then(done => {
@@ -68,19 +68,19 @@ export class RolesService {
       });
   }
 
-  editRole(data) {
+  editBlank(data) {
     this.loadingService.show();
 
-    return this.graphql.query(environment.API.admin, 'graphql', {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation UpdateRole($input: RoleInput){
-        UpdateRole(input: $input){
+      mutation UpdateBlank($input: BlankInput){
+        UpdateBlank(input: $input){
           status
           msg
         }
       }`,
 
-      name: "UpdateRole",
+      name: "UpdateBlank",
       variables: data
     })
       .then(done => {
@@ -89,20 +89,20 @@ export class RolesService {
       });
   }
 
-  delRole(data) {
+  delBlank(data) {
     return this.alertsService.confirmDel()
       .then(confirm => {
         if (!confirm) return;
         this.loadingService.show();
-        return this.graphql.query(environment.API.admin, 'graphql', {
+        return this.graphql.query(environment.API.orient, 'graphql', {
           query: `
-        mutation deleteRole($_id: String){
-          deleteRole(_id: $_id){
+        mutation deleteBlank($_id: ID){
+          deleteBlank(_id: $_id){
             status
             msg
           }
         }`,
-          name: "deleteRole",
+          name: "deleteBlank",
           variables: data
         });
       })
@@ -112,8 +112,8 @@ export class RolesService {
       });
   }
 
-  saveRole(data) {
-    return this[data._id ? 'editRole' : "newRole"]({ input: data });
+  saveBlank(data) {
+    return this[data._id ? 'editBlank' : "newBlank"]({ input: data });
   }
 
 }

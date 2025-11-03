@@ -42,7 +42,7 @@ export class UsersService {
     });
   }
 
-  getUsers(args) {
+  getUsers(args?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
       query Users{
@@ -61,7 +61,7 @@ export class UsersService {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
       mutation CreateUser(
-        $input: NewUserInput!
+        $input: UserInput!
       ){
         CreateUser(
           input: $input
@@ -108,7 +108,10 @@ export class UsersService {
         return this.graphql.query(environment.API.orient, 'graphql', {
           query: `
           mutation deleteUser($_id: ID){
-            deleteUser(_id: $_id)
+            deleteUser(_id: $_id){
+            status
+            msg
+          }
           }`,
           name: "deleteUser",
           variables: data
@@ -120,6 +123,6 @@ export class UsersService {
   }
 
   saveUser(data) {
-    return this[data.input._id ? 'editUser' : "newUser"](data);
+    return this[data._id ? 'editUser' : "newUser"]({input: data});
   }
 }

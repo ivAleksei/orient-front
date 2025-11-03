@@ -12,6 +12,10 @@ const routes: Routes = [
         path: 'home',
         loadChildren: () => import('src/apps/baseorient/content/home/home.module').then(m => m.HomePageModule)
       },
+      {
+        path: 'admin',
+        loadChildren: () => import('src/apps/baseorient/content/admin/admin.module').then(m => m.AdminModule)
+      },
     ]
   }
 ];
