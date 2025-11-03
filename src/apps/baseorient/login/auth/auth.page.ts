@@ -5,6 +5,7 @@ import { AlertsService } from 'src/_shared/services/alerts.service';
 import { AppLoadingStrategy } from 'src/apps/baseorient/app-loading-strategy';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { LocalStorageService } from 'src/_shared/services/local-storage.service';
+import { I18nService } from 'src/_shared/services/i18n.service';
 
 @Component({
   selector: 'app-auth',
@@ -24,6 +25,7 @@ export class AuthPage implements OnInit {
   @ViewChild("loginForm", {}) loginForm: any;
 
   constructor(
+    public i18n: I18nService,
     private loader: AppLoadingStrategy,
     private alertsService: AlertsService,
     private userService: UserService,
@@ -63,7 +65,7 @@ export class AuthPage implements OnInit {
         this.clear();
     } catch (err) {
       this.loading = false;
-      this.alertsService.notify({ type: "error", subtitle: 'Não conseguimos acessar no momento. Tente novamente em alguns instantes.' });
+      this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.AUTH_CANT_LOGIN });
     }
   }
 

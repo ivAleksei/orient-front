@@ -1,3 +1,14 @@
 {
-    
+    "_A": "_A",
+    "TRY_AGAIN_LATER": "Tente novamente em alguns instantes.",
+    "RECOVER_BACK_LOGIN": "Voltar para o Login",
+    "RECOVER_EMAIL": "Email",
+    "RECOVER_RECOVER_PASSWORD": "Recuperar Senha",
+    "AUTH_CANT_LOGIN": "Não conseguimos acessar no momento. Tente novamente em alguns instantes.",
+    "AUTH_CLICK_HERE": "Clique aqui",
+    "AUTH_FORGOT_PASSWORD": "Esqueceu a senha?",
+    "AUTH_PASSWORD": "Senha",
+    "AUTH_SIGNIN": "Acessar",
+    "AUTH_USERNAME": "Usuário",
+    "Z": "Z"
 }

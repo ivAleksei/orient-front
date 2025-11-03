@@ -4,6 +4,7 @@ import { UserService } from 'src/apps/baseorient/_shared/providers/user.service'
 import { AlertsService } from 'src/_shared/services/alerts.service';
 import { AppLoadingStrategy } from 'src/apps/baseorient/app-loading-strategy';
 import { environment } from 'src/apps/baseorient/environments/environment';
+import { I18nService } from 'src/_shared/services/i18n.service';
 
 @Component({
   selector: 'app-recover',
@@ -19,6 +20,7 @@ export class RecoverPage implements OnInit {
   @ViewChild("recoverForm", {}) recoverForm: any;
 
   constructor(
+    public i18n: I18nService,
     private loader: AppLoadingStrategy,
     private alertsService: AlertsService,
     private userService: UserService,
@@ -53,7 +55,7 @@ export class RecoverPage implements OnInit {
       })
       .catch((err) => {
         this.loading = false;
-        this.alertsService.notify({ type: "error", subtitle: 'Tente novamente em alguns instantes.' });
+        this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.TRY_AGAIN_LATER });
       });
   }
 
