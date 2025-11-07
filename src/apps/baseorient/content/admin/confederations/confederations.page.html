@@ -1,11 +1,11 @@
 <ion-content [fullscreen]="true">
   <div class="page-layout">
-    <h3 class="page-title">{{i18n.lang.BLANKS}}<br>
-      <small>{{i18n.lang.BLANKS_REGISTERED_TO_APP}}</small>
+    <h3 class="page-title">{{i18n.lang.CONFEDERATIONS}}<br>
+      <small>{{i18n.lang.CONFEDERATIONS_REGISTERED_TO_APP}}</small>
     </h3>
     <ion-button class="btn-add" (click)="handleTable({action: 'new'})">
       <i class="mdi mdi-plus"></i>
-      <span class="text"> {{i18n.lang.NEW_BLANK}}</span>
+      <span class="text"> {{i18n.lang.NEW_CONFEDERATION}}</span>
     </ion-button>
     <div class="content">
       <div class="card">
@@ -18,7 +18,7 @@
   </div>
 </ion-content>
 
-<ion-modal id="modalBlank" #modalBlank>
+<ion-modal id="modalConfederation" #modalConfederation>
   <ng-template>
     <ion-header>
       <ion-toolbar>
@@ -26,22 +26,34 @@
           <ion-button (click)="closeModal()">{{i18n.lang.CANCEL}}</ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button (click)="saveForm()" [strong]="true" [disabled]="!BlankForm.valid">{{i18n.lang.CONFIRM}}</ion-button>
+          <ion-button (click)="saveForm()" [strong]="true">{{i18n.lang.CONFIRM}}</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <form #BlankForm="ngForm" novalidate>
-        <!-- <pre>{{BlankForm.value | json}}</pre> -->
+      <form #ConfederationForm="ngForm" novalidate>
+        <!-- <pre>{{ConfederationForm.value | json}}</pre> -->
         <input type="hidden" name="_id" ngModel #_id="ngModel">
         <div class="section">
           <h4 class="section-title">{{i18n.lang.BASIC_DATA}}</h4>
           <div class="section-body">
             <ion-row>
-              <ion-col size="12">
+              <ion-col size-xs="2">
                 <ion-item>
-                  <ion-label for="slug" position="stacked">{{i18n.lang.NAME}}*</ion-label>
+                  <ion-label for="slug" position="stacked">{{i18n.lang.SLUG}}*</ion-label>
                   <ion-input type="text" name="slug" ngModel required #slug="ngModel"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="2">
+                <ion-item>
+                  <ion-label for="country" position="stacked">{{i18n.lang.COUNTRY}}*</ion-label>
+                  <ion-input type="text" name="country" ngModel required #country="ngModel"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="8">
+                <ion-item>
+                  <ion-label for="name" position="stacked">{{i18n.lang.NAME}}*</ion-label>
+                  <ion-input type="text" name="name" ngModel required #name="ngModel"></ion-input>
                 </ion-item>
               </ion-col>
             </ion-row>

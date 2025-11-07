@@ -48,6 +48,8 @@ export class PersonsService {
       query Persons{
         Persons{
           _id
+          name
+          id_number
         }
       }`,
       name: "Persons",

@@ -40,9 +40,40 @@
             <ion-row>
               <ion-col size="12">
                 <ion-item>
-                  <ion-label for="slug" position="stacked">{{i18n.lang.NAME}}*</ion-label>
+                  <ion-label for="slug" position="stacked">{{i18n.lang.SLUG}}*</ion-label>
                   <ion-input type="text" name="slug" ngModel required #slug="ngModel"></ion-input>
                 </ion-item>
+              </ion-col>
+              <ion-col size-xs="12">
+                <app-autocomplete [data]="arr_permissions" [ionlabel]="i18n.lang.SEARCH_PERMISSION+'*'" [label]="'_id'"
+                  [_id]="'_id'" (chooseEvent)="setPermission($event?._id)" [clear]="clearEvent"
+                  *ngIf="RoleForm.value._id">
+                </app-autocomplete>
+              </ion-col>
+              <ion-col size-xs="12" *ngIf="RoleForm.value._id">
+                <div class="scroll">
+                  <table class="table dataTable">
+                    <thead>
+                      <tr>
+                        <th>Permissão</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="!_permissions?.length">
+                        <td colspan="2">{{i18n.lang.EMPTY_TABLE}}</td>
+                      </tr>
+                      <ng-template ngFor let-it [ngForOf]="_permissions">
+                        <tr>
+                          <td>{{it?.slug}}</td>
+                          <td class="td-actions">
+                            <button class="danger" (click)="rmPermission(it)"><i class="mdi mdi-close"></i></button>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                  </table>
+                </div>
               </ion-col>
             </ion-row>
           </div>

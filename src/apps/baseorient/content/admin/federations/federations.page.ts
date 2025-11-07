@@ -4,27 +4,32 @@ import { I18nService } from 'src/_shared/services/i18n.service';
 import { LoadingService } from 'src/_shared/services/loading.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
-import { PersonsService } from 'src/apps/baseorient/_shared/providers/persons.service';
+import { FederationsService } from 'src/apps/baseorient/_shared/providers/federations.service';
+import { ConfederationsService } from 'src/apps/baseorient/_shared/providers/confederations.service';
+import { ResourcesService } from 'src/apps/baseorient/_shared/providers/resources.service';
 
 @Component({
-  selector: 'app-persons',
-  templateUrl: './persons.page.html',
-  styleUrls: ['./persons.page.scss'],
+  selector: 'app-federations',
+  templateUrl: './federations.page.html',
+  styleUrls: ['./federations.page.scss'],
 })
-export class PersonsPage implements OnInit {
+export class FederationsPage implements OnInit {
   @Output() public reloadTable: EventEmitter<any> = new EventEmitter();
-  @ViewChild("modalPerson") modalPerson: any;
-  @ViewChild('PersonForm') PersonForm: any;
-  list_persons: any[] = [];
+  @ViewChild("modalFederation") modalFederation: any;
+  @ViewChild('FederationForm') FederationForm: any;
+  arr_confederations: any[] = [];
+  arr_state_city: any[] = [];
 
   tableInfo: any = {
-    id: "table-persons",
+    id: "table-federations",
     columns: [
-      { title: 'CBO', data: "id_number" },
+      { title: 'Confederation', data: "confederation.slug" },
+      { title: 'State', data: "state" },
+      { title: 'Slug', data: "slug" },
       { title: 'Name', data: "name" },
     ],
     ajax: {
-      url: `${environment.API.admin}/server_side/persons`,
+      url: `${environment.API.orient}/server_side/federations`,
     },
     actions: {
       buttons: [
@@ -38,7 +43,9 @@ export class PersonsPage implements OnInit {
     public i18n: I18nService,
     private utils: UtilsService,
     private loadingService: LoadingService,
-    private personsService: PersonsService,
+    private resourcesService: ResourcesService,
+    private confederationsService: ConfederationsService,
+    private federationsService: FederationsService,
     private alertsService: AlertsService
   ) { }
 
@@ -50,40 +57,42 @@ export class PersonsPage implements OnInit {
   }
 
   getData() {
-    this.loadPerson();
+    this.loadConfederations();
+    this.loadState();
   }
 
-  /**
-   * loadPerson: Método que busca as viaturas para o autocomplete.
-   */
-  async loadPerson() {
+  async loadConfederations() {
     this.loadingService.show();
-    let data = await this.personsService.getPersons();
+    let data = await this.confederationsService.getConfederations();
+    this.arr_confederations = (data || []);
     this.loadingService.hide();
-    this.list_persons = (data || []).map(it => {
-      it.label = [it.prefixo, it.placa].join(' - ');
-      return it;
-    });
+  }
+
+  async loadState() {
+    this.loadingService.show();
+    let data = await this.resourcesService.getCityState();
+    this.arr_state_city = (data || []);
+    this.loadingService.hide();
   }
 
   handleTable(ev) {
     let map = {
       edit: () => {
-        this.modalPerson.present();
+        this.modalFederation.present();
         setTimeout(() => {
-          this.PersonForm.form.patchValue(ev.data);
+          this.FederationForm.form.patchValue(ev.data);
         }, 400);
       },
       new: () => {
-        this.modalPerson.present();
+        this.modalFederation.present();
       },
       del: () => {
-        this.personsService.delPerson(ev.data)
+        this.federationsService.delFederation(ev.data)
           .then(data => {
             if (data?.status != 'success')
               return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_REMOVE_ERR });
 
-            this.clearPersonForm();
+            this.clearFederationForm();
             return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_REMOVE_SUCCESS });
           });
       },
@@ -94,26 +103,26 @@ export class PersonsPage implements OnInit {
 
   saveForm() {
     this.loadingService.show();
-    let obj = Object.assign({}, this.PersonForm.value);
-    this.personsService.savePerson(obj)
+    let obj = Object.assign({}, this.FederationForm.value);
+    this.federationsService.saveFederation(obj)
       .then(data => {
         this.loadingService.hide();
         if (data?.status != 'success')
           return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_UPDATE_ERR });
 
-        this.clearPersonForm();
+        this.clearFederationForm();
         return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_UPDATE_SUCCESS });
       });
   }
 
-  clearPersonForm() {
-    this.PersonForm?.form.reset();
+  clearFederationForm() {
+    this.FederationForm?.form.reset();
     this.closeModal();
     this.reloadTable.next(true);
   }
 
   closeModal() {
-    this.modalPerson.dismiss();
+    this.modalFederation.dismiss();
   }
 
 }

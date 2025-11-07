@@ -1,11 +1,11 @@
 <ion-content [fullscreen]="true">
   <div class="page-layout">
-    <h3 class="page-title">{{i18n.lang.PERSONS}}<br>
-      <small>{{i18n.lang.PERSONS_REGISTERED_TO_APP}}</small>
+    <h3 class="page-title">{{i18n.lang.SEASONS}}<br>
+      <small>{{i18n.lang.SEASONS_REGISTERED_TO_APP}}</small>
     </h3>
     <ion-button class="btn-add" (click)="handleTable({action: 'new'})">
       <i class="mdi mdi-plus"></i>
-      <span class="text"> {{i18n.lang.NEW_PERSON}}</span>
+      <span class="text"> {{i18n.lang.NEW_SEASON}}</span>
     </ion-button>
     <div class="content">
       <div class="card">
@@ -18,7 +18,7 @@
   </div>
 </ion-content>
 
-<ion-modal id="modalPerson" #modalPerson>
+<ion-modal id="modalSeason" #modalSeason>
   <ng-template>
     <ion-header>
       <ion-toolbar>
@@ -26,28 +26,34 @@
           <ion-button (click)="closeModal()">{{i18n.lang.CANCEL}}</ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button (click)="saveForm()" [strong]="true">{{i18n.lang.CONFIRM}}</ion-button>
+          <ion-button (click)="saveForm()" [strong]="true" [disabled]="!SeasonForm.valid">{{i18n.lang.CONFIRM}}</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <form #PersonForm="ngForm" novalidate>
-        <pre>{{PersonForm.value | json}}</pre>
+      <form #SeasonForm="ngForm" novalidate>
+        <!-- <pre>{{SeasonForm.value | json}}</pre> -->
         <input type="hidden" name="_id" ngModel #_id="ngModel">
         <div class="section">
           <h4 class="section-title">{{i18n.lang.BASIC_DATA}}</h4>
           <div class="section-body">
             <ion-row>
-              <ion-col size="12">
+              <ion-col size-xs="12">
                 <ion-item>
-                  <ion-label for="name" position="stacked">{{i18n.lang.NAME}}*</ion-label>
-                  <ion-input type="text" name="name" ngModel required #name="ngModel"></ion-input>
+                  <ion-label for="year" position="stacked">{{i18n.lang.YEAR}}*</ion-label>
+                  <ion-input type="text" name="year" ngModel required #year="ngModel"></ion-input>
                 </ion-item>
               </ion-col>
-              <ion-col size="12">
+              <ion-col size-xs="6">
                 <ion-item>
-                  <ion-label for="id_number" position="stacked">{{i18n.lang.NUM_CBO}}*</ion-label>
-                  <ion-input type="text" name="id_number" ngModel required #id_number="ngModel"></ion-input>
+                  <ion-label for="dt_start" position="stacked">{{i18n.lang.DT_START}}*</ion-label>
+                  <ion-input type="text" name="dt_start" ngModel required #dt_start="ngModel"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="6">
+                <ion-item>
+                  <ion-label for="dt_end" position="stacked">{{i18n.lang.DT_END}}*</ion-label>
+                  <ion-input type="text" name="dt_end" ngModel required #dt_end="ngModel"></ion-input>
                 </ion-item>
               </ion-col>
             </ion-row>

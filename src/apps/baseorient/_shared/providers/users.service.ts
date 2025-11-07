@@ -29,7 +29,7 @@ export class UsersService {
   }
 
   getUserInfo(args, fields) {
-    return this.graphql.query(environment.API.orient, 'graphql', {
+    return this.graphql.query(environment.API.admin, 'graphql', {
       query: `
       query UserById($_id: ID){
         UserById(_id: $_id){
@@ -43,7 +43,7 @@ export class UsersService {
   }
 
   getUsers(args?) {
-    return this.graphql.query(environment.API.orient, 'graphql', {
+    return this.graphql.query(environment.API.admin, 'graphql', {
       query: `
       query Users{
         Users{
@@ -58,7 +58,7 @@ export class UsersService {
   newUser(data) {
     this.loadingService.show();
 
-    return this.graphql.query(environment.API.orient, 'graphql', {
+    return this.graphql.query(environment.API.admin, 'graphql', {
       query: `
       mutation CreateUser(
         $input: UserInput!
@@ -80,7 +80,7 @@ export class UsersService {
 
   editUser(data) {
     this.loadingService.show();
-    return this.graphql.query(environment.API.orient, 'graphql', {
+    return this.graphql.query(environment.API.admin, 'graphql', {
       query: `
       mutation UpdateUser(
         $input: UserInput!
@@ -105,7 +105,7 @@ export class UsersService {
       .then(confirm => {
         if (!confirm) return;
         this.loadingService.show();
-        return this.graphql.query(environment.API.orient, 'graphql', {
+        return this.graphql.query(environment.API.admin, 'graphql', {
           query: `
           mutation deleteUser($_id: ID){
             deleteUser(_id: $_id){

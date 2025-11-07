@@ -8,7 +8,7 @@ import { LoadingService } from 'src/_shared/services/loading.service';
 @Injectable({
   providedIn: 'root'
 })
-export class RolesService {
+export class ConfederationsService {
   private _watch: BehaviorSubject<any>;
   public watch: Observable<any>;
 
@@ -24,52 +24,46 @@ export class RolesService {
     this._watch.next(true);
   }
 
-  async getRoles(args?) {
-    return this.graphql.query(environment.API.admin, 'graphql', {
+  async getConfederations(args?) {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query Roles{
-        Roles{
+      query Confederations{
+        Confederations{
           _id
           slug
-          permissions{
-            _id
-            slug
-          }
+          name
         }
       }`,
-      name: "Roles",
+      name: "Confederations",
       variables: args || {}
     });
   }
-  async getRoleById(args?) {
-    return this.graphql.query(environment.API.admin, 'graphql', {
+  async getConfederationById(args?) {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query RoleById($_id: String){
-        RoleById(_id: $_id){
+      query ConfederationById($_id: String){
+        ConfederationById(_id: $_id){
           _id
           slug
-          permissions{
-            _id
-            slug
-          }
+          name
         }
       }`,
-      name: "RoleById",
+      name: "ConfederationById",
       variables: args || {}
     });
   }
 
-  newRole(data) {
+  newConfederation(data) {
     this.loadingService.show();
-    return this.graphql.query(environment.API.admin, 'graphql', {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation CreateRole($input: RoleInput){
-        CreateRole(input: $input){
+      mutation CreateConfederation($input: ConfederationInput){
+        CreateConfederation(input: $input){
           status
           msg
         }
       }`,
-      name: "CreateRole",
+      name: "CreateConfederation",
       variables: data
     })
       .then(done => {
@@ -78,19 +72,19 @@ export class RolesService {
       });
   }
 
-  editRole(data) {
+  editConfederation(data) {
     this.loadingService.show();
 
-    return this.graphql.query(environment.API.admin, 'graphql', {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation UpdateRole($input: RoleInput){
-        UpdateRole(input: $input){
+      mutation UpdateConfederation($input: ConfederationInput){
+        UpdateConfederation(input: $input){
           status
           msg
         }
       }`,
 
-      name: "UpdateRole",
+      name: "UpdateConfederation",
       variables: data
     })
       .then(done => {
@@ -99,20 +93,20 @@ export class RolesService {
       });
   }
 
-  delRole(data) {
+  delConfederation(data) {
     return this.alertsService.confirmDel()
       .then(confirm => {
         if (!confirm) return;
         this.loadingService.show();
-        return this.graphql.query(environment.API.admin, 'graphql', {
+        return this.graphql.query(environment.API.orient, 'graphql', {
           query: `
-        mutation deleteRole($_id: String){
-          deleteRole(_id: $_id){
+        mutation deleteConfederation($_id: ID){
+          deleteConfederation(_id: $_id){
             status
             msg
           }
         }`,
-          name: "deleteRole",
+          name: "deleteConfederation",
           variables: data
         });
       })
@@ -122,8 +116,8 @@ export class RolesService {
       });
   }
 
-  saveRole(data) {
-    return this[data._id ? 'editRole' : "newRole"]({ input: data });
+  saveConfederation(data) {
+    return this[data._id ? 'editConfederation' : "newConfederation"]({ input: data });
   }
 
 }

@@ -44,6 +44,48 @@
                   <ion-input type="text" name="username" ngModel required #username="ngModel"></ion-input>
                 </ion-item>
               </ion-col>
+              <ion-col size-xs="12">
+                <ion-item class="old-select">
+                  <ion-label for="_person" position="stacked">{{i18n.lang.PERSON}}*</ion-label>
+                  <select name="_person" ngModel #_person="ngModel" required="">
+                    <option value="">Selecione uma opção...</option>
+                    <ng-template ngFor let-it [ngForOf]="arr_persons">
+                      <option value="{{it._id}}">{{it.name}}</option>
+                    </ng-template>
+                  </select>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="12">
+                <app-autocomplete [data]="arr_roles" [ionlabel]="i18n.lang.SEARCH_ROLE+'*'" [label]="'_id'"
+                  [_id]="'_id'" (chooseEvent)="setRole($event?._id)" [clear]="clearEvent"
+                  *ngIf="UserForm.value._id">
+                </app-autocomplete>
+              </ion-col>
+              <ion-col size-xs="12" *ngIf="UserForm.value._id">
+                <div class="scroll">
+                  <table class="table dataTable">
+                    <thead>
+                      <tr>
+                        <th>Permissão</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngIf="!_roles?.length">
+                        <td colspan="2">{{i18n.lang.EMPTY_TABLE}}</td>
+                      </tr>
+                      <ng-template ngFor let-it [ngForOf]="_roles">
+                        <tr>
+                          <td>{{it?.slug}}</td>
+                          <td class="td-actions">
+                            <button class="danger" (click)="rmRole(it)"><i class="mdi mdi-close"></i></button>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                  </table>
+                </div>
+              </ion-col>
             </ion-row>
           </div>
         </div>

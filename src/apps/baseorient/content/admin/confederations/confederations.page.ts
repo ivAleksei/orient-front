@@ -4,27 +4,27 @@ import { I18nService } from 'src/_shared/services/i18n.service';
 import { LoadingService } from 'src/_shared/services/loading.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
-import { PermissionsService } from 'src/_shared/providers/permissions.service';
+import { ConfederationsService } from 'src/apps/baseorient/_shared/providers/confederations.service';
 
 @Component({
-  selector: 'app-permissions',
-  templateUrl: './permissions.page.html',
-  styleUrls: ['./permissions.page.scss'],
+  selector: 'app-confederations',
+  templateUrl: './confederations.page.html',
+  styleUrls: ['./confederations.page.scss'],
 })
-export class PermissionsPage implements OnInit {
+export class ConfederationsPage implements OnInit {
   @Output() public reloadTable: EventEmitter<any> = new EventEmitter();
-  @ViewChild("modalPermission") modalPermission: any;
-  @ViewChild('PermissionForm') PermissionForm: any;
-  list_permissions: any[] = [];
+  @ViewChild("modalConfederation") modalConfederation: any;
+  @ViewChild('ConfederationForm') ConfederationForm: any;
 
   tableInfo: any = {
-    id: "table-permissions",
+    id: "table-confederations",
     columns: [
-      { title: 'Permissão', data: "slug" },
-      { title: 'Descrição', data: "description" },
+      { title: 'Country', data: "country" },
+      { title: 'Slug', data: "slug" },
+      { title: 'Name', data: "name" },
     ],
     ajax: {
-      url: `${environment.API.admin}/server_side/permissions`,
+      url: `${environment.API.orient}/server_side/confederations`,
     },
     actions: {
       buttons: [
@@ -38,7 +38,7 @@ export class PermissionsPage implements OnInit {
     public i18n: I18nService,
     private utils: UtilsService,
     private loadingService: LoadingService,
-    private permissionsService: PermissionsService,
+    private confederationsService: ConfederationsService,
     private alertsService: AlertsService
   ) { }
 
@@ -52,25 +52,24 @@ export class PermissionsPage implements OnInit {
   getData() {
   }
 
-
   handleTable(ev) {
     let map = {
       edit: () => {
-        this.modalPermission.present();
+        this.modalConfederation.present();
         setTimeout(() => {
-          this.PermissionForm.form.patchValue(ev.data);
+          this.ConfederationForm.form.patchValue(ev.data);
         }, 400);
       },
       new: () => {
-        this.modalPermission.present();
+        this.modalConfederation.present();
       },
       del: () => {
-        this.permissionsService.delPermission(ev.data)
+        this.confederationsService.delConfederation(ev.data)
           .then(data => {
             if (data?.status != 'success')
               return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_REMOVE_ERR });
 
-            this.clearPermissionForm();
+            this.clearConfederationForm();
             return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_REMOVE_SUCCESS });
           });
       },
@@ -80,25 +79,27 @@ export class PermissionsPage implements OnInit {
   }
 
   saveForm() {
-    let obj = Object.assign({}, this.PermissionForm.value);
-    this.permissionsService.savePermission(obj)
+    this.loadingService.show();
+    let obj = Object.assign({}, this.ConfederationForm.value);
+    this.confederationsService.saveConfederation(obj)
       .then(data => {
+        this.loadingService.hide();
         if (data?.status != 'success')
           return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_UPDATE_ERR });
 
-        this.clearPermissionForm();
+        this.clearConfederationForm();
         return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_UPDATE_SUCCESS });
       });
   }
 
-  clearPermissionForm() {
-    this.PermissionForm?.form.reset();
+  clearConfederationForm() {
+    this.ConfederationForm?.form.reset();
     this.closeModal();
     this.reloadTable.next(true);
   }
 
   closeModal() {
-    this.modalPermission.dismiss();
+    this.modalConfederation.dismiss();
   }
 
 }

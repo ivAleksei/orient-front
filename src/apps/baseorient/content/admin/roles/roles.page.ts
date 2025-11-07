@@ -5,6 +5,7 @@ import { LoadingService } from 'src/_shared/services/loading.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { RolesService } from 'src/_shared/providers/roles.service';
+import { PermissionsService } from 'src/_shared/providers/permissions.service';
 
 @Component({
   selector: 'app-roles',
@@ -12,10 +13,14 @@ import { RolesService } from 'src/_shared/providers/roles.service';
   styleUrls: ['./roles.page.scss'],
 })
 export class RolesPage implements OnInit {
+  @Output() public clearEvent: EventEmitter<any> = new EventEmitter();
   @Output() public reloadTable: EventEmitter<any> = new EventEmitter();
   @ViewChild("modalRole") modalRole: any;
   @ViewChild('RoleForm') RoleForm: any;
   list_roles: any[] = [];
+  _permissions: any = [];
+  obj_permissions: any = {};
+  arr_permissions: any[] = [];
 
   tableInfo: any = {
     id: "table-roles",
@@ -37,6 +42,7 @@ export class RolesPage implements OnInit {
     public i18n: I18nService,
     private utils: UtilsService,
     private loadingService: LoadingService,
+    private permissionsService: PermissionsService,
     private rolesService: RolesService,
     private alertsService: AlertsService
   ) { }
@@ -49,6 +55,60 @@ export class RolesPage implements OnInit {
   }
 
   getData() {
+    this.getPermissions();
+  }
+
+  async getPermissions() {
+    let data = await this.permissionsService.getPermissions();
+    this.arr_permissions = data || [];
+
+    this.obj_permissions = {};
+    for (let it of (data || []))
+      this.obj_permissions[it.slug] = it;
+
+  }
+
+  setPermission(ev: any) {
+    if (!ev) return;
+
+    this._permissions.push(ev);
+    let obj = Object.assign({}, this.RoleForm.value);
+    let payload = {
+      _id: obj._id,
+      _permissions: (this._permissions || []).map(it => it.slug || it)
+    }
+    this.rolesService.saveRole(payload)
+      .then(data => {
+        if (data?.status != 'success')
+          return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_UPDATE_ERR });
+
+        this._permissions = (this._permissions || []).map(k => this.obj_permissions[k.slug || k]);
+        this.clear();
+        return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_UPDATE_SUCCESS });
+      });
+  }
+
+  rmPermission(ev: any) {
+    let _permissions = (this._permissions || []).filter(it => it != ev).map(it => it.slug || it)
+    let obj = Object.assign({}, this.RoleForm.value);
+    let payload = {
+      _id: obj._id,
+      _permissions: _permissions
+    }
+    this.rolesService.saveRole(payload)
+      .then(data => {
+        if (data?.status != 'success')
+          return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_UPDATE_ERR });
+
+        this._permissions = (_permissions || []).map(k => this.obj_permissions[k.slug || k]);
+        this.clear();
+        return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_UPDATE_SUCCESS });
+      });
+  }
+
+  clear() {
+    this.reloadTable.next(true);
+    this.clearEvent.next(true);
   }
 
   handleTable(ev) {
@@ -57,6 +117,7 @@ export class RolesPage implements OnInit {
         this.modalRole.present();
         setTimeout(() => {
           this.RoleForm.form.patchValue(ev.data);
+          this._permissions = (ev.data?._permissions || []).map(k => this.obj_permissions[k]);
         }, 400);
       },
       new: () => {
@@ -79,6 +140,8 @@ export class RolesPage implements OnInit {
 
   saveForm() {
     let obj = Object.assign({}, this.RoleForm.value);
+    obj._permissions = this._permissions || [];
+
     this.rolesService.saveRole(obj)
       .then(data => {
         if (data?.status != 'success')
@@ -90,6 +153,7 @@ export class RolesPage implements OnInit {
   }
 
   clearRoleForm() {
+    this._permissions = [];
     this.RoleForm?.form.reset();
     this.closeModal();
     this.reloadTable.next(true);

@@ -32,7 +32,7 @@ export class InternalPage implements OnInit {
   mobile: any = false;
   person: any = {};
   user: any = {};
-  
+
   menu_type: any = environment.menu_type;
   menu: any = [];
   mod: any = {};
@@ -203,8 +203,9 @@ export class InternalPage implements OnInit {
       this.routeMenu(it);
     } else {
       it.open = !it.open;
+
       for (let m of this.menu)
-        m.open = m._id == it._id && it.open;
+        m.open = m.index == it.index && it.open;
 
       if (it.open) {
         if (ev) $('.header-submenu').css({ left: ev.target.offsetLeft });

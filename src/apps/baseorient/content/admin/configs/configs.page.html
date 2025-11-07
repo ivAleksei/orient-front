@@ -1,11 +1,11 @@
 <ion-content [fullscreen]="true">
   <div class="page-layout">
-    <h3 class="page-title">{{i18n.lang.BLANKS}}<br>
-      <small>{{i18n.lang.BLANKS_REGISTERED_TO_APP}}</small>
+    <h3 class="page-title">{{i18n.lang.CONFIGS}}<br>
+      <small>{{i18n.lang.CONFIGS_REGISTERED_TO_APP}}</small>
     </h3>
     <ion-button class="btn-add" (click)="handleTable({action: 'new'})">
       <i class="mdi mdi-plus"></i>
-      <span class="text"> {{i18n.lang.NEW_BLANK}}</span>
+      <span class="text"> {{i18n.lang.NEW_CONFIG}}</span>
     </ion-button>
     <div class="content">
       <div class="card">
@@ -18,7 +18,7 @@
   </div>
 </ion-content>
 
-<ion-modal id="modalBlank" #modalBlank>
+<ion-modal id="modalConfig" #modalConfig>
   <ng-template>
     <ion-header>
       <ion-toolbar>
@@ -26,13 +26,13 @@
           <ion-button (click)="closeModal()">{{i18n.lang.CANCEL}}</ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button (click)="saveForm()" [strong]="true" [disabled]="!BlankForm.valid">{{i18n.lang.CONFIRM}}</ion-button>
+          <ion-button (click)="saveForm()" [strong]="true" [disabled]="!ConfigForm.valid">{{i18n.lang.CONFIRM}}</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <form #BlankForm="ngForm" novalidate>
-        <!-- <pre>{{BlankForm.value | json}}</pre> -->
+      <form #ConfigForm="ngForm" novalidate>
+        <!-- <pre>{{ConfigForm.value | json}}</pre> -->
         <input type="hidden" name="_id" ngModel #_id="ngModel">
         <div class="section">
           <h4 class="section-title">{{i18n.lang.BASIC_DATA}}</h4>

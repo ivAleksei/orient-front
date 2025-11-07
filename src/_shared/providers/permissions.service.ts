@@ -30,6 +30,7 @@ export class PermissionsService {
       query Permissions{
         Permissions{
           _id
+          slug
         }
       }`,
       name: "Permissions",
@@ -42,6 +43,7 @@ export class PermissionsService {
       query PermissionById($_id: String){
         PermissionById(_id: $_id){
           _id
+          slug
         }
       }`,
       name: "PermissionById",

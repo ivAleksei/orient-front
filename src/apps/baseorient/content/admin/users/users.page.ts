@@ -5,6 +5,8 @@ import { LoadingService } from 'src/_shared/services/loading.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { UsersService } from 'src/apps/baseorient/_shared/providers/users.service';
+import { PersonsService } from 'src/apps/baseorient/_shared/providers/persons.service';
+import { RolesService } from 'src/_shared/providers/roles.service';
 
 @Component({
   selector: 'app-users',
@@ -12,15 +14,21 @@ import { UsersService } from 'src/apps/baseorient/_shared/providers/users.servic
   styleUrls: ['./users.page.scss'],
 })
 export class UsersPage implements OnInit {
+  @Output() public clearEvent: EventEmitter<any> = new EventEmitter();
   @Output() public reloadTable: EventEmitter<any> = new EventEmitter();
   @ViewChild("modalUser") modalUser: any;
   @ViewChild('UserForm') UserForm: any;
   list_users: any[] = [];
+  arr_persons: any[] = [];
+  _roles: any[] = [];
+  arr_roles: any[] = [];
+  obj_roles: any = {};
 
   tableInfo: any = {
     id: "table-users",
     columns: [
       { title: 'Username', data: "username" },
+      { title: 'Person', data: "person.name" },
     ],
     ajax: {
       url: `${environment.API.admin}/server_side/users`,
@@ -37,6 +45,8 @@ export class UsersPage implements OnInit {
     public i18n: I18nService,
     private utils: UtilsService,
     private loadingService: LoadingService,
+    private personsService: PersonsService,
+    private rolesService: RolesService,
     private usersService: UsersService,
     private alertsService: AlertsService
   ) { }
@@ -49,20 +59,66 @@ export class UsersPage implements OnInit {
   }
 
   getData() {
-    this.loadUser();
+    this.getPersons();
+    this.getRoles();
   }
 
-  /**
-   * loadUser: Método que busca as viaturas para o autocomplete.
-   */
-  async loadUser() {
-    this.loadingService.show();
-    let data = await this.usersService.getUsers();
-    this.loadingService.hide();
-    this.list_users = (data || []).map(it => {
-      it.label = [it.prefixo, it.placa].join(' - ');
-      return it;
-    });
+  async getRoles() {
+    let data = await this.rolesService.getRoles();
+    this.arr_roles = data || [];
+
+    this.obj_roles = {};
+    for (let it of (data || []))
+      this.obj_roles[it.slug] = it;
+  }
+
+  async getPersons() {
+    let data = await this.personsService.getPersons();
+    this.arr_persons = data || [];
+  }
+
+
+  setRole(ev: any) {
+    if (!ev) return;
+
+    this._roles.push(ev);
+    let obj = Object.assign({}, this.UserForm.value);
+    let payload = {
+      _id: obj._id,
+      _profiles: (this._roles || []).map(it => it.slug || it)
+    }
+    this.usersService.saveUser(payload)
+      .then(data => {
+        if (data?.status != 'success')
+          return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_UPDATE_ERR });
+
+        this._roles = (this._roles || []).map(k => this.obj_roles[k.slug || k]);
+        this.clear();
+        return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_UPDATE_SUCCESS });
+      });
+  }
+
+  rmRole(ev: any) {
+    let _roles = (this._roles || []).filter(it => it != ev).map(it => it.slug || it)
+    let obj = Object.assign({}, this.UserForm.value);
+    let payload = {
+      _id: obj._id,
+      _profiles: _roles
+    }
+    this.usersService.saveUser(payload)
+      .then(data => {
+        if (data?.status != 'success')
+          return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_UPDATE_ERR });
+
+        this._roles = (_roles || []).map(k => this.obj_roles[k.slug || k]);
+        this.clear();
+        return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_UPDATE_SUCCESS });
+      });
+  }
+
+  clear() {
+    this.reloadTable.next(true);
+    this.clearEvent.next(true);
   }
 
   handleTable(ev) {
@@ -71,6 +127,7 @@ export class UsersPage implements OnInit {
         this.modalUser.present();
         setTimeout(() => {
           this.UserForm.form.patchValue(ev.data);
+          this._roles = (ev.data?._profiles || []).map(k => this.obj_roles[k]);
         }, 400);
       },
       new: () => {

@@ -8,7 +8,7 @@ import { LoadingService } from 'src/_shared/services/loading.service';
 @Injectable({
   providedIn: 'root'
 })
-export class RolesService {
+export class ClubsService {
   private _watch: BehaviorSubject<any>;
   public watch: Observable<any>;
 
@@ -24,52 +24,42 @@ export class RolesService {
     this._watch.next(true);
   }
 
-  async getRoles(args?) {
-    return this.graphql.query(environment.API.admin, 'graphql', {
+  async getClubs(args?) {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query Roles{
-        Roles{
+      query Clubs{
+        Clubs{
           _id
-          slug
-          permissions{
-            _id
-            slug
-          }
         }
       }`,
-      name: "Roles",
+      name: "Clubs",
       variables: args || {}
     });
   }
-  async getRoleById(args?) {
-    return this.graphql.query(environment.API.admin, 'graphql', {
+  async getClubById(args?) {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query RoleById($_id: String){
-        RoleById(_id: $_id){
+      query ClubById($_id: String){
+        ClubById(_id: $_id){
           _id
-          slug
-          permissions{
-            _id
-            slug
-          }
         }
       }`,
-      name: "RoleById",
+      name: "ClubById",
       variables: args || {}
     });
   }
 
-  newRole(data) {
+  newClub(data) {
     this.loadingService.show();
-    return this.graphql.query(environment.API.admin, 'graphql', {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation CreateRole($input: RoleInput){
-        CreateRole(input: $input){
+      mutation CreateClub($input: ClubInput){
+        CreateClub(input: $input){
           status
           msg
         }
       }`,
-      name: "CreateRole",
+      name: "CreateClub",
       variables: data
     })
       .then(done => {
@@ -78,19 +68,19 @@ export class RolesService {
       });
   }
 
-  editRole(data) {
+  editClub(data) {
     this.loadingService.show();
 
-    return this.graphql.query(environment.API.admin, 'graphql', {
+    return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation UpdateRole($input: RoleInput){
-        UpdateRole(input: $input){
+      mutation UpdateClub($input: ClubInput){
+        UpdateClub(input: $input){
           status
           msg
         }
       }`,
 
-      name: "UpdateRole",
+      name: "UpdateClub",
       variables: data
     })
       .then(done => {
@@ -99,20 +89,20 @@ export class RolesService {
       });
   }
 
-  delRole(data) {
+  delClub(data) {
     return this.alertsService.confirmDel()
       .then(confirm => {
         if (!confirm) return;
         this.loadingService.show();
-        return this.graphql.query(environment.API.admin, 'graphql', {
+        return this.graphql.query(environment.API.orient, 'graphql', {
           query: `
-        mutation deleteRole($_id: String){
-          deleteRole(_id: $_id){
+        mutation deleteClub($_id: ID){
+          deleteClub(_id: $_id){
             status
             msg
           }
         }`,
-          name: "deleteRole",
+          name: "deleteClub",
           variables: data
         });
       })
@@ -122,8 +112,8 @@ export class RolesService {
       });
   }
 
-  saveRole(data) {
-    return this[data._id ? 'editRole' : "newRole"]({ input: data });
+  saveClub(data) {
+    return this[data._id ? 'editClub' : "newClub"]({ input: data });
   }
 
 }

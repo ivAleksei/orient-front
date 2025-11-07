@@ -3,28 +3,27 @@ import { AlertsService } from 'src/_shared/services/alerts.service';
 import { I18nService } from 'src/_shared/services/i18n.service';
 import { LoadingService } from 'src/_shared/services/loading.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
+import { SeasonsService } from 'src/apps/baseorient/_shared/providers/seasons.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
-import { PermissionsService } from 'src/_shared/providers/permissions.service';
 
 @Component({
-  selector: 'app-permissions',
-  templateUrl: './permissions.page.html',
-  styleUrls: ['./permissions.page.scss'],
+  selector: 'app-seasons',
+  templateUrl: './seasons.page.html',
+  styleUrls: ['./seasons.page.scss'],
 })
-export class PermissionsPage implements OnInit {
+export class SeasonsPage implements OnInit {
   @Output() public reloadTable: EventEmitter<any> = new EventEmitter();
-  @ViewChild("modalPermission") modalPermission: any;
-  @ViewChild('PermissionForm') PermissionForm: any;
-  list_permissions: any[] = [];
+  @ViewChild("modalSeason") modalSeason: any;
+  @ViewChild('SeasonForm') SeasonForm: any;
+  list_seasons: any[] = [];
 
   tableInfo: any = {
-    id: "table-permissions",
+    id: "table-seasons",
     columns: [
-      { title: 'Permissão', data: "slug" },
-      { title: 'Descrição', data: "description" },
+      { title: 'Name', data: "name" },
     ],
     ajax: {
-      url: `${environment.API.admin}/server_side/permissions`,
+      url: `${environment.API.orient}/server_side/seasons`,
     },
     actions: {
       buttons: [
@@ -38,7 +37,7 @@ export class PermissionsPage implements OnInit {
     public i18n: I18nService,
     private utils: UtilsService,
     private loadingService: LoadingService,
-    private permissionsService: PermissionsService,
+    private seasonsService: SeasonsService,
     private alertsService: AlertsService
   ) { }
 
@@ -50,27 +49,40 @@ export class PermissionsPage implements OnInit {
   }
 
   getData() {
+    this.loadSeason();
   }
 
+  /**
+   * loadSeason: Método que busca as viaturas para o autocomplete.
+   */
+  async loadSeason() {
+    this.loadingService.show();
+    let data = await this.seasonsService.getSeasons();
+    this.loadingService.hide();
+    this.list_seasons = (data || []).map(it => {
+      it.label = [it.prefixo, it.placa].join(' - ');
+      return it;
+    });
+  }
 
   handleTable(ev) {
     let map = {
       edit: () => {
-        this.modalPermission.present();
+        this.modalSeason.present();
         setTimeout(() => {
-          this.PermissionForm.form.patchValue(ev.data);
+          this.SeasonForm.form.patchValue(ev.data);
         }, 400);
       },
       new: () => {
-        this.modalPermission.present();
+        this.modalSeason.present();
       },
       del: () => {
-        this.permissionsService.delPermission(ev.data)
+        this.seasonsService.delSeason(ev.data)
           .then(data => {
             if (data?.status != 'success')
               return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_REMOVE_ERR });
 
-            this.clearPermissionForm();
+            this.clearSeasonForm();
             return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_REMOVE_SUCCESS });
           });
       },
@@ -80,25 +92,27 @@ export class PermissionsPage implements OnInit {
   }
 
   saveForm() {
-    let obj = Object.assign({}, this.PermissionForm.value);
-    this.permissionsService.savePermission(obj)
+    this.loadingService.show();
+    let obj = Object.assign({}, this.SeasonForm.value);
+    this.seasonsService.saveSeason(obj)
       .then(data => {
+        this.loadingService.hide();
         if (data?.status != 'success')
           return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_UPDATE_ERR });
 
-        this.clearPermissionForm();
+        this.clearSeasonForm();
         return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_UPDATE_SUCCESS });
       });
   }
 
-  clearPermissionForm() {
-    this.PermissionForm?.form.reset();
+  clearSeasonForm() {
+    this.SeasonForm?.form.reset();
     this.closeModal();
     this.reloadTable.next(true);
   }
 
   closeModal() {
-    this.modalPermission.dismiss();
+    this.modalSeason.dismiss();
   }
 
 }
