@@ -1,0 +1,69 @@
+<div class="p-relative">
+  <ion-button class="btn-add" (click)="saveData()">
+    <i class="mdi mdi-content-save"></i>
+    <span class="text">{{i18n.lang.SAVE_DATA}}</span>
+  </ion-button>
+  <h4 class="card-title"> &nbsp;</h4>
+  <div class="card-body">
+    <form #ConfederationForm="ngForm" novalidate>
+      <div class="section">
+        <h4 class="section-title"><i class="mdi mdi-clipboard-text"></i> {{i18n.lang.BASIC_DATA}}</h4>
+        <div class="section-body">
+          <!-- <pre>{{ConfederationForm.value | json}}</pre> -->
+          <input type="hidden" name="_id" ngModel #_id="ngModel">
+          <ion-row>
+            <ion-col size-xs="12" size-lg="2">
+              <ion-item>
+                <ion-label for="slug" position="stacked">{{i18n.lang.SLUG}}*</ion-label>
+                <ion-input type="text" name="slug" ngModel required #slug="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="12" size-lg="3">
+              <ion-item>
+                <ion-label for="name" position="stacked">{{i18n.lang.NAME}}*</ion-label>
+                <ion-input type="text" name="name" ngModel required #name="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+      <div class="section">
+        <h4 class="section-title"><i class="mdi mdi-google-maps"></i> {{i18n.lang.ADDRESS}}</h4>
+        <div class="section-body">
+          <ion-row>
+            <ion-col size-xs="12" size-lg="2">
+              <ion-item class="old-select">
+                <label for="country" position="stacked">{{i18n.lang.COUNTRY}}*</label>
+                <select name="country" ngModel #country="ngModel" required>
+                  <option value="">Selecione uma opção...</option>
+                  <option value="BR">Brasil</option>
+                </select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+      <div class="section">
+        <h4 class="section-title"><i class="mdi mdi-share-variant"></i> {{i18n.lang.MEDIA}}</h4>
+        <div class="section-body">
+          <ion-row>
+            <ion-col size-xs="12" size-lg="3">
+              <ion-item>
+                <ion-label for="media_site" position="stacked">{{i18n.lang.SITE}}*</ion-label>
+                <ion-input type="text" name="media_site" ngModel required #media_site="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="12" size-lg="3">
+              <ion-item>
+                <ion-label for="media_instagram" position="stacked">{{i18n.lang.INSTAGRAM}}*</ion-label>
+                <ion-input type="text" name="media_instagram" ngModel required #media_instagram="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

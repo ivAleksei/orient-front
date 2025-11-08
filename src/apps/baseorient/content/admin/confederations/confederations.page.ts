@@ -5,6 +5,7 @@ import { LoadingService } from 'src/_shared/services/loading.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { ConfederationsService } from 'src/apps/baseorient/_shared/providers/confederations.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-confederations',
@@ -28,6 +29,7 @@ export class ConfederationsPage implements OnInit {
     },
     actions: {
       buttons: [
+        { action: "detail", tooltip: "Detalhes", class: "btn-light", icon: "mdi mdi-newspaper" },
         { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
         { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
       ]
@@ -36,6 +38,7 @@ export class ConfederationsPage implements OnInit {
 
   constructor(
     public i18n: I18nService,
+    private nav: NavController,
     private utils: UtilsService,
     private loadingService: LoadingService,
     private confederationsService: ConfederationsService,
@@ -62,6 +65,9 @@ export class ConfederationsPage implements OnInit {
       },
       new: () => {
         this.modalConfederation.present();
+      },
+      detail: () => {
+        this.nav.navigateForward(['/internal/admin/confederation/', ev.data._id]);
       },
       del: () => {
         this.confederationsService.delConfederation(ev.data)
