@@ -1,8 +1,10 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { DatePipe } from 'src/_shared/pipes/date.pipe';
 import { AlertsService } from 'src/_shared/services/alerts.service';
 import { I18nService } from 'src/_shared/services/i18n.service';
 import { LoadingService } from 'src/_shared/services/loading.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
+import { ConfederationsService } from 'src/apps/baseorient/_shared/providers/confederations.service';
 import { SeasonsService } from 'src/apps/baseorient/_shared/providers/seasons.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 
@@ -16,11 +18,18 @@ export class SeasonsPage implements OnInit {
   @ViewChild("modalSeason") modalSeason: any;
   @ViewChild('SeasonForm') SeasonForm: any;
   list_seasons: any[] = [];
+  arr_confederations: any[] = [];
 
   tableInfo: any = {
     id: "table-seasons",
     columns: [
-      { title: 'Name', data: "name" },
+      { title: 'Year', data: "year" },
+      { title: 'Confederation', data: "confederation.slug" },
+      {
+        title: 'Period', data: "year", render: (a, b, c) => {
+          return [this.datePipe.transform(c.dt_start), this.datePipe.transform(c.dt_end)].join(' - ')
+        }
+      },
     ],
     ajax: {
       url: `${environment.API.orient}/server_side/seasons`,
@@ -36,7 +45,9 @@ export class SeasonsPage implements OnInit {
   constructor(
     public i18n: I18nService,
     private utils: UtilsService,
+    private datePipe: DatePipe,
     private loadingService: LoadingService,
+    private confederationsService: ConfederationsService,
     private seasonsService: SeasonsService,
     private alertsService: AlertsService
   ) { }
@@ -50,6 +61,14 @@ export class SeasonsPage implements OnInit {
 
   getData() {
     this.loadSeason();
+    this.loadConfederations();
+  }
+
+  async loadConfederations() {
+    this.loadingService.show();
+    let data = await this.confederationsService.getConfederations();
+    this.arr_confederations = (data || []);
+    this.loadingService.hide();
   }
 
   /**

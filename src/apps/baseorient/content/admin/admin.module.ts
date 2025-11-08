@@ -19,8 +19,16 @@ const routes: Routes = [
     loadChildren: () => import('src/apps/baseorient/content/admin/federations/federations.module').then(m => m.FederationsPageModule)
   },
   {
+    path: 'federation/:id',
+    loadChildren: () => import('src/apps/baseorient/content/admin/federation-details/federation-details.module').then(m => m.FederationDetailsPageModule)
+  },
+  {
     path: 'clubs',
     loadChildren: () => import('src/apps/baseorient/content/admin/clubs/clubs.module').then(m => m.ClubsPageModule)
+  },
+  {
+    path: 'club/:id',
+    loadChildren: () => import('src/apps/baseorient/content/admin/club-details/club-details.module').then(m => m.ClubDetailsPageModule)
   },
   {
     path: 'permissions',
@@ -37,6 +45,10 @@ const routes: Routes = [
   {
     path: 'persons',
     loadChildren: () => import('src/apps/baseorient/content/admin/persons/persons.module').then(m => m.PersonsPageModule)
+  },
+  {
+    path: 'person/:id',
+    loadChildren: () => import('src/apps/baseorient/content/admin/person-details/person-details.module').then(m => m.PersonDetailsPageModule)
   },
   {
     path: 'configs',

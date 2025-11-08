@@ -26,7 +26,8 @@
           <ion-button (click)="closeModal()">{{i18n.lang.CANCEL}}</ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button (click)="saveForm()" [strong]="true" [disabled]="!SeasonForm.valid">{{i18n.lang.CONFIRM}}</ion-button>
+          <ion-button (click)="saveForm()" [strong]="true"
+            [disabled]="!SeasonForm.valid">{{i18n.lang.CONFIRM}}</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
@@ -47,13 +48,24 @@
               <ion-col size-xs="6">
                 <ion-item>
                   <ion-label for="dt_start" position="stacked">{{i18n.lang.DT_START}}*</ion-label>
-                  <ion-input type="text" name="dt_start" ngModel required #dt_start="ngModel"></ion-input>
+                  <ion-input type="date" name="dt_start" ngModel required #dt_start="ngModel"></ion-input>
                 </ion-item>
               </ion-col>
               <ion-col size-xs="6">
                 <ion-item>
                   <ion-label for="dt_end" position="stacked">{{i18n.lang.DT_END}}*</ion-label>
-                  <ion-input type="text" name="dt_end" ngModel required #dt_end="ngModel"></ion-input>
+                  <ion-input type="date" name="dt_end" ngModel required #dt_end="ngModel"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="12" >
+                <ion-item class="old-select">
+                  <label for="_confederation" position="stacked">{{i18n.lang.CONFEDERATION}}*</label>
+                  <select name="_confederation" ngModel #_confederation="ngModel" required>
+                    <option value="">Selecione uma opção...</option>
+                    <ng-template ngFor let-it [ngForOf]="arr_confederations">
+                      <option value="{{it._id}}">{{it.slug}} - {{it.name}}</option>
+                    </ng-template>
+                  </select>
                 </ion-item>
               </ion-col>
             </ion-row>
