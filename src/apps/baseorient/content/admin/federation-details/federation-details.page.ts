@@ -22,6 +22,40 @@ export class FederationDetailsPage implements OnInit {
   _id: any = '';
   federation: any;
 
+  tableInfoContacts: any = {
+    id: `table-federation-contacts-${this._id}`,
+    columns: [
+      {
+        title: 'Name', data: "person.name", render: (a, b, c) => {
+          return [c.person?.name, c.person?.num_cbo].filter(k => k).join(' - ');
+        }
+      },
+      { title: 'Position', data: "position" }
+    ],
+    data: [],
+    actions: {
+      buttons: [
+        { action: "detail-athlete", tooltip: "Detalhe", class: "btn-light", icon: "mdi mdi-newspaper" },
+        { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
+        { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
+      ]
+    }
+  }
+
+  tableInfoPartners: any = {
+    id: `table-federation-partners-${this._id}`,
+    columns: [
+      { title: 'Name', data: "name" },
+      { title: 'Agent', data: "agent" },
+      { title: 'Email', data: "email" },
+      { title: 'Phone', data: "phone" },
+    ],
+    data: [],
+    actions: {
+      buttons: []
+    }
+  }
+
   tableInfoClub: any = {
     id: `table-federation-clubs-${this._id}`,
     columns: [
@@ -101,6 +135,12 @@ export class FederationDetailsPage implements OnInit {
     this.route.params.subscribe((params: any) => {
       this._id = params?.id || null;
 
+      this.tableInfoPartners.ajax = {
+        url: `${environment.API.orient}/server_side/partners?fed=` + this._id,
+      }
+      this.tableInfoContacts.ajax = {
+        url: `${environment.API.orient}/server_side/contacts?fed=` + this._id,
+      }
       this.tableInfoClub.ajax = {
         url: `${environment.API.orient}/server_side/clubs?fed=` + this._id,
       }

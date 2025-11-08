@@ -50,6 +50,7 @@ export class FederationsService {
           name
           state
           city
+          country
         }
       }`,
       name: "FederationById",

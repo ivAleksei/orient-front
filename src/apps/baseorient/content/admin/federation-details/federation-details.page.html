@@ -10,6 +10,12 @@
         <button [ngClass]="{active: tab == 'personal'}" (click)="setTab('personal')">
           <i class="mdi mdi-clipboard-text"></i> {{i18n.lang.DATA_INFO}}
         </button>
+        <button [ngClass]="{active: tab == 'contacts'}" (click)="setTab('contacts')">
+          <i class="mdi mdi-account-group"></i> {{i18n.lang.TEAM}}
+        </button>
+        <button [ngClass]="{active: tab == 'partners'}" (click)="setTab('partners')">
+          <i class="mdi mdi-handshake"></i> {{i18n.lang.PARTNERS}}
+        </button>
         <button [ngClass]="{active: tab == 'clubs'}" (click)="setTab('clubs')">
           <i class="mdi mdi-animation"></i> {{i18n.lang.CLUBS}}
         </button>
@@ -26,6 +32,18 @@
       <div class="tabs-place">
         <div class="card" *ngIf="tab == 'personal'">
           <app-federation-form [_id]="_id"></app-federation-form>
+        </div>
+        <div class="card" *ngIf="tab == 'contacts'">
+          <div class="card-body">
+            <data-table *ngIf="tableInfoContacts" [tableInfo]="tableInfoContacts" [reload]="reloadTable"
+              (clickEvent)="handleTable($event)"></data-table>
+          </div>
+        </div>
+        <div class="card" *ngIf="tab == 'partners'">
+          <div class="card-body">
+            <data-table *ngIf="tableInfoPartners" [tableInfo]="tableInfoPartners" [reload]="reloadTable"
+              (clickEvent)="handleTable($event)"></data-table>
+          </div>
         </div>
         <div class="card" *ngIf="tab == 'clubs'">
           <div class="card-body">
@@ -54,14 +72,34 @@
       </div>
     </div>
 
-    <ion-accordion-group class="hide-desktop" [value]="tab" (ionChange)="setTab($event)">
-      <ion-accordion value="personal">
+   <ion-accordion-group class="hide-desktop" [value]="tab" (ionChange)="setTab($event)">
+      <ion-accordion value="info">
         <ion-item slot="header" color="light">
           <ion-label class="group-title">
             <i class="mdi mdi-clipboard-text"></i> {{i18n.lang.DATA_INFO}}</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content">
           <app-federation-form [_id]="_id"></app-federation-form>
+        </div>
+      </ion-accordion>
+           <ion-accordion value="contacts">
+        <ion-item slot="header" color="light">
+          <ion-label class="group-title">
+            <i class="mdi mdi-account-group"></i> {{i18n.lang.TEAM}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <data-table *ngIf="tableInfoContacts" [tableInfo]="tableInfoContacts" [reload]="reloadTable"
+            (clickEvent)="handleTable($event)"></data-table>
+        </div>
+      </ion-accordion>
+      <ion-accordion value="partners">
+        <ion-item slot="header" color="light">
+          <ion-label class="group-title">
+            <i class="mdi mdi-handshake"></i> {{i18n.lang.PARTNERS}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <data-table *ngIf="tableInfoPartners" [tableInfo]="tableInfoPartners" [reload]="reloadTable"
+            (clickEvent)="handleTable($event)"></data-table>
         </div>
       </ion-accordion>
       <ion-accordion value="clubs">
@@ -84,10 +122,20 @@
             (clickEvent)="handleTable($event)"></data-table>
         </div>
       </ion-accordion>
+      <ion-accordion value="events">
+        <ion-item slot="header" color="light">
+          <ion-label class="group-title">
+            <i class="mdi mdi-calendar-multiple"></i> {{i18n.lang.EVENTS}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <data-table *ngIf="tableInfoEvents" [tableInfo]="tableInfoEvents" [reload]="reloadTable"
+            (clickEvent)="handleTable($event)"></data-table>
+        </div>
+      </ion-accordion>
       <ion-accordion value="audit">
         <ion-item slot="header" color="light">
           <ion-label class="group-title">
-            <i class="mdi mdi-account-group"></i> {{i18n.lang.ATHLETES}}</ion-label>
+            <i class="mdi mdi-playlist-check"></i> {{i18n.lang.AUDIT}}</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content">
           <data-table *ngIf="tableInfoAudits" [tableInfo]="tableInfoAudits" [reload]="reloadTable"

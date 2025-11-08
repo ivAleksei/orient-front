@@ -11,8 +11,20 @@ const routes: Routes = [
     loadChildren: () => import('src/apps/baseorient/content/admin/dashboard-admin/dashboard-admin.module').then(m => m.DashboardAdminPageModule)
   },
   {
+    path: 'contacts',
+    loadChildren: () => import('src/apps/baseorient/content/admin/contacts/contacts.module').then(m => m.ContactsPageModule)
+  },
+  {
+    path: 'partners',
+    loadChildren: () => import('src/apps/baseorient/content/admin/partners/partners.module').then(m => m.PartnersPageModule)
+  },
+  {
     path: 'confederations',
     loadChildren: () => import('src/apps/baseorient/content/admin/confederations/confederations.module').then(m => m.ConfederationsPageModule)
+  },
+  {
+    path: 'confederation/:id',
+    loadChildren: () => import('src/apps/baseorient/content/admin/confederation-details/confederation-details.module').then(m => m.ConfederationDetailsPageModule)
   },
   {
     path: 'federations',
