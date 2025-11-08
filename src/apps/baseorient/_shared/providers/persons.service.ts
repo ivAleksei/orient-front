@@ -49,7 +49,7 @@ export class PersonsService {
         Persons{
           _id
           name
-          id_number
+          num_cbo
         }
       }`,
       name: "Persons",

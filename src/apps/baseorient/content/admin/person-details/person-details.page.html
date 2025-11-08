@@ -1,0 +1,49 @@
+<ion-content [fullscreen]="true">
+  <div class="page-layout">
+    <h3 class="page-title">Ficha Individual<br>
+      <small>Dados pessoais e profissionais do militar</small>
+    </h3>
+
+
+    <div class="tabs hide-mobile">
+      <div class="tabs-btns">
+        <button [ngClass]="{active: tab == 'personal'}" (click)="setTab('personal')">
+          <i class="mdi mdi-clipboard-text"></i> Dados Pessoais
+        </button>
+        <button [ngClass]="{active: tab == 'atletas'}" (click)="setTab('atletas')">
+          <i class="mdi mdi-account-multiple"></i> Eventos
+        </button>
+      </div>
+      <div class="tabs-place">
+        <div class="card" *ngIf="tab == 'personal'">
+          <!-- <app-crh-personal-form [_id]="_id" [edit]="1"></app-crh-personal-form> -->
+        </div>
+        <div class="card" *ngIf="tab == 'atletas'">
+          <!-- <app-crh-personal-form [_id]="_id" [edit]="1"></app-crh-personal-form> -->
+        </div>
+      </div>
+    </div>
+
+    <ion-accordion-group class="hide-desktop" [value]="tab" (ionChange)="setTab($event)">
+      <ion-accordion value="personal">
+        <ion-item slot="header" color="light">
+          <ion-label class="group-title">
+            <i class="mdi mdi-clipboard-text"></i> Dados Pessoais</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <!-- <app-crh-personal-form [_id]="_id" *ngIf="_id && tab =='personal'" [edit]="1"></app-crh-personal-form> -->
+        </div>
+      </ion-accordion>
+      <ion-accordion value="personal">
+        <ion-item slot="header" color="light">
+          <ion-label class="group-title">
+            <i class="mdi mdi-account-multiple"></i> Atletas</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <!-- <app-crh-personal-form [_id]="_id" *ngIf="_id && tab =='personal'" [edit]="1"></app-crh-personal-form> -->
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+
+  </div>
+</ion-content>

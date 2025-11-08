@@ -5,6 +5,7 @@ import { LoadingService } from 'src/_shared/services/loading.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { PersonsService } from 'src/apps/baseorient/_shared/providers/persons.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-persons',
@@ -20,14 +21,19 @@ export class PersonsPage implements OnInit {
   tableInfo: any = {
     id: "table-persons",
     columns: [
-      { title: 'CBO', data: "id_number" },
+      { title: 'CBO', data: "num_cbo" },
+      { title: 'Helga', data: "_helga" },
       { title: 'Name', data: "name" },
+      { title: 'Club', data: "clube.slug" },
+      { title: 'Federation', data: "federation.slug" },
+      { title: 'Confederation', data: "confederation.slug" },
     ],
     ajax: {
       url: `${environment.API.admin}/server_side/persons`,
     },
     actions: {
       buttons: [
+        { action: "detail", tooltip: "Detalhe", class: "btn-light", icon: "mdi mdi-newspaper" },
         { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
         { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
       ]
@@ -36,6 +42,7 @@ export class PersonsPage implements OnInit {
 
   constructor(
     public i18n: I18nService,
+    private nav: NavController,
     private utils: UtilsService,
     private loadingService: LoadingService,
     private personsService: PersonsService,
@@ -76,6 +83,9 @@ export class PersonsPage implements OnInit {
       },
       new: () => {
         this.modalPerson.present();
+      },
+      detail: () => {
+        this.nav.navigateForward(['/internal/admin/person/', ev.data._id]);
       },
       del: () => {
         this.personsService.delPerson(ev.data)
