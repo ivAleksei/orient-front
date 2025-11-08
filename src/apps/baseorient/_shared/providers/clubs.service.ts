@@ -39,9 +39,15 @@ export class ClubsService {
   async getClubById(args?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query ClubById($_id: String){
+      query ClubById($_id: ID){
         ClubById(_id: $_id){
           _id
+          _federation
+          _confederation
+          slug
+          name
+          state
+          city
         }
       }`,
       name: "ClubById",

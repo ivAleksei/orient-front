@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { StatusPipe } from 'src/_shared/pipes/status.pipe';
 import { AlertsService } from 'src/_shared/services/alerts.service';
 import { I18nService } from 'src/_shared/services/i18n.service';
@@ -32,7 +33,7 @@ export class ClubsPage implements OnInit {
       { title: 'Confederation', data: "confederation.slug" },
       {
         title: 'Status', data: "status", render: (a, b, c) => {
-            return `
+          return `
             <span class="badge ${this.StatusPipe.transform(c.status, 'class')}">
               ${this.StatusPipe.transform(c.status, 'label')}
             </span>
@@ -45,6 +46,7 @@ export class ClubsPage implements OnInit {
     },
     actions: {
       buttons: [
+        { action: "detail", tooltip: "Detalhe", class: "btn-light", icon: "mdi mdi-newspaper" },
         { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
         { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
       ]
@@ -53,6 +55,7 @@ export class ClubsPage implements OnInit {
 
   constructor(
     public i18n: I18nService,
+    private nav: NavController,
     private utils: UtilsService,
     private StatusPipe: StatusPipe,
     private loadingService: LoadingService,
@@ -109,6 +112,9 @@ export class ClubsPage implements OnInit {
           if (ev.data.state)
             this.setArrCity();
         }, 400);
+      },
+      detail: () => {
+        this.nav.navigateForward(['/internal/admin/club/', ev.data._id]);
       },
       new: () => {
         this.modalClub.present();
