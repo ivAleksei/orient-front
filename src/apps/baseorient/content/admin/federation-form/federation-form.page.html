@@ -1,0 +1,81 @@
+<div class="p-relative">
+  <ion-button class="btn-add" (click)="saveData()">
+    <i class="mdi mdi-content-save"></i>
+    <span class="text">{{i18n.lang.SAVE_DATA}}</span>
+  </ion-button>
+  <h4 class="card-title"> &nbsp;</h4>
+  <div class="card-body">
+    <form #FederationForm="ngForm" novalidate>
+      <div class="section">
+        <h4 class="section-title"><i class="mdi mdi-clipboard-text"></i> {{i18n.lang.BASIC_DATA}}</h4>
+        <div class="section-body">
+          <!-- <pre>{{FederationForm.value | json}}</pre> -->
+          <input type="hidden" name="_id" ngModel #_id="ngModel">
+          <ion-row>
+            <ion-col size-xs="12" size-lg="2">
+              <ion-item>
+                <ion-label for="slug" position="stacked">{{i18n.lang.SLUG}}*</ion-label>
+                <ion-input type="text" name="slug" ngModel required #slug="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="12" size-lg="3">
+              <ion-item>
+                <ion-label for="name" position="stacked">{{i18n.lang.NAME}}*</ion-label>
+                <ion-input type="text" name="name" ngModel required #name="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+      <div class="section">
+        <h4 class="section-title"><i class="mdi mdi-google-maps"></i> {{i18n.lang.ADDRESS}}</h4>
+        <div class="section-body">
+          <ion-row>
+            <ion-col size-xs="12" size-lg="2">
+              <ion-item class="old-select">
+                <label for="state" position="stacked">{{i18n.lang.STATE}}*</label>
+                <select name="state" ngModel #state="ngModel" required (change)="setState()">
+                  <option value="">Selecione uma opção...</option>
+                  <ng-template ngFor let-it [ngForOf]="arr_state_city">
+                    <option value="{{it.sigla}}">{{it.sigla}} - {{it.nome}}</option>
+                  </ng-template>
+                </select>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="12" size-lg="2">
+              <ion-item class="old-select">
+                <label for="city" position="stacked">{{i18n.lang.CITY}}*</label>
+                <select name="city" ngModel #city="ngModel" required>
+                  <option value="">Selecione uma opção...</option>
+                  <ng-template ngFor let-it [ngForOf]="arr_city">
+                    <option value="{{it}}">{{it}}</option>
+                  </ng-template>
+                </select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+      <div class="section">
+        <h4 class="section-title"><i class="mdi mdi-file-tree"></i> {{i18n.lang.AFFILIATIONS}}</h4>
+        <div class="section-body">
+          <ion-row>
+            <ion-col size-xs="12" size-lg="4">
+              <ion-item class="old-select">
+                <label for="_confederation" position="stacked">{{i18n.lang.CONFEDERATION}}*</label>
+                <select name="_confederation" ngModel #_confederation="ngModel" required>
+                  <option value="">Selecione uma opção...</option>
+                  <ng-template ngFor let-it [ngForOf]="arr_confederations">
+                    <option value="{{it._id}}">{{it.slug}} - {{it.name}}</option>
+                  </ng-template>
+                </select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

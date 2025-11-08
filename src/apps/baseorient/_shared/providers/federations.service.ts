@@ -42,12 +42,14 @@ export class FederationsService {
   async getFederationById(args?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query FederationById($_id: String){
+      query FederationById($_id: ID){
         FederationById(_id: $_id){
           _id
           _confederation
           slug
           name
+          state
+          city
         }
       }`,
       name: "FederationById",

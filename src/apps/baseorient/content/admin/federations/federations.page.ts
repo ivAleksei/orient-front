@@ -7,6 +7,7 @@ import { environment } from 'src/apps/baseorient/environments/environment';
 import { FederationsService } from 'src/apps/baseorient/_shared/providers/federations.service';
 import { ConfederationsService } from 'src/apps/baseorient/_shared/providers/confederations.service';
 import { ResourcesService } from 'src/apps/baseorient/_shared/providers/resources.service';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-federations',
@@ -33,14 +34,18 @@ export class FederationsPage implements OnInit {
     },
     actions: {
       buttons: [
+        { action: "detail", tooltip: "Detalhe", class: "btn-light", icon: "mdi mdi-newspaper" },
         { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
         { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
       ]
     }
   }
 
+  
+
   constructor(
     public i18n: I18nService,
+    private nav: NavController,
     private utils: UtilsService,
     private loadingService: LoadingService,
     private resourcesService: ResourcesService,
@@ -85,6 +90,9 @@ export class FederationsPage implements OnInit {
       },
       new: () => {
         this.modalFederation.present();
+      },
+      detail: () => {
+        this.nav.navigateForward(['/internal/admin/federation/', ev.data._id]);
       },
       del: () => {
         this.federationsService.delFederation(ev.data)
