@@ -577,6 +577,17 @@ ion-accordion-group {
   }
 }
 
+.p-relative {
+  position: relative;
+  padding-top: 16px;
+  margin-bottom: 72px;
+
+  .btn-add {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
 
 .section {
   padding: 16px;
@@ -1502,8 +1513,10 @@ ion-col {
       top: initial;
       font-size: 1.4em;
       bottom: 32px;
+        right: 32px;
       width: 72px;
       height: 72px;
+      z-index: 9999;
 
       .text {
         display: none;
