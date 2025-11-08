@@ -71,10 +71,10 @@ export class DataTableComponent implements OnInit {
     search: "Pesquisar:",
     zeroRecords: "Nenhum registro encontrado",
     paginate: {
-      first: "Primeiro",
-      last: "Última",
-      next: "Próxima",
-      previous: "Anterior",
+      first: "<<",
+      last: ">>",
+      next: ">",
+      previous: "<",
     },
     aria: {
       sortAscending: ": Ativar para ordenar coluna ascendente",
@@ -84,7 +84,7 @@ export class DataTableComponent implements OnInit {
 
   dtOptions: any = {
     dom: `
-    <'dataTables_row'lfp>
+    <'dataTables_row'lf>
     <'dataTables_row table_row't>
     <'dataTables_row'ip>
     `,
