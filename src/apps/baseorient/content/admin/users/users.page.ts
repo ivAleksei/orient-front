@@ -7,6 +7,7 @@ import { environment } from 'src/apps/baseorient/environments/environment';
 import { UsersService } from 'src/apps/baseorient/_shared/providers/users.service';
 import { PersonsService } from 'src/apps/baseorient/_shared/providers/persons.service';
 import { RolesService } from 'src/_shared/providers/roles.service';
+import md5 from 'md5';
 
 @Component({
   selector: 'app-users',
@@ -35,6 +36,7 @@ export class UsersPage implements OnInit {
     },
     actions: {
       buttons: [
+        { action: "reset", tooltip: "Resetar Senha", class: "btn-warning", icon: "mdi mdi-account-key", },
         { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
         { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
       ]
@@ -133,6 +135,7 @@ export class UsersPage implements OnInit {
       new: () => {
         this.modalUser.present();
       },
+      reset: () => this.resetPassword(ev.data),
       del: () => {
         this.usersService.delUser(ev.data)
           .then(data => {
@@ -146,6 +149,24 @@ export class UsersPage implements OnInit {
     }
 
     return map[ev.action](ev.data);
+  }
+
+  async resetPassword(obj) {
+    console.log(obj);
+    
+    let confirm = await this.alertsService.askConfirmation(this.i18n.lang.RESET_PASSWORD, this.i18n.lang.RESET_PASSWORD_TEXT)
+    if (!confirm) return;
+
+    let payload = { _id: obj._id, password: md5("mudar123") };
+
+    return this.usersService.saveUser(payload)
+      .then(data => {
+        if (data?.status != 'success')
+          return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_UPDATE_ERR });
+
+        this.clear();
+        return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_UPDATE_SUCCESS });
+      });
   }
 
   saveForm() {
