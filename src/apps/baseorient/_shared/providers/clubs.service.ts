@@ -30,6 +30,8 @@ export class ClubsService {
       query Clubs{
         Clubs{
           _id
+          slug
+          name
         }
       }`,
       name: "Clubs",
@@ -48,6 +50,7 @@ export class ClubsService {
           name
           state
           city
+          country
         }
       }`,
       name: "ClubById",

@@ -54,6 +54,15 @@
                 </select>
               </ion-item>
             </ion-col>
+            <ion-col size-xs="12" size-lg="2">
+              <ion-item class="old-select">
+                <label for="country" position="stacked">{{i18n.lang.COUNTRY}}*</label>
+                <select name="country" ngModel #country="ngModel" required>
+                  <option value="">Selecione uma opção...</option>
+                  <option value="BR">Brasil</option>
+                </select>
+              </ion-item>
+            </ion-col>
           </ion-row>
         </div>
       </div>

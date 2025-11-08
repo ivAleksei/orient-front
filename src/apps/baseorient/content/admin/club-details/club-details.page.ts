@@ -22,6 +22,25 @@ export class ClubDetailsPage implements OnInit {
   _id: any = '';
   clube: any;
 
+  tableInfoContacts: any = {
+    id: `table-clube-contacts-${this._id}`,
+    columns: [
+      {
+        title: 'Name', data: "person.name", render: (a, b, c) => {
+          return [c.person?.name, c.person?.num_cbo].filter(k => k).join(' - ');
+        }
+      },
+      { title: 'Position', data: "position" }
+    ],
+    data: [],
+    actions: {
+      buttons: [
+        { action: "detail-athlete", tooltip: "Detalhe", class: "btn-light", icon: "mdi mdi-newspaper" },
+        { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
+        { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
+      ]
+    }
+  }
 
   tableInfoEvents: any = {
     id: `table-clube-events-${this._id}`,
@@ -65,7 +84,9 @@ export class ClubDetailsPage implements OnInit {
   ) {
     this.route.params.subscribe((params: any) => {
       this._id = params?.id || null;
-
+      this.tableInfoContacts.ajax = {
+        url: `${environment.API.orient}/server_side/contacts?fed=` + this._id,
+      }
       this.tableInfoAthletes.ajax = {
         url: `${environment.API.orient}/server_side/athletes?club=` + this._id,
       }

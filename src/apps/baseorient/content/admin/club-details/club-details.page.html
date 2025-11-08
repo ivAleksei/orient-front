@@ -10,16 +10,25 @@
         <button [ngClass]="{active: tab == 'personal'}" (click)="setTab('personal')">
           <i class="mdi mdi-clipboard-text"></i> {{i18n.lang.DATA_INFO}}
         </button>
-        <button [ngClass]="{active: tab == 'events'}" (click)="setTab('events')">
-          <i class="mdi mdi-calendar-multiple"></i> {{i18n.lang.EVENTS}}
+        <button [ngClass]="{active: tab == 'contacts'}" (click)="setTab('contacts')">
+          <i class="mdi mdi-account-group"></i> {{i18n.lang.TEAM}}
         </button>
         <button [ngClass]="{active: tab == 'athletes'}" (click)="setTab('athletes')">
           <i class="mdi mdi-account-group"></i> {{i18n.lang.ATHLETES}}
+        </button>
+        <button [ngClass]="{active: tab == 'events'}" (click)="setTab('events')">
+          <i class="mdi mdi-calendar-multiple"></i> {{i18n.lang.EVENTS}}
         </button>
       </div>
       <div class="tabs-place">
         <div class="card" *ngIf="tab == 'personal'">
           <app-club-form [_id]="_id"></app-club-form>
+        </div>
+        <div class="card" *ngIf="tab == 'contacts'">
+          <div class="card-body">
+            <data-table *ngIf="tableInfoContacts" [tableInfo]="tableInfoContacts" [reload]="reloadTable"
+              (clickEvent)="handleTable($event)"></data-table>
+          </div>
         </div>
         <div class="card" *ngIf="tab == 'events'">
           <div class="card-body">
