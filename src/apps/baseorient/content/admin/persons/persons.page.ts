@@ -33,6 +33,7 @@ export class PersonsPage implements OnInit {
     },
     actions: {
       buttons: [
+        { action: "sync", tooltip: "sync", class: "btn-warning", icon: "mdi mdi-sync" },
         { action: "detail", tooltip: "Detalhe", class: "btn-light", icon: "mdi mdi-newspaper" },
         { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
         { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
@@ -81,6 +82,7 @@ export class PersonsPage implements OnInit {
           this.PersonForm.form.patchValue(ev.data);
         }, 400);
       },
+      sync: () => this.personsService.syncHelga(ev.data?._helga),
       new: () => {
         this.modalPerson.present();
       },

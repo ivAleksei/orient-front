@@ -4,6 +4,7 @@ import { GraphqlService } from 'src/_shared/services/graphql.service';
 import { AlertsService } from 'src/_shared/services/alerts.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { LoadingService } from 'src/_shared/services/loading.service';
+import { HttpService } from 'src/_shared/services/http.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class EventsService {
   constructor(
     private loadingService: LoadingService,
     private alertsService: AlertsService,
+    private http: HttpService,
     private graphql: GraphqlService
   ) {
     this._watch = <BehaviorSubject<any>>new BehaviorSubject(false);
@@ -22,6 +24,14 @@ export class EventsService {
   }
   trigger() {
     this._watch.next(true);
+  }
+
+  async syncHelga(_helga) {
+    if (!_helga) return null;
+
+    let query = { _lauf: _helga }
+    let url = [environment.API.orient, 'tmp', 'helga'].join('/') + '?' + Object.keys(query).map(k => `${k}=${query[k]}`);
+    return this.http.get(url);
   }
 
   async getEvents(args?) {
@@ -44,7 +54,8 @@ export class EventsService {
       query EventById($_id: ID){
         EventById(_id: $_id){
           _id
-
+          _helga
+          
           _federation
           _club
 

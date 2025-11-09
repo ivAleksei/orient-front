@@ -28,6 +28,14 @@ export class PersonsService {
     this._watch.next(true);
   }
 
+  async syncHelga(_helga) {
+    if (!_helga) return null;
+
+    let query = { _runner: _helga }
+    let url = [environment.API.orient, 'tmp', 'helga'].join('/') + '?' + Object.keys(query).map(k => `${k}=${query[k]}`);
+    return this.http.get(url);
+  }
+
   getPersonInfo(_id, fields) {
     return this.graphql.query(environment.API.admin, 'graphql', {
       query: `

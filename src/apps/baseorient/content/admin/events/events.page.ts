@@ -30,6 +30,7 @@ export class EventsPage implements OnInit {
     },
     actions: {
       buttons: [
+        { action: "sync", tooltip: "sync", class: "btn-warning", icon: "mdi mdi-sync" },
         { action: "detail", tooltip: "Detalhes", class: "btn-light", icon: "mdi mdi-newspaper" },
         { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
         { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
@@ -81,6 +82,7 @@ export class EventsPage implements OnInit {
       new: () => {
         this.modalEvent.present();
       },
+      sync: () => this.eventsService.syncHelga(ev.data?._helga),
       detail: () => {
         this.nav.navigateForward(['/internal/admin/event/', ev.data._id]);
       },

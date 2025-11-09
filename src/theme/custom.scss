@@ -618,6 +618,18 @@ pre {
   thead th,
   thead td {
     display: table-cell;
+
+    &.td-actions {
+      text-align: right;
+    }
+  }
+  tbody th,
+  tbody td {
+    display: table-cell;
+
+    &.td-actions {
+      text-align: right;
+    }
   }
 
   tbody tr:nth-child(odd) td {
@@ -727,7 +739,6 @@ app-autocomplete {
 .td-actions {
   display: table-cell;
   flex-direction: row;
-  justify-content: center;
   min-height: 40px;
 
   .btn {
@@ -1513,7 +1524,7 @@ ion-col {
       top: initial;
       font-size: 1.4em;
       bottom: 32px;
-        right: 32px;
+      right: 32px;
       width: 72px;
       height: 72px;
       z-index: 9999;
