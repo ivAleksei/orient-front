@@ -3,7 +3,7 @@ import { HttpService } from './http.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { LocalStorageService } from './local-storage.service';
 
-import * as ptBR from 'src/assets/i18n/PT-BR.json';
+import * as ptBR from 'src/assets/baseorient/i18n/PT-BR.json';
 
 @Injectable({
   providedIn: 'root'

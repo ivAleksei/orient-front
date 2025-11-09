@@ -22,8 +22,8 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "src/assets",
-                "output": "assets"
+                "input": "src/assets/baseorient",
+                "output": "assets/baseorient"
               },
               {
                 "glob": "**/*.svg",
@@ -36,7 +36,7 @@
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "node_modules/ngx-toastr/toastr.css",
-              "src/assets/plugins/summernote-lite/summernote-lite.min.css",
+              "src/assets/baseorient/plugins/summernote-lite/summernote-lite.min.css",
               "src/theme/variables.scss",
               "src/global.scss",
               "node_modules/leaflet/dist/leaflet.css"
@@ -47,10 +47,10 @@
               "node_modules/moment/min/moment.min.js",
               "node_modules/moment/locale/pt-br.js",
               "node_modules/datatables.net/js/jquery.dataTables.min.js",
-              "src/assets/libs/jquery-ui/jquery-ui.min.js",
-              "src/assets/scripts/sorting-datetime-moment.js",
-              "src/assets/plugins/summernote-lite/summernote-lite.min.js",
-              "src/assets/plugins/summernote-lite/summernote-pt-BR.js"
+              "src/assets/baseorient/libs/jquery-ui/jquery-ui.min.js",
+              "src/assets/baseorient/scripts/sorting-datetime-moment.js",
+              "src/assets/baseorient/plugins/summernote-lite/summernote-lite.min.js",
+              "src/assets/baseorient/plugins/summernote-lite/summernote-pt-BR.js"
             ]
           },
           "configurations": {

@@ -42,8 +42,8 @@ export class AppComponent {
   }
 
   async checkSSL() {
-    if (environment.production && window.location.protocol != 'https:') {
-      window.location.href = window.location.href.replace(window.location.protocol, 'https:');
+    if (environment.production && location.protocol != 'https:') {
+      location.href = location.href.replace(location.protocol, 'https:');
     }
   }
 
@@ -53,7 +53,7 @@ export class AppComponent {
     let last_rev = await this.storage.get('_rev');
     if (!last_rev || last_rev != data?.revision) {
       await this.storage.set('_rev', data?.revision);
-      window.location.href = `${environment.portal.url}?t=${data?.revision}`;
+      location.href = `${location.href}?t=${data?.revision}`;
     }
   }
 }

@@ -1322,7 +1322,7 @@ ion-col {
     // &:before {
     //   z-index: -2;
     //   content: " ";
-    //   background-image: url('/assets/imgs/fundo_funcional.svg');
+    //   background-image: url('/assets/baseorient/imgs/fundo_funcional.svg');
     //   border-radius: 16px;
     //   position: absolute;
     //   top: 0;
@@ -1336,19 +1336,19 @@ ion-col {
 
     &.aluno {
       &:before {
-        background-image: url('/assets/imgs/fundo_funcional_aluno.svg');
+        background-image: url('/assets/baseorient/imgs/fundo_funcional_aluno.svg');
       }
     }
   }
 
   .back {
     &:before {
-      background-image: url('/assets/imgs/fundo_funcional_verso.svg');
+      background-image: url('/assets/baseorient/imgs/fundo_funcional_verso.svg');
     }
 
     &.aluno {
       &:before {
-        background-image: url('/assets/imgs/fundo_funcional_verso_aluno.svg');
+        background-image: url('/assets/baseorient/imgs/fundo_funcional_verso_aluno.svg');
       }
     }
   }

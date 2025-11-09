@@ -36,6 +36,7 @@
     "start": "npm run start:baseorient",
     "prestart:baseorient": "npm run prestart",
     "start:baseorient": "ionic serve --project=baseorient --livereload --external",
+    "predeploy:baseorient": "ng build --configuration production --base-href /baseorient/",
     "deploy:baseorient": "node tasks/deploy --env=prod --app=baseorient",
 
     "build": "ng build",
