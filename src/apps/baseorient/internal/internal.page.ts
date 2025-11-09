@@ -11,6 +11,7 @@ import { HttpService } from 'src/_shared/services/http.service';
 import { NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import moment from 'moment';
+import md5 from 'md5';
 
 import { NotificationsService } from 'src/apps/baseorient/_shared/providers/notifications.service';
 import { BannersService } from 'src/apps/baseorient/_shared/providers/banners.service';
@@ -172,7 +173,7 @@ export class InternalPage implements OnInit {
     let user = await this.userService.getUser();
     if (!user) return this.userService.logOut();
 
-    if (user && !user.img) user.img = '/assets/imgs/avatar.jpeg';
+    if (user && !user.img) user.img = '/assets/baseorient/imgs/avatar.jpeg';
     this.user = user || {};
   }
 
@@ -273,12 +274,12 @@ export class InternalPage implements OnInit {
 
     let payload = {
       _id: _id,
-      password: this.password
+      password: md5(this.password)
     }
 
     this.userService.updPassword(payload)
       .then(done => {
-        if (done?.str_cpf)
+        if (done?.status == 'success')
           this.clearUpdPassword();
       })
   }

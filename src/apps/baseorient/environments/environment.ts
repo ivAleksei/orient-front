@@ -16,7 +16,7 @@ export const environment = {
     orient: "http://192.168.1.76:3003/api_orient",
   },
   Socket: {
-    platform: "sisbom",
+    platform: "baseorient",
     url: "https://ialk-socket-4a3a27ccedad.herokuapp.com",
   },
   oneSignal: {

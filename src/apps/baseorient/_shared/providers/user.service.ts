@@ -279,14 +279,14 @@ export class UserService {
 
   async updPassword(args) {
     this.loadingService.show();
-    return this.graphql.post(environment.API.orient, 'graphql', {
+    return this.graphql.post(environment.API.admin, 'graphql', {
       query: `
-      mutation updPassword($_id: ID, $password: String){
-        updPassword(_id: $_id, password: $password){
-          str_cpf
+      mutation UpdPassword($_id: ID, $password: String){
+        UpdPassword(_id: $_id, password: $password){
+          status
         }
       }`,
-      name: "updPassword",
+      name: "UpdPassword",
       variables: args
     }).then(data => {
       this.loadingService.hide();

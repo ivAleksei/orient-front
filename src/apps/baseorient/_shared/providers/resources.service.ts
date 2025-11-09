@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { GraphqlService } from 'src/_shared/services/graphql.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
-import estado_cidade from 'src/assets/json/estado_cidade.json';
+import estado_cidade from 'src/assets/baseorient/json/estado_cidade.json';
 
 @Injectable({
   providedIn: 'root'

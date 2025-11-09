@@ -27,7 +27,6 @@ export class ConfederationFormPage implements OnInit {
     private utils: UtilsService,
     private loadingService: LoadingService,
     private resourcesService: ResourcesService,
-    private federationsService: ConfederationsService,
     private confederationsService: ConfederationsService,
     private alertsService: AlertsService
   ) { }
@@ -62,7 +61,7 @@ export class ConfederationFormPage implements OnInit {
   saveData() {
     this.loadingService.show();
     let obj = Object.assign({}, this.ConfederationForm.value);
-    this.federationsService.saveConfederation(obj)
+    this.confederationsService.saveConfederation(obj)
       .then(data => {
         this.loadingService.hide();
         if (data?.status != 'success')

@@ -4,15 +4,15 @@ export const environment = {
   browser: true,
   menu_type: 'side',
   portal: {
-    url: "http://192.168.1.76:8100"
+    url: "https://ialk.com.br/baseorient/"
   },
   API: {
-    auth: "http://192.168.1.76/api_auth",
-    admin: "http://192.168.1.76/api_admin",
-    orient: "http://192.168.1.76/api_orient",
+    auth: "https://us-central1-ialk-f967b.cloudfunctions.net/orient_auth",
+    admin: "https://us-central1-ialk-f967b.cloudfunctions.net/orient_admin",
+    orient: "https://us-central1-ialk-f967b.cloudfunctions.net/orient_api",
   },
   Socket: {
-    platform: "sisbom",
+    platform: "baseorient",
     url: "https://ialk-socket-4a3a27ccedad.herokuapp.com",
   },
   oneSignal: {

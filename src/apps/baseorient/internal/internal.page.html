@@ -4,7 +4,7 @@
     <ion-list class="sidebar-menu">
       <ion-item slot="center" class="user-place">
         <div class="avatar-place">
-          <img src="/assets/imgs/baseorient.png" alt="avatar" class="rounded-circle" width="72" />
+          <img src="/assets/baseorient/imgs/baseorient.png" alt="avatar" class="rounded-circle" width="72" />
         </div>
       </ion-item>
       <div class="side-menu">
@@ -73,14 +73,14 @@
         <div class="user-info">
           <p>{{person?.short_name}}<br><small>{{person?.lotacao_str}}</small></p>
           <div class="avatar-place"
-            [ngStyle]="{'background-image': 'url('+person?.person_img || '/assets/imgs/baseorient.png'+')'}">
+            [ngStyle]="{'background-image': 'url('+person?.person_img || '/assets/baseorient/imgs/baseorient.png'+')'}">
           </div>
         </div>
         <button class="notify-btn" [ngClass]="{active: notifications?.length}" (click)="toggleNotifications()">
           <i class="mdi mdi-bell-outline"></i>
         </button>
         <div class="avatar-place" (click)="toggleTopMenu()">
-          <img src="/assets/imgs/baseorient.png" alt="baseorient" class="rounded-circle" width="36" />
+          <img src="/assets/baseorient/imgs/baseorient.png" alt="baseorient" class="rounded-circle" width="36" />
         </div>
       </ion-item>
     </ion-toolbar>

@@ -15,6 +15,14 @@ const routes: Routes = [
     loadChildren: () => import('src/apps/baseorient/content/admin/contacts/contacts.module').then(m => m.ContactsPageModule)
   },
   {
+    path: 'events',
+    loadChildren: () => import('src/apps/baseorient/content/admin/events/events.module').then(m => m.EventsPageModule)
+  },
+  {
+    path: 'event/:id',
+    loadChildren: () => import('src/apps/baseorient/content/admin/event-details/event-details.module').then(m => m.EventDetailsPageModule)
+  },
+  {
     path: 'partners',
     loadChildren: () => import('src/apps/baseorient/content/admin/partners/partners.module').then(m => m.PartnersPageModule)
   },

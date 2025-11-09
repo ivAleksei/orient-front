@@ -1,0 +1,113 @@
+<div class="p-relative">
+  <ion-button class="btn-add" (click)="saveData()">
+    <i class="mdi mdi-content-save"></i>
+    <span class="text">{{i18n.lang.SAVE_DATA}}</span>
+  </ion-button>
+  <h4 class="card-title"> &nbsp;</h4>
+  <div class="card-body">
+    <form #EventForm="ngForm" novalidate>
+      <div class="section">
+        <h4 class="section-title"><i class="mdi mdi-clipboard-text"></i> {{i18n.lang.BASIC_DATA}}</h4>
+        <div class="section-body">
+          <!-- <pre>{{EventForm.value | json}}</pre> -->
+          <input type="hidden" name="_id" ngModel #_id="ngModel">
+          <ion-row>
+            <ion-col size-xs="12" size-lg="1">
+              <ion-item>
+                <ion-label for="_helga" position="stacked">{{i18n.lang._HELGA}}*</ion-label>
+                <ion-input type="text" name="_helga" ngModel required #_helga="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="12" size-lg="3">
+              <ion-item>
+                <ion-label for="name" position="stacked">{{i18n.lang.NAME}}*</ion-label>
+                <ion-input type="text" name="name" ngModel required #name="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-lg="1">
+              <ion-item>
+                <ion-label for="dt_start" position="stacked">{{i18n.lang.DT_START}}*</ion-label>
+                <ion-input type="date" name="dt_start" ngModel required #dt_start="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="6" size-lg="1">
+              <ion-item>
+                <ion-label for="time_start" position="stacked">{{i18n.lang.TIME_START}}*</ion-label>
+                <ion-input type="time" name="time_start" ngModel required #time_start="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+      <div class="section">
+        <h4 class="section-title"><i class="mdi mdi-file-tree"></i> {{i18n.lang.AFFILIATIONS}}</h4>
+        <div class="section-body">
+          <ion-row>
+            <ion-col size-xs="12" size-lg="4">
+              <ion-item class="old-select">
+                <label for="_federation" position="stacked">{{i18n.lang.FEDERATION}}*</label>
+                <select name="_federation" ngModel #_federation="ngModel" required>
+                  <option value="">Selecione uma opção...</option>
+                  <ng-template ngFor let-it [ngForOf]="arr_federations">
+                    <option value="{{it._id}}">{{it.slug}} - {{it.name}}</option>
+                  </ng-template>
+                </select>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="12" size-lg="4">
+              <ion-item class="old-select">
+                <label for="_club" position="stacked">{{i18n.lang.CLUB}}*</label>
+                <select name="_club" ngModel #_club="ngModel" required>
+                  <option value="">Selecione uma opção...</option>
+                  <ng-template ngFor let-it [ngForOf]="arr_clubs">
+                    <option value="{{it._id}}">{{it.slug}} - {{it.name}}</option>
+                  </ng-template>
+                </select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+      <div class="section">
+        <h4 class="section-title"><i class="mdi mdi-google-maps"></i> {{i18n.lang.ADDRESS}}</h4>
+        <div class="section-body">
+          <ion-row>
+            <ion-col size-xs="12" size-lg="2">
+              <ion-item class="old-select">
+                <label for="state" position="stacked">{{i18n.lang.STATE}}*</label>
+                <select name="state" ngModel #state="ngModel" required (change)="setState()">
+                  <option value="">Selecione uma opção...</option>
+                  <ng-template ngFor let-it [ngForOf]="arr_state_city">
+                    <option value="{{it.sigla}}">{{it.sigla}} - {{it.nome}}</option>
+                  </ng-template>
+                </select>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="12" size-lg="2">
+              <ion-item class="old-select">
+                <label for="city" position="stacked">{{i18n.lang.CITY}}*</label>
+                <select name="city" ngModel #city="ngModel" required>
+                  <option value="">Selecione uma opção...</option>
+                  <ng-template ngFor let-it [ngForOf]="arr_city">
+                    <option value="{{it}}">{{it}}</option>
+                  </ng-template>
+                </select>
+              </ion-item>
+            </ion-col>
+            <ion-col size-xs="12" size-lg="2">
+              <ion-item class="old-select">
+                <label for="country" position="stacked">{{i18n.lang.COUNTRY}}*</label>
+                <select name="country" ngModel #country="ngModel" required>
+                  <option value="">Selecione uma opção...</option>
+                  <option value="BR">Brasil</option>
+                </select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
