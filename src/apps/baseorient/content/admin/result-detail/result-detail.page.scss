@@ -6,6 +6,12 @@
     width: 100%;
     display: flex;
     justify-content: right;
+    &.between{
+        justify-content: space-between;
+    }
+    &.around{
+        justify-content: space-around;
+    }
 
     .w-100 {
         width: 100%;
@@ -27,6 +33,10 @@
             margin-right: 0;
         }
     }
+}
+
+#tableResult{
+    font-size: 10px;
 }
 
 .map-place {

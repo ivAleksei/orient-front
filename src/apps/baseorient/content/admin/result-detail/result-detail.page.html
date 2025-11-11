@@ -16,19 +16,19 @@
       <ion-col size-xs="6" size-lg="2" *ngIf="result?.start_at">
         <div class="card">
           <h4>Partida</h4>
-          {{result?.start_at | date: "DD/MM/YYYY HH:mm:ss"}}
+          {{result?.start_at | date: "HH:mm:ss"}}
         </div>
       </ion-col>
       <ion-col size-xs="6" size-lg="2" *ngIf="result?.end_at">
         <div class="card">
           <h4>Chegada</h4>
-          {{result?.end_at | date: "DD/MM/YYYY HH:mm:ss"}}
+          {{result?.end_at | date: "HH:mm:ss"}}
         </div>
       </ion-col>
       <ion-col size-xs="6" size-lg="2">
         <div class="card">
           <h4>Tempo Total</h4>
-          {{result?.str_time}}
+          {{result?.time | time}}
         </div>
       </ion-col>
       <ion-col size-xs="6" size-lg="2" *ngIf="result?.category?.num_pcs || result?.splits?.length">
@@ -51,38 +51,7 @@
       </ion-col>
     </ion-row>
     <div *ngIf="result?.splits?.length">
-      <h3>Destaques e Análises</h3>
-      <ion-row>
-        <ion-col size-xs="6" size-lg="4">
-          <div class="card">
-            <h4><i class="mdi mdi-trophy-outline"></i> Melhor Split</h4>
-            <p>Ponto {{best_split?.index}} (base {{best_split?.num_base}})</p>
-            <p>Tempo: {{best_split?.time_partial | time}}</p>
-            <p *ngIf="best_split?.pace">Ritmo: {{best_split?.pace | time}}/km</p>
-          </div>
-        </ion-col>
-        <ion-col size-xs="6" size-lg="4">
-          <div class="card">
-            <h4><i class="mdi mdi-timer-outline"></i> Pior Split</h4>
-            <p>Ponto {{poor_split?.index}} (base {{poor_split?.num_base}})</p>
-            <p>Tempo: {{poor_split?.time_partial | time}}</p>
-            <p *ngIf="poor_split?.pace">Ritmo: {{poor_split?.pace | time}}/km</p>
-          </div>
-        </ion-col>
-        <ion-col size-xs="12" size-lg="4">
-          <div class="card">
-            <h4> Trechos Críticos</h4>
-            <p>
-              Trechos mais lentos: Identificados por ritmo acima de X min/km
-              Erros prováveis: Base 8 (diferença grande para média da categoria)
-            </p>
-            <p>
-              Identifique como críticos os trechos com ritmo acima de um limite (ex.: 7:00/km) ou grandes desvios vs. a
-              média da categoria.
-            </p>
-          </div>
-        </ion-col>
-      </ion-row>
+
       <h3>Tempo de Passagem nos PCs</h3>
       <div class="card">
         <div class="card-body">
@@ -117,9 +86,41 @@
           </table>
         </div>
       </div>
+      <h3>Destaques e Análises</h3>
+      <ion-row>
+        <ion-col size-xs="6" size-lg="4">
+          <div class="card">
+            <h4><i class="mdi mdi-trophy-outline"></i> Melhor Split</h4>
+            <p>Ponto {{best_split?.index}} (base {{best_split?.num_base}})</p>
+            <p>Tempo: {{best_split?.time_partial | time}}</p>
+            <p *ngIf="best_split?.pace">Ritmo: {{best_split?.pace | time}}/km</p>
+          </div>
+        </ion-col>
+        <ion-col size-xs="6" size-lg="4">
+          <div class="card">
+            <h4><i class="mdi mdi-timer-outline"></i> Pior Split</h4>
+            <p>Ponto {{poor_split?.index}} (base {{poor_split?.num_base}})</p>
+            <p>Tempo: {{poor_split?.time_partial | time}}</p>
+            <p *ngIf="poor_split?.pace">Ritmo: {{poor_split?.pace | time}}/km</p>
+          </div>
+        </ion-col>
+        <ion-col size-xs="12" size-lg="4">
+          <div class="card">
+            <h4> Trechos Críticos</h4>
+            <p>
+              Trechos mais lentos: Identificados por ritmo acima de X min/km
+              Erros prováveis: Base 8 (diferença grande para média da categoria)
+            </p>
+            <p>
+              Identifique como críticos os trechos com ritmo acima de um limite (ex.: 7:00/km) ou grandes desvios vs. a
+              média da categoria.
+            </p>
+          </div>
+        </ion-col>
+      </ion-row>
       <h3>Gráficos</h3>
       <ion-row>
-        <ion-col size-xs="12" size-lg="4">
+        <ion-col size-xs="12" size-lg="6">
           <div class="card">
             <div class="card-title">Tempo por Base (splits)</div>
             <div class="graph-place">
@@ -131,7 +132,7 @@
           </div>
 
         </ion-col>
-        <ion-col size-xs="12" size-lg="4">
+        <ion-col size-xs="12" size-lg="6">
           <div class="card">
             <div class="card-title">Ritmo por Trecho</div>
             <div class="graph-place">
@@ -143,17 +144,103 @@
           </div>
 
         </ion-col>
-        <ion-col size-xs="12" size-lg="4">
+        <ion-col size-xs="12" size-lg="12">
           <div class="card">
-            <div class="card-title">Gap Chart</div>
-            <div class="graph-place">
-              <ngx-charts-bar-vertical-2d [results]="data_graph_pace" [gradient]="true" [xAxis]="true" [yAxis]="true"
-                [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true" [groupPadding]="0"
-                [yAxisTickFormatting]="timePipe.transform">
-              </ngx-charts-bar-vertical-2d>
-            </div>
+            <ion-row>
+              <ion-col size-xs="12" size-lg="4">
+                <ion-item class="old-select">
+                  <label for="state" position="stacked">Tipo de Gráfico*</label>
+                  <select name="type_graph" [(ngModel)]="type_graph">
+                    <option value="">Selecione uma opção...</option>
+                    <option value="position_race">Posição de Prova</option>
+                    <option value="position_split">Posição no Split</option>
+                    <option value="time_spent">Tempo de Prova</option>
+                    <option value="time_split">Tempo no Split</option>
+                    <option value="table_result">Tabela Resultados</option>
+                  </select>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="12" size-lg="4">
+                <ion-item class="old-select">
+                  <label for="state" position="stacked">Comparar outras categorias*</label>
+                  <input type="checkbox" name="same_route" [(ngModel)]="same_route" (change)="getRouteResults()">
+                </ion-item>
+              </ion-col>
+            </ion-row>
           </div>
 
+          <ion-row>
+            <ion-col size-xs="12" size-lg="4" [ngClass]="{hidden: type_graph == 'table_result'}">
+              <div class="card">
+                <div class="inline around">
+                  <ion-button class="btn" (click)="setShowAll(true)">Todos</ion-button>
+                  <ion-button class="btn" color="light" (click)="setShowAll(false)">Nenhum</ion-button>
+                </div>
+                <ng-template ngFor let-it [ngForOf]="data_results">
+                  <ion-item>
+                    <ion-checkbox justify="start" labelPlacement="end" name="show-{{it._id}}"
+                      (ionChange)="setupChartRoute()" [(ngModel)]="it.show"> ({{it.pos || (it.status | status)}})
+                      {{it?.category?.name}}
+                      {{it?.name}}</ion-checkbox>
+                  </ion-item>
+                </ng-template>
+              </div>
+            </ion-col>
+            <ion-col size-xs="12" [attr.size-lg]="type_graph == 'table_result' ? 12 : 8">
+              <div class="card">
+                <div *ngIf="type_graph == 'table_result'">
+                  <table id="tableResult" class="table dataTable">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>{{i18n.lang.NAME}}</th>
+                        <th>{{i18n.lang.TIME}}</th>
+                        <ng-template ngFor let-it [ngForOf]="result?.splits">
+                          <th>{{it.num_base}}</th>
+                        </ng-template>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-template ngFor let-it [ngForOf]="data_results">
+                        <tr>
+                          <td>{{it.pos || (it.status | status)}}</td>
+                          <td>{{it?.category?.name}} {{it?.name}}<br>{{it?.club?.name}}</td>
+                          <td>{{it.time | time}}</td>
+                          <ng-template ngFor let-sp [ngForOf]="result?.splits">
+                            <td>{{it.obj_splits[sp.num_base]?.time_spent | time}}<br>
+                              {{it.obj_splits[sp.num_base]?.time_split | time}}
+                            </td>
+                          </ng-template>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="graph-place" *ngIf="type_graph == 'position_race'">
+                  <ngx-charts-line-chart [results]="data_position_race_graph" [gradient]="true" [xAxis]="true"
+                    [yAxis]="true" [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true">
+                  </ngx-charts-line-chart>
+                </div>
+                <div class="graph-place" *ngIf="type_graph == 'position_split'">
+                  <ngx-charts-line-chart [results]="data_position_split_graph" [gradient]="true" [xAxis]="true"
+                    [yAxis]="true" [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true">
+                  </ngx-charts-line-chart>
+                </div>
+                <div class="graph-place" *ngIf="type_graph == 'time_spent'">
+                  <ngx-charts-line-chart [results]="data_time_spent_graph" [gradient]="true" [xAxis]="true"
+                    [yAxis]="true" [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true"
+                    [yAxisTickFormatting]="timePipe.transform">
+                  </ngx-charts-line-chart>
+                </div>
+                <div class="graph-place" *ngIf="type_graph == 'time_split'">
+                  <ngx-charts-line-chart [results]="data_time_split_graph" [gradient]="true" [xAxis]="true"
+                    [yAxis]="true" [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true"
+                    [yAxisTickFormatting]="timePipe.transform">
+                  </ngx-charts-line-chart>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
         </ion-col>
       </ion-row>
     </div>
@@ -164,7 +251,7 @@
         <img src="assets/baseorient/imgs/mapa_template.png" alt="map_template">
       </div>
     </div>
-    <div class="inline">
+    <div class="inline between">
       <div>
         <h4>Links úteis</h4>
         <a href="https://helga-o.com/webres/index.php?lauf={{result?.event?._helga}}&lang=pt#{{result?.category?.name}}"

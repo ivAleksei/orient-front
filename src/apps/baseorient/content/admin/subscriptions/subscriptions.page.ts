@@ -20,20 +20,23 @@ export class SubscriptionsPage implements OnInit {
   tableInfo: any = {
     id: "table-subscriptions",
     columns: [
+      { title: 'Date', data: "event.dt_start", datatype: "pipe", pipe: "DatePipe", options:"DD/MM/YYYY HH:mm" },
       { title: 'Num Start', data: "num_start" },
       { title: 'Name', data: "name" },
+      { title: 'Category', data: "category.name" },
       {
         title: 'Club', data: "club.name", render: (a, b, c) => {
           return [c.club?.slug, c.club?.name].filter(k => k).join(' - ')
         }
       },
-      { title: 'Category', data: "category.name" },
+      { title: 'Evento', data: "event.name" },
     ],
     ajax: {
       url: `${environment.API.orient}/server_side/event-subscriptions`,
     },
     actions: {
       buttons: [
+        { action: "event-detail", tooltip: "Evento", class: "btn-light", icon: "mdi mdi-file-document" }, // TODO
         { action: "result", tooltip: "Extrato", class: "btn-warning", icon: "mdi mdi-file-document" }, // TODO
         // { action: "edit", tooltip: "Editar", class: "btn-warning", icon: "mdi mdi-file-document" },
         // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
@@ -63,6 +66,7 @@ export class SubscriptionsPage implements OnInit {
 
   handleTable(ev) {
     let map = {
+      ['event-detail']: args => this.nav.navigateForward(['/internal/admin/event', ev.data._event]),
       result: args => this.nav.navigateForward(['/internal/admin/result', ev.data._id]),
       edit: () => {
         this.modalSubscription.present();

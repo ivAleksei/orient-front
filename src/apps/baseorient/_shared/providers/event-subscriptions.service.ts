@@ -4,6 +4,7 @@ import { GraphqlService } from 'src/_shared/services/graphql.service';
 import { AlertsService } from 'src/_shared/services/alerts.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { LoadingService } from 'src/_shared/services/loading.service';
+import { HttpService } from 'src/_shared/services/http.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class EventSubscriptionsService {
   public watch: Observable<any>;
 
   constructor(
+    private http: HttpService,
     private loadingService: LoadingService,
     private alertsService: AlertsService,
     private graphql: GraphqlService
@@ -36,6 +38,14 @@ export class EventSubscriptionsService {
       variables: args || {}
     });
   }
+
+  async getResultCategory(args) {
+    let query = args || {};
+    // http://localhost:3003/api_orient/ws/table-result?_category=bee8fa30-bd78-11f0-b9e2-7d82012a6326
+    let url = [environment.API.orient, 'ws', 'table-result'].join('/') + '?' + Object.keys(query).map(k => `${k}=${query[k]}`);
+    return this.http.get(url);
+  }
+
   async getEventSubscriptionById(args?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
@@ -55,14 +65,15 @@ export class EventSubscriptionsService {
           time
           str_time
           start_at
-          end_at
+          end_at 
+          _person
 
         category{
           _id
           name
           dist
           climb
-          route
+          _route
           num_pcs
         }
           splits{

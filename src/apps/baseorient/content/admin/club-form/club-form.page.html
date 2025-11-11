@@ -24,6 +24,12 @@
                 <ion-input type="text" name="name" ngModel required #name="ngModel"></ion-input>
               </ion-item>
             </ion-col>
+            <ion-col size-xs="12" size-lg="3">
+              <ion-item>
+                <ion-label for="cgc" position="stacked">{{i18n.lang.CLUB_CGC}}*</ion-label>
+                <input type="text" name="cgc" ngModel required #cgc="ngModel" data-mask="cnpj" />
+              </ion-item>
+            </ion-col>
           </ion-row>
         </div>
       </div>
