@@ -1,0 +1,188 @@
+<ion-content [fullscreen]="true">
+  <div class="page-layout">
+    <div class="inline">
+      <h3 class="page-title w-100">{{result?.event?.name}}<br>
+        <small>{{result?.event?.organizer}}</small><br>
+        <small><i class="mdi mdi-calendar"></i> {{result?.event?.dt_start| date: "dddd, DD/MM/YYYY HH:mm"}}</small><br>
+        <small><i class="mdi mdi-pin"></i> {{result?.event?.location}}</small><br>
+      </h3>
+      <h3 class="page-title t-right name">{{result?.name}}<br>
+        <span class="badge light">#{{result?.num_start}}</span>
+        <span class="badge light">{{result?.category?.name}}</span>
+      </h3>
+    </div>
+    <h3>{{i18n.lang.RACE_RESUME}}</h3>
+    <ion-row>
+      <ion-col size-xs="6" size-lg="2" *ngIf="result?.start_at">
+        <div class="card">
+          <h4>Partida</h4>
+          {{result?.start_at | date: "DD/MM/YYYY HH:mm:ss"}}
+        </div>
+      </ion-col>
+      <ion-col size-xs="6" size-lg="2" *ngIf="result?.end_at">
+        <div class="card">
+          <h4>Chegada</h4>
+          {{result?.end_at | date: "DD/MM/YYYY HH:mm:ss"}}
+        </div>
+      </ion-col>
+      <ion-col size-xs="6" size-lg="2">
+        <div class="card">
+          <h4>Tempo Total</h4>
+          {{result?.str_time}}
+        </div>
+      </ion-col>
+      <ion-col size-xs="6" size-lg="2" *ngIf="result?.category?.num_pcs || result?.splits?.length">
+        <div class="card">
+          <h4>Controles</h4>
+          {{result?.category?.num_pcs || (result?.status == 'OK' ? result?.splits?.length: '-')}}
+        </div>
+      </ion-col>
+      <ion-col size-xs="6" size-lg="2" *ngIf="result?.category?.dist">
+        <div class="card">
+          <h4>Distancia</h4>
+          {{result?.category?.dist}}
+        </div>
+      </ion-col>
+      <ion-col size-xs="6" size-lg="2" *ngIf="result?.category?.climb">
+        <div class="card">
+          <h4>Elevação</h4>
+          {{result?.category?.climb}}
+        </div>
+      </ion-col>
+    </ion-row>
+    <div *ngIf="result?.splits?.length">
+      <h3>Destaques e Análises</h3>
+      <ion-row>
+        <ion-col size-xs="6" size-lg="4">
+          <div class="card">
+            <h4><i class="mdi mdi-trophy-outline"></i> Melhor Split</h4>
+            <p>Ponto {{best_split?.index}} (base {{best_split?.num_base}})</p>
+            <p>Tempo: {{best_split?.time_partial | time}}</p>
+            <p *ngIf="best_split?.pace">Ritmo: {{best_split?.pace | time}}/km</p>
+          </div>
+        </ion-col>
+        <ion-col size-xs="6" size-lg="4">
+          <div class="card">
+            <h4><i class="mdi mdi-timer-outline"></i> Pior Split</h4>
+            <p>Ponto {{poor_split?.index}} (base {{poor_split?.num_base}})</p>
+            <p>Tempo: {{poor_split?.time_partial | time}}</p>
+            <p *ngIf="poor_split?.pace">Ritmo: {{poor_split?.pace | time}}/km</p>
+          </div>
+        </ion-col>
+        <ion-col size-xs="12" size-lg="4">
+          <div class="card">
+            <h4> Trechos Críticos</h4>
+            <p>
+              Trechos mais lentos: Identificados por ritmo acima de X min/km
+              Erros prováveis: Base 8 (diferença grande para média da categoria)
+            </p>
+            <p>
+              Identifique como críticos os trechos com ritmo acima de um limite (ex.: 7:00/km) ou grandes desvios vs. a
+              média da categoria.
+            </p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <h3>Tempo de Passagem nos PCs</h3>
+      <div class="card">
+        <div class="card-body">
+          <table class="table dataTable">
+            <thead>
+              <tr>
+                <th>Ponto</th>
+                <th>Base</th>
+                <th>Distância</th>
+                <th>Tempo Parcial</th>
+                <th>Acumulado</th>
+                <th>Ritmo</th>
+                <th>Obs.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="!result?.splits?.length">
+                <td colspan="12">{{i18n.lang.NO_SPLIT_FOUND}}</td>
+              </tr>
+              <ng-template ngFor let-it let-i="index" [ngForOf]="result?.splits">
+                <tr>
+                  <td>{{i+1}}</td>
+                  <td>{{it.num_base}}</td>
+                  <td>-</td>
+                  <td>{{it.time_partial | time}}</td>
+                  <td>{{it.time_spent | time}}</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <h3>Gráficos</h3>
+      <ion-row>
+        <ion-col size-xs="12" size-lg="4">
+          <div class="card">
+            <div class="card-title">Tempo por Base (splits)</div>
+            <div class="graph-place">
+              <ngx-charts-bar-vertical-2d [results]="data_graph_splits" [gradient]="false" [xAxis]="true" [yAxis]="true"
+                [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true" [groupPadding]="0"
+                [yAxisTickFormatting]="timePipe.transform">
+              </ngx-charts-bar-vertical-2d>
+            </div>
+          </div>
+
+        </ion-col>
+        <ion-col size-xs="12" size-lg="4">
+          <div class="card">
+            <div class="card-title">Ritmo por Trecho</div>
+            <div class="graph-place">
+              <ngx-charts-bar-vertical-2d [results]="data_graph_pace" [gradient]="false" [xAxis]="true" [yAxis]="true"
+                [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true" [groupPadding]="0"
+                [yAxisTickFormatting]="timePipe.transform">
+              </ngx-charts-bar-vertical-2d>
+            </div>
+          </div>
+
+        </ion-col>
+        <ion-col size-xs="12" size-lg="4">
+          <div class="card">
+            <div class="card-title">Gap Chart</div>
+            <div class="graph-place">
+              <ngx-charts-bar-vertical-2d [results]="data_graph_pace" [gradient]="true" [xAxis]="true" [yAxis]="true"
+                [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true" [groupPadding]="0"
+                [yAxisTickFormatting]="timePipe.transform">
+              </ngx-charts-bar-vertical-2d>
+            </div>
+          </div>
+
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div *ngIf="result?.category?.map">
+      <h3>Mapa</h3>
+      <div class="map-place">
+        <img src="assets/baseorient/imgs/mapa_template.png" alt="map_template">
+      </div>
+    </div>
+    <div class="inline">
+      <div>
+        <h4>Links úteis</h4>
+        <a href="https://helga-o.com/webres/index.php?lauf={{result?.event?._helga}}&lang=pt#{{result?.category?.name}}"
+          target="_blank">Helga WebRes</a>
+        <h4 *ngIf="result?.event?.organizer">Organizador</h4>
+        <h4 *ngIf="result?.event?.apura">Apuração</h4>
+        <p *ngIf="result?.event?.apura == 'sicard'">SICard</p>
+        <p *ngIf="result?.event?.apura == 'siac'">SIAC</p>
+        <p *ngIf="result?.event?.apura == 'qrcode'">QR Code</p>
+        <p *ngIf="result?.event?.apura == 'stamp'">Grampo</p>
+      </div>
+      <div>
+        <div class="qrcode-place ">
+          <div class="qr-place" *ngIf="public_url">
+            <qrcode [qrdata]="public_url" [width]="112" [errorCorrectionLevel]="'M'"></qrcode>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

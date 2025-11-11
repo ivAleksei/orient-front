@@ -4,12 +4,11 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PersonDetailsPageRoutingModule } from './person-details-routing.module';
+import { ResultDetailPageRoutingModule } from './result-detail-routing.module';
 
-import { PersonDetailsPage } from './person-details.page';
+import { ResultDetailPage } from './result-detail.page';
 import { ComponentsModule } from 'src/_shared/components/components.module';
 import { PipesModule } from 'src/_shared/pipes/pipes.module';
-import { PersonFormPageModule } from '../person-form/person-form.module';
 
 @NgModule({
   imports: [
@@ -18,9 +17,8 @@ import { PersonFormPageModule } from '../person-form/person-form.module';
     IonicModule,
     ComponentsModule,
     PipesModule,
-    PersonFormPageModule,
-    PersonDetailsPageRoutingModule
+    ResultDetailPageRoutingModule
   ],
-  declarations: [PersonDetailsPage]
+  declarations: [ResultDetailPage]
 })
-export class PersonDetailsPageModule { }
+export class ResultDetailPageModule { }

@@ -1,0 +1,58 @@
+.page-layout {
+    max-width: 1340px;
+}
+
+.inline {
+    width: 100%;
+    display: flex;
+    justify-content: right;
+
+    .w-100 {
+        width: 100%;
+    }
+
+    .name {
+        min-width: 400px;
+    }
+
+    .card {
+        width: 100%;
+        margin: 8px 8px;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
+
+.map-place {
+    width: 100%;
+    min-height: 600px;
+}
+
+.qrcode-place {
+    padding: 0;
+    margin-left: 16px;
+}
+
+@media screen and (max-width: 768px) {
+    .inline {
+        flex-direction: column;
+
+        .name{
+            min-width: auto;
+        }
+
+        .qrcode-place {
+            display: none;
+        }
+    }
+
+    .map-place {
+        min-height: auto;
+    }
+}

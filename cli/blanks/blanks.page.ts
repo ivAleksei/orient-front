@@ -88,7 +88,8 @@ export class BlanksPage implements OnInit {
       },
     }
 
-    return map[ev.action](ev.data);
+    if (map[ev.action])
+      return map[ev.action](ev.data);
   }
 
   saveForm() {

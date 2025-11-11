@@ -1,9 +1,9 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { AlertsService } from 'src/_shared/services/alerts.service';
 import { I18nService } from 'src/_shared/services/i18n.service';
 import { LoadingService } from 'src/_shared/services/loading.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
-import { SubscriptionsService } from 'src/apps/baseorient/_shared/providers/subscriptions.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 
 @Component({
@@ -34,17 +34,19 @@ export class SubscriptionsPage implements OnInit {
     },
     actions: {
       buttons: [
-        { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
-        { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
+        { action: "result", tooltip: "Extrato", class: "btn-warning", icon: "mdi mdi-file-document" }, // TODO
+        // { action: "edit", tooltip: "Editar", class: "btn-warning", icon: "mdi mdi-file-document" },
+        // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
+        // { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
       ]
     }
   }
 
   constructor(
     public i18n: I18nService,
+    private nav: NavController,
     private utils: UtilsService,
     private loadingService: LoadingService,
-    private subscriptionsService: SubscriptionsService,
     private alertsService: AlertsService
   ) { }
 
@@ -56,24 +58,12 @@ export class SubscriptionsPage implements OnInit {
   }
 
   getData() {
-    this.loadSubscription();
   }
 
-  /**
-   * loadSubscription: Método que busca as viaturas para o autocomplete.
-   */
-  async loadSubscription() {
-    this.loadingService.show();
-    let data = await this.subscriptionsService.getSubscriptions();
-    this.loadingService.hide();
-    this.list_subscriptions = (data || []).map(it => {
-      it.label = [it.prefixo, it.placa].join(' - ');
-      return it;
-    });
-  }
 
   handleTable(ev) {
     let map = {
+      result: args => this.nav.navigateForward(['/internal/admin/result', ev.data._id]),
       edit: () => {
         this.modalSubscription.present();
         setTimeout(() => {
@@ -84,7 +74,8 @@ export class SubscriptionsPage implements OnInit {
         this.modalSubscription.present();
       },
       del: () => {
-        this.subscriptionsService.delSubscription(ev.data)
+        return Promise.resolve(null)
+          // this.subscriptionsService.delSubscription(ev.data)
           .then(data => {
             if (data?.status != 'success')
               return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_REMOVE_ERR });
@@ -101,7 +92,8 @@ export class SubscriptionsPage implements OnInit {
   saveForm() {
     this.loadingService.show();
     let obj = Object.assign({}, this.SubscriptionForm.value);
-    this.subscriptionsService.saveSubscription(obj)
+    return Promise.resolve(null)
+      // this.subscriptionsService.saveSubscription(obj)
       .then(data => {
         this.loadingService.hide();
         if (data?.status != 'success')

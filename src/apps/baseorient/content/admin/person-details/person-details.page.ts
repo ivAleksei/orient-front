@@ -6,6 +6,7 @@ import { UtilsService } from 'src/_shared/services/utils.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { PersonsService } from 'src/apps/baseorient/_shared/providers/persons.service';
 import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-person-details',
@@ -16,11 +17,41 @@ export class PersonDetailsPage implements OnInit {
   @Output() public reloadTable: EventEmitter<any> = new EventEmitter();
   @ViewChild('PersonDetailForm') PersonDetailForm: any;
 
-  tab: any;
-  _id: any;
+  tab: any = 'personal';
+  _id: any = null;
+
+
+  tableInfoSubscriptions: any = {
+    id: `table-event-subscription-${this._id}`,
+    columns: [
+      { title: 'Date', data: "event.dt_start", datatype: "pipe", pipe: "DatePipe", options: "DD/MM/YYYY HH:mm" },
+      { title: 'Event', data: "event.name" },
+      { title: 'Category', data: "category.name" },
+      {
+        title: 'Club', data: "club.name", render: (a, b, c) => {
+          return [c.club?.slug, c.club?.name].filter(k => k).join(' - ')
+        }
+      },
+      { title: 'Control', data: "controlcard" },
+      {
+        title: 'Pos', data: "pos", render: (a, b, c) => {
+          return c.pos || c.status;
+        }
+      },
+      { title: 'Time', data: "str_time" },
+    ],
+    data: [],
+    actions: {
+      buttons: [
+        // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
+        { action: "result", tooltip: "Extrato", class: "btn-warning", icon: "mdi mdi-file-document" }, // TODO
+      ]
+    }
+  }
 
   constructor(
     public i18n: I18nService,
+    private nav: NavController,
     private route: ActivatedRoute,
     private utils: UtilsService,
     private loadingService: LoadingService,
@@ -29,6 +60,12 @@ export class PersonDetailsPage implements OnInit {
   ) {
     this.route.params.subscribe((params: any) => {
       this._id = params?.id || null;
+
+      this.tableInfoSubscriptions.ajax = {
+        url: `${environment.API.orient}/server_side/event-subscriptions?pers=` + this._id,
+      }
+
+      this.reloadTable.next(true);
       this.loadPersonDetail();
     })
   }
@@ -59,7 +96,7 @@ export class PersonDetailsPage implements OnInit {
 
   handleTable(ev) {
     let map = {
-
+      result: args => this.nav.navigateForward(['/internal/admin/result', ev.data._id])
     }
 
     return map[ev.action](ev.data);

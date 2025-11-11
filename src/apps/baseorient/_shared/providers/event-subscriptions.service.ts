@@ -8,7 +8,7 @@ import { LoadingService } from 'src/_shared/services/loading.service';
 @Injectable({
   providedIn: 'root'
 })
-export class SubscriptionsService {
+export class EventSubscriptionsService {
   private _watch: BehaviorSubject<any>;
   public watch: Observable<any>;
 
@@ -24,42 +24,77 @@ export class SubscriptionsService {
     this._watch.next(true);
   }
 
-  async getSubscriptions(args?) {
+  async getEventSubscriptions(args?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query Subscriptions{
-        Subscriptions{
+      query EventSubscriptions{
+        EventSubscriptions{
           _id
         }
       }`,
-      name: "Subscriptions",
+      name: "EventSubscriptions",
       variables: args || {}
     });
   }
-  async getSubscriptionById(args?) {
+  async getEventSubscriptionById(args?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query SubscriptionById($_id: String){
-        SubscriptionById(_id: $_id){
+      query EventSubscriptionById($_id: ID){
+        EventSubscriptionById(_id: $_id){
           _id
+          status
+          name
+          num_start
+          controlcard
+          country
+          club{
+            slug
+            name
+          }
+
+          time
+          str_time
+          start_at
+          end_at
+
+        category{
+          _id
+          name
+          dist
+          climb
+          route
+          num_pcs
+        }
+          splits{
+            num_base
+            time_spent
+          }
+          event{
+            _id
+            _helga
+            dt_start
+            name
+            location
+            organizer
+          }
         }
       }`,
-      name: "SubscriptionById",
+      name: "EventSubscriptionById",
       variables: args || {}
     });
   }
 
-  newSubscription(data) {
+  newEventSubscription(data) {
     this.loadingService.show();
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation CreateSubscription($input: SubscriptionInput){
-        CreateSubscription(input: $input){
+      mutation CreateEventSubscription($input: EventSubscriptionInput){
+        CreateEventSubscription(input: $input){
           status
           msg
         }
       }`,
-      name: "CreateSubscription",
+      name: "CreateEventSubscription",
       variables: data
     })
       .then(done => {
@@ -68,19 +103,19 @@ export class SubscriptionsService {
       });
   }
 
-  editSubscription(data) {
+  editEventSubscription(data) {
     this.loadingService.show();
 
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation UpdateSubscription($input: SubscriptionInput){
-        UpdateSubscription(input: $input){
+      mutation UpdateEventSubscription($input: EventSubscriptionInput){
+        UpdateEventSubscription(input: $input){
           status
           msg
         }
       }`,
 
-      name: "UpdateSubscription",
+      name: "UpdateEventSubscription",
       variables: data
     })
       .then(done => {
@@ -89,20 +124,20 @@ export class SubscriptionsService {
       });
   }
 
-  delSubscription(data) {
+  delEventSubscription(data) {
     return this.alertsService.confirmDel()
       .then(confirm => {
         if (!confirm) return;
         this.loadingService.show();
         return this.graphql.query(environment.API.orient, 'graphql', {
           query: `
-        mutation deleteSubscription($_id: ID){
-          deleteSubscription(_id: $_id){
+        mutation deleteEventSubscription($_id: ID){
+          deleteEventSubscription(_id: $_id){
             status
             msg
           }
         }`,
-          name: "deleteSubscription",
+          name: "deleteEventSubscription",
           variables: data
         });
       })
@@ -112,8 +147,8 @@ export class SubscriptionsService {
       });
   }
 
-  saveSubscription(data) {
-    return this[data._id ? 'editSubscription' : "newSubscription"]({ input: data });
+  saveEventSubscription(data) {
+    return this[data._id ? 'editEventSubscription' : "newEventSubscription"]({ input: data });
   }
 
 }

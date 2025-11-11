@@ -8,6 +8,7 @@ import { NavController } from '@ionic/angular';
 import { StatusPipe } from 'src/_shared/pipes/status.pipe';
 import { ActivatedRoute } from '@angular/router';
 import { EventsService } from 'src/apps/baseorient/_shared/providers/events.service';
+import { PersonsService } from 'src/apps/baseorient/_shared/providers/persons.service';
 
 @Component({
   selector: 'app-event-details',
@@ -61,9 +62,9 @@ export class EventDetailsPage implements OnInit {
     data: [],
     actions: {
       buttons: [
-        { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
-        { action: "detail-athlete", tooltip: "Extrato", class: "btn-warning", icon: "mdi mdi-file-document" }, // TODO
-        { action: "detail-athlete", tooltip: "Detalhe", class: "btn-light", icon: "mdi mdi-clipboard-account" },
+        { action: "sync", tooltip: "sync", class: "btn-warning", icon: "mdi mdi-sync" },
+        { action: "result", tooltip: "Extrato", class: "btn-warning", icon: "mdi mdi-file-document" }, // TODO
+        { action: "detail-athlete", tooltip: "Ficha Pessoal", class: "btn-light", icon: "mdi mdi-account" }, // TODO
       ]
     }
   }
@@ -107,6 +108,7 @@ export class EventDetailsPage implements OnInit {
     private route: ActivatedRoute,
     private utils: UtilsService,
     private loadingService: LoadingService,
+    private personsService: PersonsService,
     private eventsService: EventsService,
     private alertsService: AlertsService
   ) {
@@ -154,6 +156,7 @@ export class EventDetailsPage implements OnInit {
 
   handleTable(ev) {
     let map = {
+      result: args => this.nav.navigateForward(['/internal/admin/result', ev.data._id]),
       "detail-athlete": () => {
         this.nav.navigateForward(['/internal/admin/person/', ev.data._person]);
       },

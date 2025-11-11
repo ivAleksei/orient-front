@@ -10,16 +10,19 @@
         <button [ngClass]="{active: tab == 'personal'}" (click)="setTab('personal')">
           <i class="mdi mdi-clipboard-text"></i> Dados Pessoais
         </button>
-        <button [ngClass]="{active: tab == 'atletas'}" (click)="setTab('atletas')">
-          <i class="mdi mdi-account-multiple"></i> Eventos
+        <button [ngClass]="{active: tab == 'subscriptions'}" (click)="setTab('subscriptions')">
+          <i class="mdi mdi-calendar-multiple"></i> Inscrições
         </button>
       </div>
       <div class="tabs-place">
         <div class="card" *ngIf="tab == 'personal'">
-          <!-- <app-crh-personal-form [_id]="_id" [edit]="1"></app-crh-personal-form> -->
+          <app-person-form [_id]="_id"></app-person-form>
         </div>
-        <div class="card" *ngIf="tab == 'atletas'">
-          <!-- <app-crh-personal-form [_id]="_id" [edit]="1"></app-crh-personal-form> -->
+        <div class="card" *ngIf="tab == 'subscriptions'">
+           <div class="card-body">
+            <data-table *ngIf="tableInfoSubscriptions" [tableInfo]="tableInfoSubscriptions" [reload]="reloadTable"
+              (clickEvent)="handleTable($event)"></data-table>
+          </div>
         </div>
       </div>
     </div>
@@ -31,7 +34,7 @@
             <i class="mdi mdi-clipboard-text"></i> Dados Pessoais</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content">
-          <!-- <app-crh-personal-form [_id]="_id" *ngIf="_id && tab =='personal'" [edit]="1"></app-crh-personal-form> -->
+          <app-person-form [_id]="_id"></app-person-form>
         </div>
       </ion-accordion>
       <ion-accordion value="personal">
@@ -40,7 +43,6 @@
             <i class="mdi mdi-account-multiple"></i> Atletas</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content">
-          <!-- <app-crh-personal-form [_id]="_id" *ngIf="_id && tab =='personal'" [edit]="1"></app-crh-personal-form> -->
         </div>
       </ion-accordion>
     </ion-accordion-group>

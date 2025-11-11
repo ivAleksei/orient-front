@@ -75,6 +75,8 @@ export class PersonsPage implements OnInit {
   }
 
   handleTable(ev) {
+    console.log(ev);
+    
     let map = {
       edit: () => {
         this.modalPerson.present();

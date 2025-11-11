@@ -82,6 +82,10 @@ const routes: Routes = [
     path: 'subscriptions',
     loadChildren: () => import('src/apps/baseorient/content/admin/subscriptions/subscriptions.module').then(m => m.SubscriptionsPageModule)
   },
+  {
+    path: 'result/:id',
+    loadChildren: () => import('src/apps/baseorient/content/admin/result-detail/result-detail.module').then(m => m.ResultDetailPageModule)
+  },
   { path: '**', redirectTo: "/internal/home" },
 ];
 

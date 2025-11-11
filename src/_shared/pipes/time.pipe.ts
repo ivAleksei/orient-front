@@ -9,10 +9,15 @@ export class TimePipe implements PipeTransform {
     value = +value;
     if (!value) return '-';
 
-    let minutos = Math.floor((value % 3600) / 60);
-    let segundos = value % 60;
+    const hrs = Math.floor(value / 3600);
+    const mins = Math.floor((value % 3600) / 60);
+    const secs = value % 60;
 
-    return [('00' + minutos).slice(-2), ('00' + segundos).slice(-2)].join(':');
+    const h = String(hrs).padStart(2, '0');
+    const m = String(mins).padStart(2, '0');
+    const s = String(secs).padStart(2, '0');
+
+    return [h != '00' ? h : null, m, s].filter(it => it).join(':');
   }
 
 }

@@ -3,6 +3,10 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: 'result/:id',
+    loadChildren: () => import('src/apps/baseorient/content/admin/result-detail/result-detail.module').then(m => m.ResultDetailPageModule)
+  },
+  {
     path: 'start',
     loadChildren: () => import('src/_shared/pages/start/start.module').then(m => m.StartPageModule)
   },

@@ -80,6 +80,7 @@ export class InternalPage implements OnInit {
   }
 
   async checkPermission(route) {
+    return; // TODO REMOVER BYPASS
     if (!environment.production || !route.startsWith('/internal')) return;
 
     let find = (this.menu || []).find(m => {

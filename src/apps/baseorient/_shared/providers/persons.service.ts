@@ -33,7 +33,23 @@ export class PersonsService {
 
     let query = { _runner: _helga }
     let url = [environment.API.orient, 'tmp', 'helga'].join('/') + '?' + Object.keys(query).map(k => `${k}=${query[k]}`);
+    console.log(url);
+    
     return this.http.get(url);
+  }
+
+  getAthleteInfo(_id, fields) {
+    return this.graphql.query(environment.API.orient, 'graphql', {
+      query: `
+      query AthleteById($_id: ID){
+        AthleteById(_id: $_id){
+          _id
+          ${fields}
+        }
+      }`,
+      name: "AthleteById",
+      variables: { _id: _id }
+    });
   }
 
   getPersonInfo(_id, fields) {
