@@ -9,6 +9,18 @@ export class StatusPipe implements PipeTransform {
 
   transform(value: string, prop?: string): unknown {
     let map_status = {
+      "MissingPunch": {
+        class: "warning",
+        label: "NCL"
+      },
+      "DidNotFinish": {
+        class: "warning",
+        label: "DNF"
+      },
+      "DidNotStarted": {
+        class: "warning",
+        label: "DNS"
+      },
       "aprovado": {
         class: "success",
         label: "Aprovado"
