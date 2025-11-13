@@ -7,7 +7,7 @@ export class TimePipe implements PipeTransform {
 
   transform(value: any): string {
     value = +value;
-    if (!value) return '-';
+    if (!value) return '00:00';
 
     const hrs = Math.floor(value / 3600);
     const mins = Math.floor((value % 3600) / 60);
