@@ -10,6 +10,9 @@
         <button [ngClass]="{active: tab == 'info'}" (click)="setTab('info')">
           <i class="mdi mdi-clipboard-text"></i> {{i18n.lang.DATA_INFO}}
         </button>
+        <button [ngClass]="{active: tab == 'races'}" (click)="setTab('races')">
+          <i class="mdi mdi-flag-checkered"></i> {{i18n.lang.EVENT_RACES}}
+        </button>
         <button [ngClass]="{active: tab == 'categories'}" (click)="setTab('categories')">
           <i class="mdi mdi-clipboard-text"></i> {{i18n.lang.CATEGORIES}}
         </button>
@@ -26,6 +29,12 @@
       <div class="tabs-place">
         <div class="card" *ngIf="tab == 'info'">
           <app-event-form [_id]="_id"></app-event-form>
+        </div>
+        <div class="card" *ngIf="tab == 'races'">
+          <div class="card-body">
+            <data-table *ngIf="tableInfoRaces" [tableInfo]="tableInfoRaces" [reload]="reloadTable"
+              (clickEvent)="handleTable($event)"></data-table>
+          </div>
         </div>
         <div class="card" *ngIf="tab == 'categories'">
           <div class="card-body">

@@ -55,21 +55,8 @@ export class EventsPage implements OnInit {
   }
 
   getData() {
-    this.loadEvent();
   }
 
-  /**
-   * loadEvent: Método que busca as viaturas para o autocomplete.
-   */
-  async loadEvent() {
-    this.loadingService.show();
-    let data = await this.eventsService.getEvents();
-    this.loadingService.hide();
-    this.list_events = (data || []).map(it => {
-      it.label = [it.prefixo, it.placa].join(' - ');
-      return it;
-    });
-  }
 
   handleTable(ev) {
     let map = {
@@ -82,7 +69,7 @@ export class EventsPage implements OnInit {
       new: () => {
         this.modalEvent.present();
       },
-      sync: () => this.eventsService.syncHelga(ev.data?._helga),
+      sync: () => this.eventsService.syncHelga( ev.data._helga),
       detail: () => {
         this.nav.navigateForward(['/internal/admin/event/', ev.data._id]);
       },

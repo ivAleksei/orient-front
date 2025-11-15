@@ -7,8 +7,8 @@
         <small><i class="mdi mdi-pin"></i> {{result?.event?.location}}</small><br>
       </h3>
       <h3 class="page-title t-right name">{{result?.name}}<br>
-        <span class="badge light">#{{result?.num_start}}</span>
-        <span class="badge light">{{result?.category?.name}}</span>
+        <span class="badge light">#{{result?.startnumber}}</span>
+        <span class="badge light">{{result?.category}}</span>
       </h3>
     </div>
     <h3>{{i18n.lang.RACE_RESUME}}</h3>
@@ -31,22 +31,22 @@
           {{result?.time | time}}
         </div>
       </ion-col>
-      <ion-col size-xs="6" size-lg="2" *ngIf="result?.category?.num_pcs || result?.splits?.length">
+      <ion-col size-xs="6" size-lg="2" *ngIf="result?.route?.n_pcs">
         <div class="card">
           <h4>Controles</h4>
-          {{result?.category?.num_pcs || (result?.status == 'OK' ? result?.splits?.length: '-')}}
+          {{result?.route?.n_pcs || (result?.status == 'OK' ? result?.splits?.length: '-')}}
         </div>
       </ion-col>
-      <ion-col size-xs="6" size-lg="2" *ngIf="result?.category?.dist">
+      <ion-col size-xs="6" size-lg="2" *ngIf="result?.route?.dist">
         <div class="card">
           <h4>Distancia</h4>
-          {{result?.category?.dist}}
+          {{result?.route?.dist}}
         </div>
       </ion-col>
-      <ion-col size-xs="6" size-lg="2" *ngIf="result?.category?.climb">
+      <ion-col size-xs="6" size-lg="2" *ngIf="result?.route?.climb">
         <div class="card">
           <h4>Elevação</h4>
-          {{result?.category?.climb}}
+          {{result?.route?.climb}}
         </div>
       </ion-col>
     </ion-row>
@@ -90,7 +90,7 @@
       <ion-row>
         <ion-col size-xs="6" size-lg="4">
           <div class="card">
-            <h4><i class="mdi mdi-trophy-outline"></i> Melhor Split</h4>
+            <h4><i class="mdi mdi-trophy-outline"></i> Split Mais Curto</h4>
             <p>Ponto {{best_split?.index}} (base {{best_split?.num_base}})</p>
             <p>Tempo: {{best_split?.time_partial | time}}</p>
             <p *ngIf="best_split?.pace">Ritmo: {{best_split?.pace | time}}/km</p>
@@ -98,7 +98,7 @@
         </ion-col>
         <ion-col size-xs="6" size-lg="4">
           <div class="card">
-            <h4><i class="mdi mdi-timer-outline"></i> Pior Split</h4>
+            <h4><i class="mdi mdi-timer-outline"></i> Split Mais Longo</h4>
             <p>Ponto {{poor_split?.index}} (base {{poor_split?.num_base}})</p>
             <p>Tempo: {{poor_split?.time_partial | time}}</p>
             <p *ngIf="poor_split?.pace">Ritmo: {{poor_split?.pace | time}}/km</p>
@@ -132,7 +132,7 @@
           </div>
 
         </ion-col>
-        <ion-col size-xs="12" size-lg="6">
+        <!-- <ion-col size-xs="12" size-lg="6">
           <div class="card">
             <div class="card-title">Ritmo por Trecho</div>
             <div class="graph-place">
@@ -143,9 +143,10 @@
             </div>
           </div>
 
-        </ion-col>
+        </ion-col> -->
         <ion-col size-xs="12" size-lg="12">
           <div class="card">
+            <h4 class="card-title">{{i18n.lang.ROUTE}} {{result?.route_ref || '-'}}</h4>
             <ion-row>
               <ion-col size-xs="12" size-lg="4">
                 <ion-item class="old-select">
@@ -168,7 +169,6 @@
               </ion-col>
             </ion-row>
           </div>
-
           <ion-row>
             <ion-col size-xs="12" size-lg="4" [ngClass]="{hidden: type_graph == 'table_result'}">
               <div class="card">
@@ -179,7 +179,8 @@
                 <ng-template ngFor let-it [ngForOf]="data_results">
                   <ion-item>
                     <ion-checkbox justify="start" labelPlacement="end" name="show-{{it._id}}"
-                      (ionChange)="setupChartRoute()" [(ngModel)]="it.show"> ({{it.pos || (it.status | status)}})
+                      (ionChange)="setupChartRoute()" [(ngModel)]="it.show">
+                      <span *ngIf="it.pos || it.status">({{it.pos || (it.status | status)}})</span>
                       {{it?.category?.name}}
                       {{it?.name}}</ion-checkbox>
                   </ion-item>
@@ -245,7 +246,7 @@
       </ion-row>
     </div>
 
-    <div *ngIf="result?.category?.map">
+    <div>
       <h3>Mapa</h3>
       <div class="map-place">
         <img src="assets/baseorient/imgs/mapa_template.png" alt="map_template">
@@ -254,7 +255,7 @@
     <div class="inline between">
       <div>
         <h4>Links úteis</h4>
-        <a href="https://helga-o.com/webres/index.php?lauf={{result?.event?._helga}}&lang=pt#{{result?.category?.name}}"
+        <a href="https://helga-o.com/webres/index.php?lauf={{result?.event?._helga}}&lang=pt#{{result?.category}}"
           target="_blank">Helga WebRes</a>
         <h4 *ngIf="result?.event?.organizer">Organizador</h4>
         <h4 *ngIf="result?.event?.apura">Apuração</h4>

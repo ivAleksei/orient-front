@@ -47,7 +47,13 @@ export class EventFormPage implements OnInit {
 
 
     this.loadingService.show();
-    let data = await this.eventsService.getEventById({ _id: this._id });
+    let data = await this.eventsService.getEventById({ _id: this._id }, `
+      _helga
+      dt_start
+      name
+      location
+      organizer
+    `);
 
     // HANDLE DT_START
     data.time_start = moment(data.dt_start, this.utils.formatsDate).format('HH:mm');

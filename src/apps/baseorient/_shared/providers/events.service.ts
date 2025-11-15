@@ -34,36 +34,26 @@ export class EventsService {
     return this.http.get(url);
   }
 
-  async getEvents(args?) {
+  async getEvents(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
       query Events{
         Events{
           _id
-          dt_start
-          name
+          ${fields}
         }
       }`,
       name: "Events",
       variables: args || {}
     });
   }
-  async getEventById(args?) {
+  async getEventById(args: any, fields?: any) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
       query EventById($_id: ID){
         EventById(_id: $_id){
           _id
-          _helga
-          
-          _federation
-          _club
-
-          dt_start
-          name
-          city
-          state
-          country
+          ${fields}
         }
       }`,
       name: "EventById",

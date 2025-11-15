@@ -7,6 +7,7 @@ export const environment = {
     url: "https://ialk.com.br/baseorient/"
   },
   API: {
+    storage: "https://storage.cbm.rn.gov.br",
     auth: "https://us-central1-ialk-f967b.cloudfunctions.net/orient_auth",
     admin: "https://us-central1-ialk-f967b.cloudfunctions.net/orient_admin",
     orient: "https://us-central1-ialk-f967b.cloudfunctions.net/orient_api",

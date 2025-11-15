@@ -22,11 +22,13 @@ export class PersonsPage implements OnInit {
     id: "table-persons",
     columns: [
       { title: 'CBO', data: "num_cbo" },
-      { title: 'Helga', data: "_helga" },
       { title: 'Name', data: "name" },
       { title: 'Club', data: "clube.slug" },
-      { title: 'Federation', data: "federation.slug" },
-      { title: 'Confederation', data: "confederation.slug" },
+      {
+        title: 'Helga', data: "_helga", render: (a, b, c) => {
+          return (c._helga || []).map(it => [it._id, it.name].join(' - ')).join('<br>')
+        }
+      },
     ],
     ajax: {
       url: `${environment.API.admin}/server_side/persons`,
@@ -76,7 +78,7 @@ export class PersonsPage implements OnInit {
 
   handleTable(ev) {
     console.log(ev);
-    
+
     let map = {
       edit: () => {
         this.modalPerson.present();
@@ -84,7 +86,7 @@ export class PersonsPage implements OnInit {
           this.PersonForm.form.patchValue(ev.data);
         }, 400);
       },
-      sync: () => this.personsService.syncHelga(ev.data?._helga),
+      sync: () => this.personsService.syncHelga({ _id: ev.data._id }),
       new: () => {
         this.modalPerson.present();
       },

@@ -13,9 +13,13 @@ const routes: Routes = [
         loadChildren: () => import('src/apps/baseorient/content/home/home.module').then(m => m.HomePageModule)
       },
       {
+        path: 'replay',
+        loadChildren: () => import('src/apps/baseorient/content/run-viewer/run-viewer.module').then(m => m.RunViewerPageModule)
+      },
+      {
         path: 'admin',
         loadChildren: () => import('src/apps/baseorient/content/admin/admin.module').then(m => m.AdminModule)
-      },
+      }
     ]
   }
 ];

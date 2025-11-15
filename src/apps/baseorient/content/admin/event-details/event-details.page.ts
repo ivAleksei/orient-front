@@ -23,19 +23,40 @@ export class EventDetailsPage implements OnInit {
   _id: any = '';
   event: any;
 
-  tableInfoCategories: any = {
-    id: `table-event-categories-${this._id}`,
+  tableInfoRaces: any = {
+    id: `table-event-races-${this._id}`,
     columns: [
+      { title: 'Date', data: "dt_start", datatype: "pipe", pipe: "DatePipe", options: "DD/MM/YYYY HH:mm" },
       { title: 'Name', data: "name" },
-      { title: 'Route', data: "route" },
-      { title: 'Subscriptions', data: "n_subs" },
     ],
     data: [],
     actions: {
       buttons: [
-        { action: "detail-map", tooltip: "Mapa", class: "btn-light", icon: "mdi mdi-map" },
-        { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
-        { action: "remove", tooltip: "Remover", class: "btn-danger", icon: "mdi mdi-close" }, // TODO
+        { action: "detail", tooltip: "Detalhes", class: "btn-light", icon: "mdi mdi-newspaper" },
+        // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
+        // { action: "remove", tooltip: "Remover", class: "btn-danger", icon: "mdi mdi-close" }, // TODO
+      ]
+    }
+  }
+
+  tableInfoCategories: any = {
+    id: `table-event-categories-${this._id}`,
+    columns: [
+      { title: 'Name', data: "name" },
+      {
+        title: 'Routes', data: "routes", render: (a, b, c) => {
+          return Object.values(c.routes || {}).map((r: any) => r.ref).join(',');
+        }
+      },
+      { title: 'N. Subs', data: "" },
+    ],
+    data: [],
+    actions: {
+      buttons: [
+        { action: "replay_category", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play" }, // TODO
+        // { action: "detail-map", tooltip: "Mapa", class: "btn-light", icon: "mdi mdi-map" },
+        // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
+        // { action: "remove", tooltip: "Remover", class: "btn-danger", icon: "mdi mdi-close" }, // TODO
       ]
     }
   }
@@ -43,25 +64,22 @@ export class EventDetailsPage implements OnInit {
   tableInfoSubscriptions: any = {
     id: `table-event-subscription-${this._id}`,
     columns: [
-      { title: 'Category', data: "category.name" },
-      { title: 'Num Start', data: "num_start" },
+      { title: 'Category', data: "category" },
+      { title: 'Num Start', data: "startnumber" },
       { title: 'Name', data: "name" },
-      {
-        title: 'Club', data: "club.name", render: (a, b, c) => {
-          return [c.club?.slug, c.club?.name].filter(k => k).join(' - ')
-        }
-      },
+      { title: 'Club', data: "club" },
       { title: 'Control', data: "controlcard" },
       {
         title: 'Pos', data: "pos", render: (a, b, c) => {
           return c.pos || c.status;
         }
       },
-      { title: 'Time', data: "str_time" },
+      { title: 'Time', data: "time", datatype: 'pipe', pipe: "TimePipe" },
     ],
     data: [],
     actions: {
       buttons: [
+        { action: "replay_sub", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play" }, // TODO
         { action: "sync", tooltip: "sync", class: "btn-warning", icon: "mdi mdi-sync" },
         { action: "result", tooltip: "Extrato", class: "btn-warning", icon: "mdi mdi-file-document" }, // TODO
         { action: "detail-athlete", tooltip: "Ficha Pessoal", class: "btn-light", icon: "mdi mdi-account" }, // TODO
@@ -72,18 +90,22 @@ export class EventDetailsPage implements OnInit {
   tableInfoRoutes: any = {
     id: `table-event-routes-${this._id}`,
     columns: [
-      { title: 'Ref', data: "ref" },
+      { title: 'Name', data: "name" },
       { title: 'Dist', data: "dist" },
       { title: 'Climb', data: "climb" },
-      { title: 'Num PCs', data: "num_pcs" },
-      { title: 'Categories', data: "categories" },
+      { title: 'Num PCs', data: "n_pcs" },
+      {
+        title: 'Categories', data: "categories", render: (a, b, c) => {
+          return Object.keys(c.categories || {}).join(',');
+        }
+      },
     ],
     data: [],
     actions: {
       buttons: [
-        { action: "detail-map", tooltip: "Mapa", class: "btn-light", icon: "mdi mdi-map" },
-        { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
-        { action: "remove", tooltip: "Remover", class: "btn-danger", icon: "mdi mdi-close" }, // TODO
+        // { action: "detail-map", tooltip: "Mapa", class: "btn-light", icon: "mdi mdi-map" },
+        // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
+        // { action: "remove", tooltip: "Remover", class: "btn-danger", icon: "mdi mdi-close" }, // TODO
       ]
     }
   }
@@ -124,6 +146,9 @@ export class EventDetailsPage implements OnInit {
       this.tableInfoRoutes.ajax = {
         url: `${environment.API.orient}/server_side/event-routes?ev=` + this._id,
       }
+      this.tableInfoRaces.ajax = {
+        url: `${environment.API.orient}/server_side/event-races?ev=` + this._id,
+      }
 
       this.reloadTable.next(true);
       this.loadEventDetail();
@@ -149,20 +174,44 @@ export class EventDetailsPage implements OnInit {
    */
   async loadEventDetail() {
     this.loadingService.show();
-    let data = await this.eventsService.getEventById({ _id: this._id });
+    let data = await this.eventsService.getEventById({ _id: this._id }, `
+      name
+    `);
     this.event = data || null;
     this.loadingService.hide();
+    // this.getRoutes();
+  }
+
+  // TODO
+  async getRoutes() {
+    // let data = await this.eventsService.getEventById({ _id: this._id }, `
+    //   name
+    // `);
+    // this.routes = data || null;
+
   }
 
   handleTable(ev) {
     let map = {
+      replay_sub: args => this.nav.navigateForward(['/internal/replay'], {
+        state: {
+          _subscription: ev.data._id
+        }
+      }),
+      replay_category: args => this.nav.navigateForward(['/internal/replay'], {
+        state: {
+          _subscription: ev.data._id
+        }
+      }),
+      sync: () => this.personsService.syncHelga({ _id: ev.data._person }),
       result: args => this.nav.navigateForward(['/internal/admin/result', ev.data._id]),
       "detail-athlete": () => {
         this.nav.navigateForward(['/internal/admin/person/', ev.data._person]);
       },
     }
 
-    return map[ev.action](ev.data);
+    if (map[ev.action])
+      return map[ev.action](ev.data);
   }
 
   saveForm() {

@@ -20,27 +20,26 @@ export class SubscriptionsPage implements OnInit {
   tableInfo: any = {
     id: "table-subscriptions",
     columns: [
-      { title: 'Date', data: "event.dt_start", datatype: "pipe", pipe: "DatePipe", options:"DD/MM/YYYY HH:mm" },
-      { title: 'Num Start', data: "num_start" },
+      { title: 'Num Start', data: "startnumber" },
       { title: 'Name', data: "name" },
-      { title: 'Category', data: "category.name" },
+      { title: 'Category', data: "category" },
+      { title: 'Race', data: "race" },
+      { title: 'Club', data: "club" },
+      { title: 'Control', data: "controlcard" },
       {
-        title: 'Club', data: "club.name", render: (a, b, c) => {
-          return [c.club?.slug, c.club?.name].filter(k => k).join(' - ')
+        title: 'Pos', data: "pos", render: (a, b, c) => {
+          return c.pos || c.status;
         }
       },
-      { title: 'Evento', data: "event.name" },
     ],
     ajax: {
       url: `${environment.API.orient}/server_side/event-subscriptions`,
     },
     actions: {
       buttons: [
+        { action: "replay", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play" }, // TODO
         { action: "event-detail", tooltip: "Evento", class: "btn-light", icon: "mdi mdi-file-document" }, // TODO
         { action: "result", tooltip: "Extrato", class: "btn-warning", icon: "mdi mdi-file-document" }, // TODO
-        // { action: "edit", tooltip: "Editar", class: "btn-warning", icon: "mdi mdi-file-document" },
-        // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
-        // { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
       ]
     }
   }
@@ -66,6 +65,11 @@ export class SubscriptionsPage implements OnInit {
 
   handleTable(ev) {
     let map = {
+      replay: args => this.nav.navigateForward(['/internal/replay'], {
+        state: {
+          _subscription: ev.data._id
+        }
+      }),
       ['event-detail']: args => this.nav.navigateForward(['/internal/admin/event', ev.data._event]),
       result: args => this.nav.navigateForward(['/internal/admin/result', ev.data._id]),
       edit: () => {

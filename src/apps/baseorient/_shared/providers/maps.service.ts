@@ -9,7 +9,7 @@ import { HttpService } from 'src/_shared/services/http.service';
 @Injectable({
   providedIn: 'root'
 })
-export class EventSubscriptionsService {
+export class MapsService {
   private _watch: BehaviorSubject<any>;
   public watch: Observable<any>;
 
@@ -26,71 +26,43 @@ export class EventSubscriptionsService {
     this._watch.next(true);
   }
 
-  async getEventSubscriptions(args?) {
+  async getMaps(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query EventSubscriptions{
-        EventSubscriptions{
-          _id
-        }
-      }`,
-      name: "EventSubscriptions",
-      variables: args || {}
-    });
-  }
-
-  async getResultCategory(args) {
-    let query = args || {};
-    // http://localhost:3003/api_orient/ws/table-result?_category=bee8fa30-bd78-11f0-b9e2-7d82012a6326
-    let url = [environment.API.orient, 'ws', 'table-result'].join('/') + '?' + Object.keys(query).map(k => `${k}=${query[k]}`).join('&');
-    return this.http.get(url);
-  }
-
-  async getEventRouteBy(args?) {
-    return this.graphql.query(environment.API.orient, 'graphql', {
-      query: `
-      query EventRouteBy($event: ID, $route_ref: String){
-        EventRouteBy(event: $event, route_ref: $route_ref){
-          _id
-          dist
-          climb
-          num_pcs
-          pcs{
-            index
-            num_base
-          }
-        }
-      }`,
-      name: "EventRouteBy",
-      variables: args || {}
-    });
-  }
-
-  async getEventSubscriptionById(args?, fields?) {
-    return this.graphql.query(environment.API.orient, 'graphql', {
-      query: `
-      query EventSubscriptionById($_id: ID){
-        EventSubscriptionById(_id: $_id){
+      query Maps{
+        Maps{
           _id
           ${fields}
         }
       }`,
-      name: "EventSubscriptionById",
+      name: "Maps",
+      variables: args || {}
+    });
+  }
+  async getMapById(args?) {
+    return this.graphql.query(environment.API.orient, 'graphql', {
+      query: `
+      query MapById($_id: String){
+        MapById(_id: $_id){
+          _id
+        }
+      }`,
+      name: "MapById",
       variables: args || {}
     });
   }
 
-  newEventSubscription(data) {
+  newMap(data) {
     this.loadingService.show();
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation CreateEventSubscription($input: EventSubscriptionInput){
-        CreateEventSubscription(input: $input){
+      mutation CreateMap($input: MapInput){
+        CreateMap(input: $input){
           status
           msg
         }
       }`,
-      name: "CreateEventSubscription",
+      name: "CreateMap",
       variables: data
     })
       .then(done => {
@@ -99,19 +71,19 @@ export class EventSubscriptionsService {
       });
   }
 
-  editEventSubscription(data) {
+  editMap(data) {
     this.loadingService.show();
 
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation UpdateEventSubscription($input: EventSubscriptionInput){
-        UpdateEventSubscription(input: $input){
+      mutation UpdateMap($input: MapInput){
+        UpdateMap(input: $input){
           status
           msg
         }
       }`,
 
-      name: "UpdateEventSubscription",
+      name: "UpdateMap",
       variables: data
     })
       .then(done => {
@@ -120,20 +92,20 @@ export class EventSubscriptionsService {
       });
   }
 
-  delEventSubscription(data) {
+  delMap(data) {
     return this.alertsService.confirmDel()
       .then(confirm => {
         if (!confirm) return;
         this.loadingService.show();
         return this.graphql.query(environment.API.orient, 'graphql', {
           query: `
-        mutation deleteEventSubscription($_id: ID){
-          deleteEventSubscription(_id: $_id){
+        mutation deleteMap($_id: ID){
+          deleteMap(_id: $_id){
             status
             msg
           }
         }`,
-          name: "deleteEventSubscription",
+          name: "deleteMap",
           variables: data
         });
       })
@@ -143,8 +115,8 @@ export class EventSubscriptionsService {
       });
   }
 
-  saveEventSubscription(data) {
-    return this[data._id ? 'editEventSubscription' : "newEventSubscription"]({ input: data });
+  saveMap(data) {
+    return this[data._id ? 'editMap' : "newMap"]({ input: data });
   }
 
 }

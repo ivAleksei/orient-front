@@ -20,7 +20,9 @@ export class EventRacesPage implements OnInit {
   tableInfo: any = {
     id: "table-event-races",
     columns: [
-      { title: 'Name', data: "name" },
+      { title: 'date', data: "dt_start", datatype: "pipe", pipe: "DatePipe", options: "DD/MM/YYYY HH:mm" },
+      { title: 'name', data: "name" },
+      { title: '_helga', data: "_helga" },
     ],
     ajax: {
       url: `${environment.API.orient}/server_side/event-races`,

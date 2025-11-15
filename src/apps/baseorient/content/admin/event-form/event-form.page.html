@@ -41,6 +41,32 @@
       </div>
 
       <div class="section">
+        <h4 class="section-title"><i class="mdi mdi-google-maps"></i> {{i18n.lang.ADDRESS}}</h4>
+        <div class="section-body"> 
+          <ion-row>
+            <ion-col size-xs="6" size-lg="6">
+              <ion-item>
+                <ion-label for="location" position="stacked">{{i18n.lang.LOCATION}}*</ion-label>
+                <ion-input type="text" name="location" ngModel required #location="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+      <div class="section">
+        <h4 class="section-title"><i class="mdi mdi-file-tree"></i> {{i18n.lang.AFFILIATIONS}}</h4>
+        <div class="section-body">
+          <ion-row>
+            <ion-col size-xs="6" size-lg="6">
+              <ion-item>
+                <ion-label for="organizer" position="stacked">{{i18n.lang.ORGANIZER}}*</ion-label>
+                <ion-input type="text" name="organizer" ngModel required #organizer="ngModel"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </div>
+      </div>
+      <!-- <div class="section">
         <h4 class="section-title"><i class="mdi mdi-file-tree"></i> {{i18n.lang.AFFILIATIONS}}</h4>
         <div class="section-body">
           <ion-row>
@@ -106,7 +132,7 @@
             </ion-col>
           </ion-row>
         </div>
-      </div>
+      </div> -->
 
     </form>
   </div>

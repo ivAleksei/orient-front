@@ -1,0 +1,49 @@
+<ion-content [fullscreen]="true">
+  <div class="page-layout">
+    <div class="player">
+      <button class="btn-play" id="playPauseBtn" (click)="handleClick()">
+        <i class="mdi mdi-play" *ngIf="!isPlaying"></i>
+        <i class="mdi mdi-pause" *ngIf="isPlaying"></i>
+      </button>
+
+      <div class="progress-container">
+        <div class="progress-bar" (click)="handleClickProgress($event)">
+          <div class="progress-fill" id="progressFill" [ngStyle]="{width: percent+'%'}"></div>
+        </div>
+        <div class="progress-time">
+          <span id="currentTime">{{this.currentTime | time}}</span>
+          <span id="totalTime">{{this.duration | time}}</span>
+        </div>
+      </div>
+    </div>
+    <ion-row>
+      <ion-col size-xs="12" size-lg="6">
+        <div class="map-place">
+          <img src="/assets/baseorient/imgs/mapa_template.png" alt="mapa_template">
+        </div>
+      </ion-col>
+      <ion-col size-xs="12" size-lg="6">
+        <table class="table dataTable">
+          <tbody>
+            <tr>
+              <th>Pos</th>
+              <th>Name</th>
+              <th>Time</th>
+              <th>Ult. Base</th>
+            </tr>
+            <ng-template ngFor let-it [ngForOf]="ranking">
+              <tr>
+                <td>{{it.pos || (it.status | status) || '-'}}</td>
+                <td>{{it.name}}</td>
+                <td>{{it.ult_time | time}}</td>
+                <td>{{it.ult_base || '-'}}</td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
+      </ion-col>
+    </ion-row>
+
+
+  </div>
+</ion-content>

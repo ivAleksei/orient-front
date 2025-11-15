@@ -51,12 +51,53 @@ export class ResultDetailPage implements OnInit {
 
   async loadResultDetail() {
     this.loadingService.show();
-    let data = await this.eventSubscriptionsService.getEventSubscriptionById({ _id: this._id });
-    this.result = data || [];
-    this.result?.splits.push({ num_base: this.i18n.lang.FINISH, time_spent: data.time });
+    let data = await this.eventSubscriptionsService.getEventSubscriptionById({ _id: this._id }, `
+          _id
+          _club
+          _person
+          _race
+          _route
 
-    this.getRouteResults();
+          category
+          club
+
+          name
+
+          status
+          startnumber
+          controlcard
+          pos
+          start_at
+          end_at
+          str_time
+          time
+          
+          splits{
+            num_base
+            time_spent
+          }
+
+          route{
+            _id
+            dist
+            climb
+            splits{
+              index
+              num_base
+            }
+          }
+          event{
+            _id
+            _helga
+            name
+            organizer
+            dt_start
+            location
+          }`);
+    this.result = data || [];
+
     this.setupData();
+    this.getRouteResults();
     this.loadingService.hide();
   }
 
@@ -64,9 +105,11 @@ export class ResultDetailPage implements OnInit {
   data_results: any = [];
 
   async getRouteResults() {
-    let query: any = { _category: this.result?.category?._id };
+
+
+    let query: any = { _subscription: this.result?._id };
     if (this.same_route)
-      query = { _route: this.result?.category?._route }
+      query.same_route = true;
 
     this.loadingService.show();
     let data = await this.eventSubscriptionsService.getResultCategory(query);
@@ -120,11 +163,20 @@ export class ResultDetailPage implements OnInit {
 
     for (let r of (this.data_results || [])) {
       for (let s of Object.keys(r.obj_splits || {})) {
+        if (!group_by_split[s]) continue;
+
         group_by_split[s].athletes[r._id] = r.obj_splits[s];
         group_by_split[s].athletes[r._id]._id = r._id;
         group_by_split[s].athletes[r._id].status = r.status;
       }
     }
+
+    // console.log(Object.values(group_by_split || {}).map((it: any) => {
+    //   it.n_athletes = Object.keys(it.athletes).length;
+    //   return it;
+    // }));
+
+    // return;
 
     for (let sp of Object.keys(group_by_split || {})) {
       let arr_race_position = Object.values(group_by_split[sp].athletes || {}).sort((a: any, b: any) => {
@@ -134,7 +186,9 @@ export class ResultDetailPage implements OnInit {
       });
       let arr_split_position = Object.values(group_by_split[sp].athletes || {}).sort((a: any, b: any) => a.time_split - b.time_split).map((it: any) => it._id);
 
+
       for (let k of Object.keys(group_by_split[sp].athletes || {})) {
+        if (!group_by_split[sp].athletes[k]) continue;
         group_by_split[sp].athletes[k].race_pos = arr_race_position.map((it: any) => it._id).indexOf(k);
         group_by_split[sp].athletes[k].split_pos = arr_split_position.indexOf(k);
       }
@@ -142,18 +196,28 @@ export class ResultDetailPage implements OnInit {
 
 
     // POSIÇÃO NA PROVA
-    this.data_position_race_graph = (this.data_results || []).filter(it => it.show).map(r => {
+    let graph = (this.data_results || []).filter(it => it.show).map(r => {
       return {
         name: r.name, series: [{ name: '0', value: 0 }, ...(this.result?.splits || []).map(it => {
-          return { name: it.num_base, value: group_by_split[it.num_base].athletes[r._id].race_pos + 1 };
+          let race_pos = group_by_split[it.num_base]?.athletes[r._id]?.race_pos;
+          if (!group_by_split[it.num_base]?.athletes[r._id])
+            race_pos = Object.keys(group_by_split[it.num_base]?.athletes || {})?.length;
+
+          return { name: it.num_base, value: race_pos + 1 };
         })]
       }
     })
+    this.data_position_race_graph = graph;
+
     // POSIÇÃO NO SPLIT - OK
     this.data_position_split_graph = (this.data_results || []).filter(it => it.show).map(r => {
       return {
         name: r.name, series: [{ name: '0', value: 0 }, ...(this.result?.splits || []).map(it => {
-          return { name: it.num_base, value: group_by_split[it.num_base].athletes[r._id].split_pos + 1 };
+          let split_pos = group_by_split[it.num_base]?.athletes[r._id]?.split_pos;
+          if (!group_by_split[it.num_base]?.athletes[r._id])
+            split_pos = Object.keys(group_by_split[it.num_base]?.athletes || {})?.length;
+
+          return { name: it.num_base, value: split_pos + 1 };
         })]
       }
     })
@@ -178,6 +242,10 @@ export class ResultDetailPage implements OnInit {
 
   setupData() {
     let spent = 0;
+
+    if (this.result?.splits?.length)
+      (this.result?.splits || []).push({ num_base: this.i18n.lang.FINISH, time_spent: this.result.time });
+
     this.result.splits = (this.result?.splits || []).map((it, i) => {
       it.index = i + 1;
       it.time_partial = i == 0 ? it.time_spent : it.time_spent - spent;

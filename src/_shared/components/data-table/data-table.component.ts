@@ -11,6 +11,7 @@ import { AlertsService } from "src/_shared/services/alerts.service";
 import { PickerController } from "@ionic/angular";
 import { ObjKeyPipe } from "src/_shared/pipes/obj-key.pipe";
 import { PatentePipe } from "src/_shared/pipes/patente.pipe";
+import { TimePipe } from "src/_shared/pipes/time.pipe";
 declare var $: any;
 
 @Component({
@@ -38,6 +39,7 @@ export class DataTableComponent implements OnInit {
     private utils: UtilsService,
     private storage: LocalStorageService,
     private alertsService: AlertsService,
+    private TimePipe: TimePipe,
     private StatusPipe: StatusPipe,
     private PatentePipe: PatentePipe,
     private ObjKeyPipe: ObjKeyPipe,

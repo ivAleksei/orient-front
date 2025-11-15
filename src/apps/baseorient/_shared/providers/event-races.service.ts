@@ -24,24 +24,26 @@ export class EventRacesService {
     this._watch.next(true);
   }
 
-  async getEventRaces(args?) {
+  async getEventRaces(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
       query EventRaces{
         EventRaces{
           _id
+          ${fields}
         }
       }`,
       name: "EventRaces",
       variables: args || {}
     });
   }
-  async getEventRaceById(args?) {
+  async getEventRaceById(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
       query EventRaceById($_id: String){
         EventRaceById(_id: $_id){
           _id
+          ${fields}
         }
       }`,
       name: "EventRaceById",

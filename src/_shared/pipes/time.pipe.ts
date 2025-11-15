@@ -11,7 +11,7 @@ export class TimePipe implements PipeTransform {
 
     const hrs = Math.floor(value / 3600);
     const mins = Math.floor((value % 3600) / 60);
-    const secs = value % 60;
+    const secs = Math.round(value % 60);
 
     const h = String(hrs).padStart(2, '0');
     const m = String(mins).padStart(2, '0');

@@ -19,6 +19,10 @@ const routes: Routes = [
     loadChildren: () => import('src/apps/baseorient/content/admin/events/events.module').then(m => m.EventsPageModule)
   },
   {
+    path: 'event-races',
+    loadChildren: () => import('src/apps/baseorient/content/admin/event-races/event-races.module').then(m => m.EventRacesPageModule)
+  },
+  {
     path: 'event/:id',
     loadChildren: () => import('src/apps/baseorient/content/admin/event-details/event-details.module').then(m => m.EventDetailsPageModule)
   },
@@ -83,10 +87,13 @@ const routes: Routes = [
     loadChildren: () => import('src/apps/baseorient/content/admin/subscriptions/subscriptions.module').then(m => m.SubscriptionsPageModule)
   },
   {
+    path: 'maps',
+    loadChildren: () => import('src/apps/baseorient/content/admin/maps/maps.module').then(m => m.MapsPageModule)
+  },
+  {
     path: 'result/:id',
     loadChildren: () => import('src/apps/baseorient/content/admin/result-detail/result-detail.module').then(m => m.ResultDetailPageModule)
   },
-  { path: '**', redirectTo: "/internal/home" },
 ];
 
 @NgModule({

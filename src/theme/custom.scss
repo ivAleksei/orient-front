@@ -43,6 +43,75 @@ ion-modal {
     }
   }
 
+  .uploads {
+    padding: 16px 8px;
+    margin: 16px 0;
+    display: inline-flex;
+    width: 100%;
+    max-width: 80vw;
+    overflow-x: auto;
+    background: #f5f5f5;
+
+    .up-item {
+      background: #fff;
+      width: 78px;
+      min-width: 78px;
+      height: 78px;
+      text-align: center;
+      padding: 21px 0;
+      font-size: 32px;
+      border: 2px dashed #ccc;
+      color: #ccc;
+      cursor: pointer;
+      margin-right: 16px;
+      position: relative;
+
+      .mdi-close {
+        position: absolute;
+        right: 0;
+        top: 0;
+        background: var(--ion-color-danger);
+        color: var(--ion-color-danger-contrast);
+        border-radius: 50%;
+        border: 1px solid var(--ion-color-danger-shade);
+        width: 24px;
+        height: 24px;
+        font-size: 20px;
+        margin-top: -13px;
+        margin-right: -13px;
+        opacity: 0;
+        pointer-events: none;
+        transition: all .2s ease-in-out;
+      }
+
+      p {
+        width: 64px;
+        text-align: center;
+        text-overflow: ellipsis;
+        font-size: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        margin: 0 auto;
+      }
+
+      &.file {
+        background: white;
+        border: 2px dashed var(--ion-color-primary-tint);
+        color: var(--ion-color-primary);
+
+        padding-top: 12px;
+      }
+
+      &.open {
+        .mdi-close {
+          opacity: 1;
+          pointer-events: initial;
+        }
+      }
+    }
+  }
+
+
   // form {
   //   >.old-select {
   //     padding-top: 0;
@@ -623,6 +692,7 @@ pre {
       text-align: right;
     }
   }
+
   tbody th,
   tbody td {
     display: table-cell;

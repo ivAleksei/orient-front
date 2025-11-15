@@ -24,21 +24,18 @@ export class PersonDetailsPage implements OnInit {
   tableInfoSubscriptions: any = {
     id: `table-event-subscription-${this._id}`,
     columns: [
-      { title: 'Date', data: "event.dt_start", datatype: "pipe", pipe: "DatePipe", options: "DD/MM/YYYY HH:mm" },
-      { title: 'Event', data: "event.name" },
-      { title: 'Category', data: "category.name" },
-      {
-        title: 'Club', data: "club.name", render: (a, b, c) => {
-          return [c.club?.slug, c.club?.name].filter(k => k).join(' - ')
-        }
-      },
+      { title: 'Date', data: "start_at", datatype: 'pipe', pipe: "DatePipe", options: "DD/MM/YYYY HH:mm" },
+      { title: 'Num Start', data: "startnumber" },
+      { title: 'Category', data: "category" },
+      { title: 'Race', data: "race" },
+      { title: 'Club', data: "club" },
       { title: 'Control', data: "controlcard" },
       {
         title: 'Pos', data: "pos", render: (a, b, c) => {
           return c.pos || c.status;
         }
       },
-      { title: 'Time', data: "str_time" },
+      { title: 'Time', data: "time", datatype: 'pipe', pipe: "TimePipe" },
     ],
     data: [],
     actions: {

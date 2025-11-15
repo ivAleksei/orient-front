@@ -8,12 +8,13 @@ export const environment = {
   browser: true,
   menu_type: 'side',
   portal: {
-    url: "http://192.168.1.76:8100"
+    url: "http://192.168.1.68:8100"
   },
   API: {
-    auth: "http://192.168.1.76:3003/api_auth",
-    admin: "http://192.168.1.76:3003/api_admin",
-    orient: "http://192.168.1.76:3003/api_orient",
+    storage: "https://storage.cbm.rn.gov.br",
+    auth: "http://192.168.1.68:3003/api_auth",
+    admin: "http://192.168.1.68:3003/api_admin",
+    orient: "http://192.168.1.68:3003/api_orient",
   },
   Socket: {
     platform: "baseorient",

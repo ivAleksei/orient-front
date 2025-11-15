@@ -4,17 +4,15 @@ import { GraphqlService } from 'src/_shared/services/graphql.service';
 import { AlertsService } from 'src/_shared/services/alerts.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { LoadingService } from 'src/_shared/services/loading.service';
-import { HttpService } from 'src/_shared/services/http.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EventSubscriptionsService {
+export class EventRoutesService {
   private _watch: BehaviorSubject<any>;
   public watch: Observable<any>;
 
   constructor(
-    private http: HttpService,
     private loadingService: LoadingService,
     private alertsService: AlertsService,
     private graphql: GraphqlService
@@ -26,71 +24,44 @@ export class EventSubscriptionsService {
     this._watch.next(true);
   }
 
-  async getEventSubscriptions(args?) {
+  async getEventRoutes(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query EventSubscriptions{
-        EventSubscriptions{
-          _id
-        }
-      }`,
-      name: "EventSubscriptions",
-      variables: args || {}
-    });
-  }
-
-  async getResultCategory(args) {
-    let query = args || {};
-    // http://localhost:3003/api_orient/ws/table-result?_category=bee8fa30-bd78-11f0-b9e2-7d82012a6326
-    let url = [environment.API.orient, 'ws', 'table-result'].join('/') + '?' + Object.keys(query).map(k => `${k}=${query[k]}`).join('&');
-    return this.http.get(url);
-  }
-
-  async getEventRouteBy(args?) {
-    return this.graphql.query(environment.API.orient, 'graphql', {
-      query: `
-      query EventRouteBy($event: ID, $route_ref: String){
-        EventRouteBy(event: $event, route_ref: $route_ref){
-          _id
-          dist
-          climb
-          num_pcs
-          pcs{
-            index
-            num_base
-          }
-        }
-      }`,
-      name: "EventRouteBy",
-      variables: args || {}
-    });
-  }
-
-  async getEventSubscriptionById(args?, fields?) {
-    return this.graphql.query(environment.API.orient, 'graphql', {
-      query: `
-      query EventSubscriptionById($_id: ID){
-        EventSubscriptionById(_id: $_id){
+      query EventRoutes{
+        EventRoutes{
           _id
           ${fields}
         }
       }`,
-      name: "EventSubscriptionById",
+      name: "EventRoutes",
+      variables: args || {}
+    });
+  }
+  async getEventRouteById(args?, fields?) {
+    return this.graphql.query(environment.API.orient, 'graphql', {
+      query: `
+      query EventRouteById($_id: String){
+        EventRouteById(_id: $_id){
+          _id
+          ${fields}
+        }
+      }`,
+      name: "EventRouteById",
       variables: args || {}
     });
   }
 
-  newEventSubscription(data) {
+  newEventRoute(data) {
     this.loadingService.show();
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation CreateEventSubscription($input: EventSubscriptionInput){
-        CreateEventSubscription(input: $input){
+      mutation CreateEventRoute($input: EventRouteInput){
+        CreateEventRoute(input: $input){
           status
           msg
         }
       }`,
-      name: "CreateEventSubscription",
+      name: "CreateEventRoute",
       variables: data
     })
       .then(done => {
@@ -99,19 +70,19 @@ export class EventSubscriptionsService {
       });
   }
 
-  editEventSubscription(data) {
+  editEventRoute(data) {
     this.loadingService.show();
 
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation UpdateEventSubscription($input: EventSubscriptionInput){
-        UpdateEventSubscription(input: $input){
+      mutation UpdateEventRoute($input: EventRouteInput){
+        UpdateEventRoute(input: $input){
           status
           msg
         }
       }`,
 
-      name: "UpdateEventSubscription",
+      name: "UpdateEventRoute",
       variables: data
     })
       .then(done => {
@@ -120,20 +91,20 @@ export class EventSubscriptionsService {
       });
   }
 
-  delEventSubscription(data) {
+  delEventRoute(data) {
     return this.alertsService.confirmDel()
       .then(confirm => {
         if (!confirm) return;
         this.loadingService.show();
         return this.graphql.query(environment.API.orient, 'graphql', {
           query: `
-        mutation deleteEventSubscription($_id: ID){
-          deleteEventSubscription(_id: $_id){
+        mutation deleteEventRoute($_id: ID){
+          deleteEventRoute(_id: $_id){
             status
             msg
           }
         }`,
-          name: "deleteEventSubscription",
+          name: "deleteEventRoute",
           variables: data
         });
       })
@@ -143,8 +114,8 @@ export class EventSubscriptionsService {
       });
   }
 
-  saveEventSubscription(data) {
-    return this[data._id ? 'editEventSubscription' : "newEventSubscription"]({ input: data });
+  saveEventRoute(data) {
+    return this[data._id ? 'editEventRoute' : "newEventRoute"]({ input: data });
   }
 
 }

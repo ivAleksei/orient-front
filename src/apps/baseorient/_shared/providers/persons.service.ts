@@ -28,13 +28,17 @@ export class PersonsService {
     this._watch.next(true);
   }
 
-  async syncHelga(_helga) {
-    if (!_helga) return null;
+  /**
+   * Atualiza dados via helga
+   * @param args._id ID person 
+   * @returns 
+   */
+  async syncHelga(args) {
+    if (!args._id) return;
 
-    let query = { _runner: _helga }
+    let query = { _person: args._id }
     let url = [environment.API.orient, 'tmp', 'helga'].join('/') + '?' + Object.keys(query).map(k => `${k}=${query[k]}`);
-    console.log(url);
-    
+
     return this.http.get(url);
   }
 
