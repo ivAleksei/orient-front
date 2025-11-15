@@ -14,6 +14,8 @@ import { NavController } from '@ionic/angular';
 })
 export class EventsPage implements OnInit {
   @Output() public reloadTable: EventEmitter<any> = new EventEmitter();
+  @ViewChild("modalImport") modalImport: any;
+  @ViewChild('ImportForm') ImportForm: any;
   @ViewChild("modalEvent") modalEvent: any;
   @ViewChild('EventForm') EventForm: any;
   list_events: any[] = [];
@@ -60,6 +62,7 @@ export class EventsPage implements OnInit {
 
   handleTable(ev) {
     let map = {
+      import_helga: () => this.modalImport.present(),
       edit: () => {
         this.modalEvent.present();
         setTimeout(() => {
@@ -69,7 +72,7 @@ export class EventsPage implements OnInit {
       new: () => {
         this.modalEvent.present();
       },
-      sync: () => this.eventsService.syncHelga( ev.data._helga),
+      sync: () => this.eventsService.syncHelga(ev.data._helga),
       detail: () => {
         this.nav.navigateForward(['/internal/admin/event/', ev.data._id]);
       },
@@ -88,6 +91,14 @@ export class EventsPage implements OnInit {
     return map[ev.action](ev.data);
   }
 
+  async importEvent() {
+    this.loadingService.show();
+    let obj = Object.assign({}, this.ImportForm.value);
+    await this.eventsService.syncHelga(obj._helga);
+    this.clearEventForm();
+    this.loadingService.hide();
+  }
+
   saveForm() {
     this.loadingService.show();
     let obj = Object.assign({}, this.EventForm.value);
@@ -103,13 +114,15 @@ export class EventsPage implements OnInit {
   }
 
   clearEventForm() {
+    this.ImportForm?.form.reset();
     this.EventForm?.form.reset();
     this.closeModal();
     this.reloadTable.next(true);
   }
 
   closeModal() {
-    this.modalEvent.dismiss();
+    this.modalImport?.dismiss();
+    this.modalEvent?.dismiss();
   }
 
 }

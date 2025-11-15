@@ -26,6 +26,7 @@ export class DataTableComponent implements OnInit {
 
   reloadSub: Subscription;
 
+  @Input() id: any;
   @Input() reload: any;
   @Input() listTemplate: TemplateRef<any>;
   @Input() tableInfo: any = {};
@@ -47,7 +48,7 @@ export class DataTableComponent implements OnInit {
     private CurrencyPipe: CurrencyPipe,
     private DatePipe: DatePipe,
   ) {
-    this.tableInfo.id = "temp-id";
+    this.tableInfo.id = this.id || "temp-id";
   }
 
   list: any = [];

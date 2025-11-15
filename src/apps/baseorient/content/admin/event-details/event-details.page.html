@@ -5,7 +5,7 @@
     </h3>
 
 
-    <div class="tabs hide-mobile">
+    <div class="tabs hide-mobile" *ngIf="!mobile">
       <div class="tabs-btns">
         <button [ngClass]="{active: tab == 'info'}" (click)="setTab('info')">
           <i class="mdi mdi-clipboard-text"></i> {{i18n.lang.DATA_INFO}}
@@ -32,38 +32,38 @@
         </div>
         <div class="card" *ngIf="tab == 'races'">
           <div class="card-body">
-            <data-table *ngIf="tableInfoRaces" [tableInfo]="tableInfoRaces" [reload]="reloadTable"
+            <data-table [id]="tableInfoRaces?.id"  [tableInfo]="tableInfoRaces" [reload]="reloadTable"
               (clickEvent)="handleTable($event)"></data-table>
           </div>
         </div>
         <div class="card" *ngIf="tab == 'categories'">
           <div class="card-body">
-            <data-table *ngIf="tableInfoCategories" [tableInfo]="tableInfoCategories" [reload]="reloadTable"
-              (clickEvent)="handleTable($event)"></data-table>
-          </div>
-        </div>
-        <div class="card" *ngIf="tab == 'subscriptions'">
-          <div class="card-body">
-            <data-table *ngIf="tableInfoSubscriptions" [tableInfo]="tableInfoSubscriptions" [reload]="reloadTable"
+            <data-table [id]="tableInfoCategories?.id" [tableInfo]="tableInfoCategories" [reload]="reloadTable"
               (clickEvent)="handleTable($event)"></data-table>
           </div>
         </div>
         <div class="card" *ngIf="tab == 'routes'">
           <div class="card-body">
-            <data-table *ngIf="tableInfoRoutes" [tableInfo]="tableInfoRoutes" [reload]="reloadTable"
+            <data-table [id]="tableInfoRoutes?.id" [tableInfo]="tableInfoRoutes" [reload]="reloadTable"
+              (clickEvent)="handleTable($event)"></data-table>
+          </div>
+        </div>
+        <div class="card" *ngIf="tab == 'subscriptions'">
+          <div class="card-body">
+            <data-table [id]="tableInfoSubscriptions?.id" [tableInfo]="tableInfoSubscriptions" [reload]="reloadTable"
               (clickEvent)="handleTable($event)"></data-table>
           </div>
         </div>
         <div class="card" *ngIf="tab == 'audit'">
           <div class="card-body">
-            <data-table *ngIf="tableInfoAudits" [tableInfo]="tableInfoAudits" [reload]="reloadTable"
+            <data-table [id]="tableInfoAudits?.id" [tableInfo]="tableInfoAudits" [reload]="reloadTable"
               (clickEvent)="handleTable($event)"></data-table>
           </div>
         </div>
       </div>
     </div>
 
-    <ion-accordion-group class="hide-desktop" [value]="tab" (ionChange)="setTab($event)">
+    <ion-accordion-group class="hide-desktop" [value]="tab" (ionChange)="setTab($event)" *ngIf="mobile">
       <ion-accordion value="info">
         <ion-item slot="header" color="light">
           <ion-label class="group-title">
@@ -73,13 +73,23 @@
           <app-event-form [_id]="_id"></app-event-form>
         </div>
       </ion-accordion>
+      <ion-accordion value="races">
+        <ion-item slot="header" color="light">
+          <ion-label class="group-title">
+            <i class="mdi mdi-flag-checkered"></i> {{i18n.lang.EVENT_RACES}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <data-table [id]="tableInfoRaces?.id" [tableInfo]="tableInfoRaces" [reload]="reloadTable"
+            (clickEvent)="handleTable($event)"></data-table>
+        </div>
+      </ion-accordion>
       <ion-accordion value="categories">
         <ion-item slot="header" color="light">
           <ion-label class="group-title">
             <i class="mdi mdi-clipboard-text"></i> {{i18n.lang.CATEGORIES}}</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content">
-          <data-table *ngIf="tableInfoCategories" [tableInfo]="tableInfoCategories" [reload]="reloadTable"
+          <data-table [id]="tableInfoCategories?.id" [tableInfo]="tableInfoCategories" [reload]="reloadTable"
             (clickEvent)="handleTable($event)"></data-table>
         </div>
       </ion-accordion>
@@ -89,7 +99,7 @@
             <i class="mdi mdi-routes"></i> {{i18n.lang.ROUTES}}</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content">
-          <data-table *ngIf="tableInfoRoutes" [tableInfo]="tableInfoRoutes" [reload]="reloadTable"
+          <data-table [id]="tableInfoRoutes?.id" [tableInfo]="tableInfoRoutes" [reload]="reloadTable"
             (clickEvent)="handleTable($event)"></data-table>
         </div>
       </ion-accordion>
@@ -99,7 +109,7 @@
             <i class="mdi mdi-account-group"></i> {{i18n.lang.SUBSCRIPTIONS}}</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content">
-          <data-table *ngIf="tableInfoSubscriptions" [tableInfo]="tableInfoSubscriptions" [reload]="reloadTable"
+          <data-table [id]="tableInfoSubscriptions?.id" [tableInfo]="tableInfoSubscriptions" [reload]="reloadTable"
             (clickEvent)="handleTable($event)"></data-table>
         </div>
       </ion-accordion>
@@ -109,7 +119,7 @@
             <i class="mdi mdi-playlist-check"></i> {{i18n.lang.AUDIT}}</ion-label>
         </ion-item>
         <div class="ion-padding" slot="content">
-          <data-table *ngIf="tableInfoAudits" [tableInfo]="tableInfoAudits" [reload]="reloadTable"
+          <data-table [id]="tableInfoAudits" [tableInfo]="tableInfoAudits" [reload]="reloadTable"
             (clickEvent)="handleTable($event)"></data-table>
         </div>
       </ion-accordion>

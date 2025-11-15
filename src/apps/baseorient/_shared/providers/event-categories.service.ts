@@ -27,8 +27,8 @@ export class EventCategoriesService {
   async getEventCategories(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query EventCategories{
-        EventCategories{
+      query EventCategories($_event: ID, $_race: ID){
+        EventCategories(_event: $_event, _race: $_race){
           _id
           ${fields}
         }

@@ -27,8 +27,8 @@ export class EventRoutesService {
   async getEventRoutes(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query EventRoutes{
-        EventRoutes{
+      query EventRoutes($_event: ID, $_race: ID){
+        EventRoutes(_event: $_event, _race: $_race){
           _id
           ${fields}
         }

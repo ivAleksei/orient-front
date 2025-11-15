@@ -9,6 +9,8 @@ import { StatusPipe } from 'src/_shared/pipes/status.pipe';
 import { ActivatedRoute } from '@angular/router';
 import { EventsService } from 'src/apps/baseorient/_shared/providers/events.service';
 import { PersonsService } from 'src/apps/baseorient/_shared/providers/persons.service';
+import { EventCategoriesService } from 'src/apps/baseorient/_shared/providers/event-categories.service';
+import { EventRoutesService } from 'src/apps/baseorient/_shared/providers/event-routes.service';
 
 @Component({
   selector: 'app-event-details',
@@ -19,12 +21,12 @@ export class EventDetailsPage implements OnInit {
   @Output() public reloadTable: EventEmitter<any> = new EventEmitter();
   @ViewChild('EventDetailForm') EventDetailForm: any;
 
+  mobile: any = innerWidth <= 768;
   tab: any = 'info';
   _id: any = '';
   event: any;
 
   tableInfoRaces: any = {
-    id: `table-event-races-${this._id}`,
     columns: [
       { title: 'Date', data: "dt_start", datatype: "pipe", pipe: "DatePipe", options: "DD/MM/YYYY HH:mm" },
       { title: 'Name', data: "name" },
@@ -40,20 +42,24 @@ export class EventDetailsPage implements OnInit {
   }
 
   tableInfoCategories: any = {
-    id: `table-event-categories-${this._id}`,
     columns: [
       { title: 'Name', data: "name" },
+      { title: 'Dist', data: "dist", render: (a, b, c) => c.routes.find(it => it)?.dist },
+      { title: 'Climb', data: "climb", render: (a, b, c) => c.routes.find(it => it)?.climb },
+      { title: 'N. PCS', data: "n_pcs", render: (a, b, c) => c.routes.find(it => it)?.n_pcs },
       {
         title: 'Routes', data: "routes", render: (a, b, c) => {
-          return Object.values(c.routes || {}).map((r: any) => r.ref).join(',');
+
+          return Object.values(c.routes || {}).map((r: any) => r.name).join(', ');
         }
       },
-      { title: 'N. Subs', data: "" },
+      { title: 'N. Subs', data: "n_subs"},
     ],
     data: [],
     actions: {
       buttons: [
-        { action: "replay_category", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play" }, // TODO
+        { action: "map_open", tooltip: "Abrir Mapa", class: "btn-warning", icon: "mdi mdi-map", conditional: args => args.map?._id },
+        // { action: "replay_category", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play" }, // TODO
         // { action: "detail-map", tooltip: "Mapa", class: "btn-light", icon: "mdi mdi-map" },
         // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
         // { action: "remove", tooltip: "Remover", class: "btn-danger", icon: "mdi mdi-close" }, // TODO
@@ -62,7 +68,6 @@ export class EventDetailsPage implements OnInit {
   }
 
   tableInfoSubscriptions: any = {
-    id: `table-event-subscription-${this._id}`,
     columns: [
       { title: 'Category', data: "category" },
       { title: 'Num Start', data: "startnumber" },
@@ -88,22 +93,30 @@ export class EventDetailsPage implements OnInit {
   }
 
   tableInfoRoutes: any = {
-    id: `table-event-routes-${this._id}`,
     columns: [
       { title: 'Name', data: "name" },
       { title: 'Dist', data: "dist" },
       { title: 'Climb', data: "climb" },
       { title: 'Num PCs', data: "n_pcs" },
+      { title: 'N. Subs', data: "n_subs"},
       {
         title: 'Categories', data: "categories", render: (a, b, c) => {
-          return Object.keys(c.categories || {}).join(',');
+          return (c.categories || []).map(it => {
+            if (it.map)
+              return `<a id="${it._id}" href="${it?.map?.file?.url || 'javascript:void(0)'}" target="_blank">${it.name}</a>`;
+
+            return it.name;
+          }
+          ).join(', ');
         }
       },
     ],
     data: [],
     actions: {
       buttons: [
-        // { action: "detail-map", tooltip: "Mapa", class: "btn-light", icon: "mdi mdi-map" },
+        { action: "map_open", tooltip: "Abrir Mapa", class: "btn-warning", icon: "mdi mdi-map", conditional: args => args.map?._id },
+        { action: "map_send", tooltip: "Enviar Mapa", class: "btn-light", icon: "mdi mdi-upload" },
+        { action: "replay_route", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play" },
         // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
         // { action: "remove", tooltip: "Remover", class: "btn-danger", icon: "mdi mdi-close" }, // TODO
       ]
@@ -111,7 +124,6 @@ export class EventDetailsPage implements OnInit {
   }
 
   tableInfoAudits: any = {
-    id: `table-event-audit-${this._id}`,
     columns: [
       { title: 'Event', data: "" },
     ],
@@ -132,19 +144,21 @@ export class EventDetailsPage implements OnInit {
     private loadingService: LoadingService,
     private personsService: PersonsService,
     private eventsService: EventsService,
+    private eventRoutesService: EventRoutesService,
+    private eventCategoriesService: EventCategoriesService,
     private alertsService: AlertsService
   ) {
     this.route.params.subscribe((params: any) => {
       this._id = params?.id || null;
 
-      this.tableInfoCategories.ajax = {
-        url: `${environment.API.orient}/server_side/event-categories?ev=` + this._id,
-      }
+      this.tableInfoRaces.id = `table-event-races-${this._id}`;
+      this.tableInfoCategories.id = `table-event-categories-${this._id}`;
+      this.tableInfoRoutes.id = `table-event-routes-${this._id}`;
+      this.tableInfoSubscriptions.id = `table-event-subscriptions-${this._id}`;
+      this.tableInfoAudits.id = `table-event-audits-${this._id}`;
+
       this.tableInfoSubscriptions.ajax = {
         url: `${environment.API.orient}/server_side/event-subscriptions?ev=` + this._id,
-      }
-      this.tableInfoRoutes.ajax = {
-        url: `${environment.API.orient}/server_side/event-routes?ev=` + this._id,
       }
       this.tableInfoRaces.ajax = {
         url: `${environment.API.orient}/server_side/event-races?ev=` + this._id,
@@ -154,24 +168,114 @@ export class EventDetailsPage implements OnInit {
       this.loadEventDetail();
     })
   }
+
   ngOnInit() {
   }
 
   ionViewWillEnter() {
-    this.getData();
+    window.addEventListener('resize', () => {
+      this.mobile = innerWidth <= 768;
+    })
+  }
+  ionViewWillLeave() {
+    window.removeEventListener('resize', null);
   }
 
   setTab(ev) {
     let new_val = ev?.detail?.value || ev;
     if (new_val != this.tab) this.tab = new_val;
+
+    let handleTab = {
+      info: () => {
+
+      },
+      races: () => {
+
+      },
+      categories: () => {
+        this.getEventCategories();
+      },
+      routes: () => {
+        this.getEventRoutes();
+      },
+      subscriptions: () => {
+
+      },
+      audit: () => {
+
+      },
+    }
+
+    if (handleTab[this.tab])
+      handleTab[this.tab]();
   }
 
-  getData() {
+  async getEventRoutes() {
+    this.loadingService.show();
+    let data = await this.eventRoutesService.getEventRoutes({ _event: this._id }, `
+      _id
+      name  
+      dist
+      climb
+      n_pcs
+      n_subs
+      categories{
+        _id
+        name
+        map{
+          file{
+            url
+          }
+        }
+      }
+      map{
+        _id
+        file{
+          url
+        }
+      }
+    `);
+    this.tableInfoRoutes.data = (data || []).map(it => {
+      it.label = `${it.name} - ${(it.categories || []).map(c => c.name).join(',')}`
+      return it;
+    })
+    this.loadingService.hide();
+    this.reloadTable.next(true);
   }
 
+  async getEventCategories() {
+    this.loadingService.show();
+    let data = await this.eventCategoriesService.getEventCategories({ _event: this._id }, `
+      _id
+      _event
+      _race
+      name  
+      n_subs
+      routes{
+        name
+        dist
+        climb
+        n_pcs
+        map{
+          file{
+            url
+          }
+        }
+      }
+      map{
+        _id
+        file{
+          url
+        }
+      }
+    `);
+    this.tableInfoCategories.data = data || [];
+    this.loadingService.hide();
+    this.reloadTable.next(true);
+  }
   /**
-   * loadEventDetail: Método que busca as viaturas para o autocomplete.
-   */
+ * loadEventDetail: Método que busca as viaturas para o autocomplete.
+ */
   async loadEventDetail() {
     this.loadingService.show();
     let data = await this.eventsService.getEventById({ _id: this._id }, `
@@ -179,7 +283,6 @@ export class EventDetailsPage implements OnInit {
     `);
     this.event = data || null;
     this.loadingService.hide();
-    // this.getRoutes();
   }
 
   // TODO
@@ -193,6 +296,11 @@ export class EventDetailsPage implements OnInit {
 
   handleTable(ev) {
     let map = {
+      map_open: args => {
+        console.log(ev.data);
+
+        window.open(ev.data.map?.file?.url, '_blank');
+      },
       replay_sub: args => this.nav.navigateForward(['/internal/replay'], {
         state: {
           _subscription: ev.data._id

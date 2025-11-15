@@ -38,6 +38,7 @@ export class MapsPage implements OnInit {
       { title: 'Date', data: "event.dt_start", datatype: "pipe", pipe: "DatePipe", options: "DD/MM/YYYY HH:mm" },
       { title: 'Event', data: "event.name" },
       { title: 'Route', data: "route.name" },
+      { title: 'Category', data: "category.name" },
       {
         title: 'Categories', data: "route.categories", render: (a, b, c) => {
           return (c.route.categories || []).map(it => it.name).join(',')
@@ -99,6 +100,9 @@ export class MapsPage implements OnInit {
         categories{
           name
         }
+      }
+      category{
+        name
       }
       file{
         url
