@@ -51,16 +51,6 @@ export class EventRacesPage implements OnInit {
   }
 
   getData() {
-    this.loadEventRace();
-  }
-
-  /**
-   * loadEventRace: Método que busca as viaturas para o autocomplete.
-   */
-  async loadEventRace() {
-    this.loadingService.show();
-    let data = await this.eventRacesService.getEventRaces();
-    this.loadingService.hide();
   }
 
   handleTable(ev) {
