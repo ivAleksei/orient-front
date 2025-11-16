@@ -246,10 +246,10 @@
       </ion-row>
     </div>
 
-    <div>
+    <div *ngIf="route_map?.file?.url">
       <h3>Mapa</h3>
       <div class="map-place">
-        <img src="assets/baseorient/imgs/mapa_template.png" alt="map_template">
+        <img [src]="route_map?.file?.url" alt="map_template">
       </div>
     </div>
     <div class="inline between">

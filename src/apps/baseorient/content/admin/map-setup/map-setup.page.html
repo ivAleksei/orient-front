@@ -3,10 +3,7 @@
     <div class="inline">
 
       <div class="map-section">
-        <div id="map">
-        <!-- <div leaflet [leafletOptions]="options" [leafletLayers]="options?.layers" *ngIf="render"
-          (leafletMapReady)="onMapReady($event)"> -->
-        </div>
+        <div id="map"></div>
       </div>
       <div class="map-section" [ngClass]="{hidden: sync_ok}">
         <div class="zoom-container">
@@ -38,11 +35,9 @@
                     [disabled]="sync_ok"></td>
                 <td><input type="number" name="lng" [(ngModel)]="it.latLng.lng" (change)="transformMap()"
                     [disabled]="sync_ok"></td>
-                <td><input type="number" name="x" [(ngModel)]="it.xy.x" (change)="transformMap()"
-                    [disabled]="sync_ok">
+                <td><input type="number" name="x" [(ngModel)]="it.xy.x" (change)="transformMap()" [disabled]="sync_ok">
                 </td>
-                <td><input type="number" name="y" [(ngModel)]="it.xy.y" (change)="transformMap()"
-                    [disabled]="sync_ok">
+                <td><input type="number" name="y" [(ngModel)]="it.xy.y" (change)="transformMap()" [disabled]="sync_ok">
                 </td>
               </tr>
             </ng-template>

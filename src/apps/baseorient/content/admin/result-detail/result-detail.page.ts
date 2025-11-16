@@ -46,9 +46,6 @@ export class ResultDetailPage implements OnInit {
   ionViewWillEnter() {
   }
 
-  getData() {
-  }
-
   async loadResultDetail() {
     this.loadingService.show();
     let data = await this.eventSubscriptionsService.getEventSubscriptionById({ _id: this._id }, `
@@ -81,9 +78,14 @@ export class ResultDetailPage implements OnInit {
             _id
             dist
             climb
-            splits{
+            pcs{
               index
               num_base
+            }
+            map{
+              file{
+                url
+              }
             }
           }
           event{
@@ -95,12 +97,17 @@ export class ResultDetailPage implements OnInit {
             location
           }`);
     this.result = data || [];
-
-    this.setupData();
-    this.getRouteResults();
+    this.route_map = data?.route?.map || null;
+    this.getData();
     this.loadingService.hide();
   }
 
+  getData() {
+    this.setupData();
+    this.getRouteResults();
+  }
+
+  route_map: any;
   same_route: boolean;
   data_results: any = [];
 

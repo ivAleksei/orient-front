@@ -110,6 +110,10 @@ export class MapSetupPage implements OnInit {
       file{
         url
       }  
+      center{
+        lat
+        lng
+      }
       sync_points{
         latLng{
           lat
@@ -158,6 +162,11 @@ export class MapSetupPage implements OnInit {
 
 
   async getCenterMap() {
+    if (this.raceMap?.center?.lat && this.raceMap?.center?.lng) {
+      this.centerMap = this.raceMap.center;
+      return;
+    }
+    
     let location = null;
     if (!location && this.raceMap._race) {
       let race = await this.racesService.getEventRaceById({ _id: this.raceMap._race }, `
@@ -266,7 +275,6 @@ export class MapSetupPage implements OnInit {
    * @returns 
    */
   setPair(src, coords) {
-    console.log('setPair', src, coords);
 
     if (this.state == 'add_pc') {
       this.addNewPC(coords);
@@ -275,7 +283,6 @@ export class MapSetupPage implements OnInit {
 
     if (this.sync_ok) return;
 
-    console.log(this.obj_sync_points);
 
     if (this.pair_i != 3) {
       if (
@@ -291,7 +298,6 @@ export class MapSetupPage implements OnInit {
       if (obj.latLng?.lat && obj.xy?.x)
         this.pair_i++;
     }
-    console.log(this.pair_i);
 
     if (this.pair_i == 3) {
       this.alertsService.notify({ type: "success", subtitle: "Pontos para sincronização definidos" });
@@ -343,6 +349,7 @@ export class MapSetupPage implements OnInit {
   async saveSyncPoints() {
     let payload = {
       _id: this._id,
+      center: this.centerMap,
       sync_points: Array.from(this.sync_points)
     }
     await this.mapsService.saveMap(payload)
@@ -440,7 +447,6 @@ export class MapSetupPage implements OnInit {
 
     let img: any = await this.utils.getImageSize(this.raceMap.file.url);
     if (!img) return;
-    console.log(img);
 
     // 4) Converte cantos da imagem (por ex. 1024x768)
     const width = img.width;
@@ -478,7 +484,6 @@ export class MapSetupPage implements OnInit {
     this.overlayMap = L.imageOverlay.rotated(this.raceMap.file.url, corners.topLeft, corners.topRight, corners.bottomLeft, {
       opacity: this.configs.opacity,
       interactive: true,
-      attribution: "Historical building plan &copy; <a href='http://www.ign.es'>Instituto Geográfico Nacional de España</a>"
     }).addTo(this.leafletMap);
   }
 
@@ -559,7 +564,6 @@ export class MapSetupPage implements OnInit {
 
     container.removeEventListener('click', (e: any) => { });
     container.addEventListener('click', (e: MouseEvent) => {
-      console.log('event', 'click');
 
       if (hasDragged) {
         hasDragged = false;
@@ -583,35 +587,12 @@ export class MapSetupPage implements OnInit {
       const imgX = relX * img.naturalWidth;   // aqui deve ir até ~1183
       const imgY = relY * img.naturalHeight;  // aqui deve ir até ~854
 
-      console.log('coords imagem:', imgX, imgY);
 
       this.setPair('xy', {
         x: Math.round(imgX),
         y: Math.round(imgY)
       });
     });
-    // container.addEventListener('click', (e: any) => {
-    //   console.log('event', 'click');
-
-    //   // se houve drag, não considerar como clique de seleção
-    //   if (hasDragged) {
-    //     hasDragged = false;
-    //     return;
-    //   }
-
-    //   // posição do clique em relação ao zoomContent (corrigindo o scale)
-    //   const rect = zoomContent.getBoundingClientRect();
-    //   const x = (e.clientX - rect.left) / scale;
-    //   const y = (e.clientY - rect.top) / scale;
-
-
-
-    //   // RETORNA LOCAL DO CLICK (x,y)
-    //   console.log(x, y);
-
-    //   this.setPair('xy', { x: Math.floor(x), y: Math.floor(y) })
-    // });
-
     applyZoom();
   }
 

@@ -49,6 +49,7 @@ export class MapsPage implements OnInit {
     data: [],
     actions: {
       buttons: [
+        { action: "replay_route", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play", conditional: args => args._route }, // TODO
         { action: "map", tooltip: "Detail", class: "btn-light", icon: "mdi mdi-map" },
         { action: "center_map", tooltip: "Detail", class: "btn-warning", icon: "mdi mdi-target" },
         { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
@@ -93,6 +94,7 @@ export class MapsPage implements OnInit {
       _event
       _race
       _route
+      _category
       
       event{
         dt_start
@@ -200,6 +202,11 @@ export class MapsPage implements OnInit {
 
   handleTable(ev) {
     let map = {
+      replay_route: args => this.nav.navigateForward(['/internal/replay'], {
+        state: {
+          _route: ev.data._route
+        }
+      }),
       center_map: () => {
         this.nav.navigateForward(['/internal/admin/map-setup', ev.data._id])
       },
@@ -213,6 +220,7 @@ export class MapsPage implements OnInit {
       map: () => {
         window.open(ev.data?.file?.url, '_blank');
       },
+
       new: () => {
         this.modalMap.present();
       },

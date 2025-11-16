@@ -16,24 +16,50 @@
         </div>
       </div>
     </div>
-    <ion-row>
-      <ion-col size-xs="12" size-lg="6">
-        <div class="map-place">
-          <img src="/assets/baseorient/imgs/mapa_template.png" alt="mapa_template">
+    <div class="inline">
+      <div class="map-section">
+        <div id="mapViewer"></div>
+      </div>
+      <div class="map-section">
+        <div class="inline">
+          <div class="card">
+            <h4 class="card-title">{{i18n.lang.ROUTE}}<br><small>{{route?.name || '-'}}</small></h4>
+          </div>
+          <div class="card">
+            <h4 class="card-title">{{i18n.lang.CATEGORY}}<br>
+              <select name="_category" [(ngModel)]="_category" (change)="filterCategory()">
+                <option [value]="''">Todos</option>
+                <ng-template ngFor let-it [ngForOf]="route?.categories || []">
+                  <option [value]="it._id">{{it.name}}</option>
+                </ng-template>
+              </select>
+            </h4>
+          </div>
         </div>
-      </ion-col>
-      <ion-col size-xs="12" size-lg="6">
+        <div class="inline">
+          <div class="card">
+            <h4 class="card-title">{{i18n.lang.DIST}}<br><small>{{route?.dist || '-'}}</small></h4>
+          </div>
+          <div class="card">
+            <h4 class="card-title">{{i18n.lang.CLIMB}}<br><small>{{route?.climb || '-'}}</small></h4>
+          </div>
+          <div class="card">
+            <h4 class="card-title">{{i18n.lang.N_SUBS}}<br><small>{{ranking?.length || '-'}}</small></h4>
+          </div>
+        </div>
         <table class="table dataTable">
           <tbody>
             <tr>
               <th>Pos</th>
+              <th>Category</th>
               <th>Name</th>
               <th>Time</th>
               <th>Ult. Base</th>
             </tr>
             <ng-template ngFor let-it [ngForOf]="ranking">
               <tr>
-                <td>{{it.pos || (it.status | status) || '-'}}</td>
+                <td>{{it.race_pos || '-'}}</td>
+                <td>{{obj_categories[it._category]?.name||'-'}}</td>
                 <td>{{it.name}}</td>
                 <td>{{it.ult_time | time}}</td>
                 <td>{{it.ult_base || '-'}}</td>
@@ -41,8 +67,21 @@
             </ng-template>
           </tbody>
         </table>
-      </ion-col>
-    </ion-row>
+        <div class="card">
+          <h4 class="card-title">
+            Posição de Prova
+          </h4>
+          <div class="card-body">
+
+            <div class="graph-place">
+              <ngx-charts-line-chart [results]="data_position_race_graph" [gradient]="true" [xAxis]="true"
+                [yAxis]="true" [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="true">
+              </ngx-charts-line-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
   </div>

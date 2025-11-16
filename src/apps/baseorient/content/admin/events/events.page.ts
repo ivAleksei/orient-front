@@ -102,6 +102,9 @@ export class EventsPage implements OnInit {
   saveForm() {
     this.loadingService.show();
     let obj = Object.assign({}, this.EventForm.value);
+    obj.dt_start = [obj.dt_start, obj.time_start].join(' ');
+    delete obj.time_start;
+    
     this.eventsService.saveEvent(obj)
       .then(data => {
         this.loadingService.hide();

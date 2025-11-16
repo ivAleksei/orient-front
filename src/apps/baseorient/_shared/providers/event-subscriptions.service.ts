@@ -46,19 +46,13 @@ export class EventSubscriptionsService {
     return this.http.get(url);
   }
 
-  async getEventRouteBy(args?) {
+  async getEventRouteBy(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query EventRouteBy($event: ID, $route_ref: String){
-        EventRouteBy(event: $event, route_ref: $route_ref){
+      query EventRouteBy($event: ID){
+        EventRouteBy(event: $event:){
           _id
-          dist
-          climb
-          num_pcs
-          pcs{
-            index
-            num_base
-          }
+          ${fields}
         }
       }`,
       name: "EventRouteBy",

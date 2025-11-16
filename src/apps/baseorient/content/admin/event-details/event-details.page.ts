@@ -59,7 +59,7 @@ export class EventDetailsPage implements OnInit {
     actions: {
       buttons: [
         { action: "map_open", tooltip: "Abrir Mapa", class: "btn-warning", icon: "mdi mdi-map", conditional: args => args.map?._id },
-        // { action: "replay_category", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play" }, // TODO
+        { action: "replay_category", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play" }, // TODO
         // { action: "detail-map", tooltip: "Mapa", class: "btn-light", icon: "mdi mdi-map" },
         // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
         // { action: "remove", tooltip: "Remover", class: "btn-danger", icon: "mdi mdi-close" }, // TODO
@@ -115,7 +115,6 @@ export class EventDetailsPage implements OnInit {
     actions: {
       buttons: [
         { action: "map_open", tooltip: "Abrir Mapa", class: "btn-warning", icon: "mdi mdi-map", conditional: args => args.map?._id },
-        { action: "map_send", tooltip: "Enviar Mapa", class: "btn-light", icon: "mdi mdi-upload" },
         { action: "replay_route", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play" },
         // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
         // { action: "remove", tooltip: "Remover", class: "btn-danger", icon: "mdi mdi-close" }, // TODO
@@ -297,8 +296,6 @@ export class EventDetailsPage implements OnInit {
   handleTable(ev) {
     let map = {
       map_open: args => {
-        console.log(ev.data);
-
         window.open(ev.data.map?.file?.url, '_blank');
       },
       replay_sub: args => this.nav.navigateForward(['/internal/replay'], {
@@ -306,9 +303,14 @@ export class EventDetailsPage implements OnInit {
           _subscription: ev.data._id
         }
       }),
+      replay_route: args => this.nav.navigateForward(['/internal/replay'], {
+        state: {
+          _route: ev.data._id
+        }
+      }),
       replay_category: args => this.nav.navigateForward(['/internal/replay'], {
         state: {
-          _subscription: ev.data._id
+          _category: ev.data._id
         }
       }),
       sync: () => this.personsService.syncHelga({ _id: ev.data._person }),
