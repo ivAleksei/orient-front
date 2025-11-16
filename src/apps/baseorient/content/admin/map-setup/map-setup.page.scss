@@ -1,0 +1,70 @@
+.page-layout {
+    padding: 0;
+    margin: 0;
+    min-height: calc(100vh - 66px);
+}
+
+.inline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.info-section {
+    flex-grow: 1;
+}
+
+.map-section {
+    width: 100%;
+    height: 100%;
+    flex-grow: 2;
+
+    >div {
+        min-height: calc(100vh - 58px);
+    }
+}
+
+
+.scroll{
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.zoom-container {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+    /* tamanho visível da div (ajuste como quiser) */
+    border: 1px solid #ccc;
+    overflow: auto;
+    /* permite scroll se o conteúdo ficar maior */
+    position: relative;
+
+    img {
+        pointer-events: none;
+    }
+
+    &.dragging {
+        cursor: grabbing;
+    }
+}
+
+.zoom-content {
+    transform-origin: 0 0;
+}
+
+.zoom-controls {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+    .inline {
+        flex-direction: column;
+    }
+}

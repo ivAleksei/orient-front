@@ -24,21 +24,17 @@
     "git-clear": "git fetch --prune",
     "merge": "git merge origin/master",
     "git-setup": "npm run git-clear && npm run merge",
-
     "electron": "electron ./www/main.js",
     "start:electron": "electron-forge start",
     "package:electron": "electron-forge package",
     "make:electron": "electron-forge make --arch=\"ia32,x64\"",
-
     "local-ip": "node local_ip.js",
-
     "prestart": "npm run git-setup && npm run local-ip",
     "start": "npm run start:baseorient",
     "prestart:baseorient": "npm run prestart",
     "start:baseorient": "ionic serve --project=baseorient --livereload --external",
     "predeploy:baseorient": "ng build --configuration production --base-href /baseorient/",
     "deploy:baseorient": "node tasks/deploy --env=prod --app=baseorient",
-
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "deploy": "npm run deploy:baseorient",
@@ -89,6 +85,7 @@
     "jquery": "^3.7.0",
     "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
+    "leaflet-imageoverlay-rotated": "^0.2.1",
     "lg-thumbnail": "^1.2.1",
     "lg-zoom": "^1.3.0",
     "lightgallery": "^2.9.0",

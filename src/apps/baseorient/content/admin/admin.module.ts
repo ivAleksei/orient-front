@@ -91,6 +91,18 @@ const routes: Routes = [
     loadChildren: () => import('src/apps/baseorient/content/admin/maps/maps.module').then(m => m.MapsPageModule)
   },
   {
+    path: 'pcs',
+    loadChildren: () => import('src/apps/baseorient/content/admin/event-pcs/event-pcs.module').then(m => m.EventPcsPageModule)
+  },
+  {
+    path: 'gpx',
+    loadChildren: () => import('src/apps/baseorient/content/admin/event-gpxs/event-gpxs.module').then(m => m.EventGpxsPageModule)
+  },
+  {
+    path: 'map-setup/:id',
+    loadChildren: () => import('src/apps/baseorient/content/admin/map-setup/map-setup.module').then(m => m.MapSetupPageModule)
+  },
+  {
     path: 'result/:id',
     loadChildren: () => import('src/apps/baseorient/content/admin/result-detail/result-detail.module').then(m => m.ResultDetailPageModule)
   },

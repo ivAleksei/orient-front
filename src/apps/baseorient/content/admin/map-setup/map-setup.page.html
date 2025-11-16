@@ -1,0 +1,129 @@
+<ion-content [fullscreen]="true">
+  <div class="page-layout">
+    <div class="inline">
+
+      <div class="map-section">
+        <div id="map">
+        <!-- <div leaflet [leafletOptions]="options" [leafletLayers]="options?.layers" *ngIf="render"
+          (leafletMapReady)="onMapReady($event)"> -->
+        </div>
+      </div>
+      <div class="map-section" [ngClass]="{hidden: sync_ok}">
+        <div class="zoom-container">
+          <div class="zoom-content" id="zoomContent">
+            <img id="mapImg" [src]="raceMap?.file?.url" alt="raceMap">
+          </div>
+        </div>
+
+      </div>
+      <div class="info-section">
+        <table class="table dataTable">
+          <thead>
+            <tr>
+              <th colspan="3">Status Sync: {{sync_ok}} - {{state}}</th>
+              <th class="t-center">
+                <input type="checkbox" name="show_sync_pcs" [(ngModel)]="configs.show_sync_pcs"
+                  (change)="transformMap()">
+              </th>
+            </tr>
+            <tr>
+              <th colspan="2">Coord Real (lat,lng)</th>
+              <th colspan="2">Coord Mapa (x,y)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-it [ngForOf]="sync_points">
+              <tr>
+                <td><input type="number" name="lat" [(ngModel)]="it.latLng.lat" (change)="transformMap()"
+                    [disabled]="sync_ok"></td>
+                <td><input type="number" name="lng" [(ngModel)]="it.latLng.lng" (change)="transformMap()"
+                    [disabled]="sync_ok"></td>
+                <td><input type="number" name="x" [(ngModel)]="it.xy.x" (change)="transformMap()"
+                    [disabled]="sync_ok">
+                </td>
+                <td><input type="number" name="y" [(ngModel)]="it.xy.y" (change)="transformMap()"
+                    [disabled]="sync_ok">
+                </td>
+              </tr>
+            </ng-template>
+            <tr>
+              <td>Opacidade</td>
+              <td><input type="range" min="1" max="100" name="rng_opacity" [(ngModel)]="rng_opacity"
+                  (change)="setOpacityMap()"></td>
+              <td><input type="number" name="cfg_opacity" [(ngModel)]="configs.opacity" (keyup)="transformMap()"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="inline">
+          <ion-button (click)="saveSyncPoints()">Salvar Configs</ion-button>
+          <ion-button (click)="resetSync()">Reiniciar</ion-button>
+        </div>
+        <table class="table dataTable" *ngIf="sync_ok && raceMap?._route">
+          <thead>
+            <tr>
+              <th colspan="3" class="t-center">Route PCs</th>
+              <th class="t-center">
+                <input type="checkbox" name="show_route_pcs" [(ngModel)]="configs.show_route_pcs"
+                  (change)="transformMap()">
+              </th>
+            </tr>
+            <tr>
+              <th class="t-center">#</th>
+              <th class="t-center">N. Base</th>
+              <th class="t-center">Coord Real (lat,lng)</th>
+              <th class="t-center">Coord Mapa (x,y)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-it let-i="index" [ngForOf]="arr_route_pcs">
+              <tr>
+                <td class="t-center">{{i}}</td>
+                <td class="t-center">{{it.num_base}}</td>
+                <td class="t-center">({{it.latLng?.lat || '-'}},{{it.latLng?.lng || '-'}})</td>
+                <td class="t-center">({{it.xy?.x || '-'}},{{it.xy?.y || '-'}})</td>
+              </tr>
+            </ng-template>
+          </tbody>
+        </table>
+        <table class="table dataTable" *ngIf="sync_ok && !raceMap?._route">
+          <thead>
+            <tr>
+              <th colspan="5" class="t-center">Race PCs</th>
+              <th class="t-center">
+                <input type="checkbox" name="show_marker_pc" [(ngModel)]="configs.show_marker_pc"
+                  (change)="transformMap()">
+              </th>
+            </tr>
+            <tr>
+              <th class="t-center">#</th>
+              <th class="t-center">N. Base</th>
+              <th class="t-center" colspan="2">Coord Real (lat,lng)</th>
+              <th class="t-center" colspan="2">Coord Mapa (x,y)</th>
+            </tr>
+          </thead>
+        </table>
+        <div class="scroll" *ngIf="sync_ok && !raceMap?._route">
+          <table class="table dataTable">
+            <tbody>
+              <ng-template ngFor let-it let-i="index" [ngForOf]="arr_pcs">
+                <tr>
+                  <td>{{i}}</td>
+                  <td><input type="text" name="num_base" [(ngModel)]="it.num_base"></td>
+                  <td><input type="number" name="lat" [(ngModel)]="it.latLng.lat"></td>
+                  <td><input type="number" name="lng" [(ngModel)]="it.latLng.lng"></td>
+                  <td><input type="number" name="x" [(ngModel)]="it.xy.x"></td>
+                  <td><input type="number" name="y" [(ngModel)]="it.xy.y"></td>
+                  <td><button class="btn btn-danger" (click)="rmPC(it)"><i class="mdi mdi-close"></i></button></td>
+                </tr>
+              </ng-template>
+            </tbody>
+          </table>
+        </div>
+        <div class="inline" *ngIf="sync_ok && !raceMap?._route">
+          <ion-button (click)="savePoints()">Salvar PCs</ion-button>
+          <ion-button (click)="setState('add_pc')" [disabled]="state == 'add_pc'">Add PCs</ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

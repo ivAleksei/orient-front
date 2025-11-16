@@ -50,7 +50,9 @@
               "src/assets/baseorient/libs/jquery-ui/jquery-ui.min.js",
               "src/assets/baseorient/scripts/sorting-datetime-moment.js",
               "src/assets/baseorient/plugins/summernote-lite/summernote-lite.min.js",
-              "src/assets/baseorient/plugins/summernote-lite/summernote-pt-BR.js"
+              "src/assets/baseorient/plugins/summernote-lite/summernote-pt-BR.js",
+              "node_modules/leaflet/dist/leaflet.js",
+              "src/assets/baseorient/libs/leaflet-rotated/Leaflet.ImageOverlay.Rotated.js"
             ]
           },
           "configurations": {

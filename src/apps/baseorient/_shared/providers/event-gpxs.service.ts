@@ -8,7 +8,7 @@ import { LoadingService } from 'src/_shared/services/loading.service';
 @Injectable({
   providedIn: 'root'
 })
-export class EventRacesService {
+export class EventGpxsService {
   private _watch: BehaviorSubject<any>;
   public watch: Observable<any>;
 
@@ -24,44 +24,44 @@ export class EventRacesService {
     this._watch.next(true);
   }
 
-  async getEventRaces(args?, fields?) {
+  async getEventGpxs(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query EventRaces{
-        EventRaces{
+      query EventGpxs{
+        EventGpxs{
           _id
           ${fields}
         }
       }`,
-      name: "EventRaces",
+      name: "EventGpxs",
       variables: args || {}
     });
   }
-  async getEventRaceById(args?, fields?) {
+  async getEventGpxById(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query EventRaceById($_id: ID){
-        EventRaceById(_id: $_id){
+      query EventGpxById($_id: String){
+        EventGpxById(_id: $_id){
           _id
           ${fields}
         }
       }`,
-      name: "EventRaceById",
+      name: "EventGpxById",
       variables: args || {}
     });
   }
 
-  newEventRace(data) {
+  newEventGpx(data) {
     this.loadingService.show();
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation CreateEventRace($input: EventRaceInput){
-        CreateEventRace(input: $input){
+      mutation CreateEventGpx($input: EventGpxInput){
+        CreateEventGpx(input: $input){
           status
           msg
         }
       }`,
-      name: "CreateEventRace",
+      name: "CreateEventGpx",
       variables: data
     })
       .then(done => {
@@ -70,19 +70,19 @@ export class EventRacesService {
       });
   }
 
-  editEventRace(data) {
+  editEventGpx(data) {
     this.loadingService.show();
 
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation UpdateEventRace($input: EventRaceInput){
-        UpdateEventRace(input: $input){
+      mutation UpdateEventGpx($input: EventGpxInput){
+        UpdateEventGpx(input: $input){
           status
           msg
         }
       }`,
 
-      name: "UpdateEventRace",
+      name: "UpdateEventGpx",
       variables: data
     })
       .then(done => {
@@ -91,20 +91,20 @@ export class EventRacesService {
       });
   }
 
-  delEventRace(data) {
+  delEventGpx(data) {
     return this.alertsService.confirmDel()
       .then(confirm => {
         if (!confirm) return;
         this.loadingService.show();
         return this.graphql.query(environment.API.orient, 'graphql', {
           query: `
-        mutation deleteEventRace($_id: ID){
-          deleteEventRace(_id: $_id){
+        mutation deleteEventGpx($_id: ID){
+          deleteEventGpx(_id: $_id){
             status
             msg
           }
         }`,
-          name: "deleteEventRace",
+          name: "deleteEventGpx",
           variables: data
         });
       })
@@ -114,8 +114,8 @@ export class EventRacesService {
       });
   }
 
-  saveEventRace(data) {
-    return this[data._id ? 'editEventRace' : "newEventRace"]({ input: data });
+  saveEventGpx(data) {
+    return this[data._id ? 'editEventGpx' : "newEventGpx"]({ input: data });
   }
 
 }

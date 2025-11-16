@@ -8,7 +8,7 @@ import { LoadingService } from 'src/_shared/services/loading.service';
 @Injectable({
   providedIn: 'root'
 })
-export class EventRacesService {
+export class EventPcsService {
   private _watch: BehaviorSubject<any>;
   public watch: Observable<any>;
 
@@ -24,44 +24,57 @@ export class EventRacesService {
     this._watch.next(true);
   }
 
-  async getEventRaces(args?, fields?) {
+  async getEventPcs(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query EventRaces{
-        EventRaces{
+      query EventPcs{
+        EventPcs{
           _id
           ${fields}
         }
       }`,
-      name: "EventRaces",
+      name: "EventPcs",
       variables: args || {}
     });
   }
-  async getEventRaceById(args?, fields?) {
+  async getEventPcsBy(args?, fields?) {
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      query EventRaceById($_id: ID){
-        EventRaceById(_id: $_id){
+      query EventPcsBy($_event: ID, $_race: ID){
+        EventPcsBy(_event: $_event, _race: $_race){
           _id
           ${fields}
         }
       }`,
-      name: "EventRaceById",
+      name: "EventPcsBy",
+      variables: args || {}
+    });
+  }
+  async getEventPcById(args?, fields?) {
+    return this.graphql.query(environment.API.orient, 'graphql', {
+      query: `
+      query EventPcById($_id: String){
+        EventPcById(_id: $_id){
+          _id
+          ${fields}
+        }
+      }`,
+      name: "EventPcById",
       variables: args || {}
     });
   }
 
-  newEventRace(data) {
+  newEventPc(data) {
     this.loadingService.show();
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation CreateEventRace($input: EventRaceInput){
-        CreateEventRace(input: $input){
+      mutation CreateEventPc($input: EventPcInput){
+        CreateEventPc(input: $input){
           status
           msg
         }
       }`,
-      name: "CreateEventRace",
+      name: "CreateEventPc",
       variables: data
     })
       .then(done => {
@@ -70,19 +83,19 @@ export class EventRacesService {
       });
   }
 
-  editEventRace(data) {
+  editEventPc(data) {
     this.loadingService.show();
 
     return this.graphql.query(environment.API.orient, 'graphql', {
       query: `
-      mutation UpdateEventRace($input: EventRaceInput){
-        UpdateEventRace(input: $input){
+      mutation UpdateEventPc($input: EventPcInput){
+        UpdateEventPc(input: $input){
           status
           msg
         }
       }`,
 
-      name: "UpdateEventRace",
+      name: "UpdateEventPc",
       variables: data
     })
       .then(done => {
@@ -91,20 +104,20 @@ export class EventRacesService {
       });
   }
 
-  delEventRace(data) {
+  delEventPc(data) {
     return this.alertsService.confirmDel()
       .then(confirm => {
         if (!confirm) return;
         this.loadingService.show();
         return this.graphql.query(environment.API.orient, 'graphql', {
           query: `
-        mutation deleteEventRace($_id: ID){
-          deleteEventRace(_id: $_id){
+        mutation deleteEventPc($_id: ID){
+          deleteEventPc(_id: $_id){
             status
             msg
           }
         }`,
-          name: "deleteEventRace",
+          name: "deleteEventPc",
           variables: data
         });
       })
@@ -114,8 +127,8 @@ export class EventRacesService {
       });
   }
 
-  saveEventRace(data) {
-    return this[data._id ? 'editEventRace' : "newEventRace"]({ input: data });
+  saveEventPc(data) {
+    return this[data._id ? 'editEventPc' : "newEventPc"]({ input: data });
   }
 
 }

@@ -14,6 +14,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { SummernoteComponent } from './summernote/summernote.component';
 import { UploadsComponent } from './uploads/uploads.component';
 import { PipesModule } from '../pipes/pipes.module';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { PipesModule } from '../pipes/pipes.module';
     QRCodeModule,
     NgxChartsModule,
     FullCalendarModule,
+    LeafletModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
@@ -44,6 +46,7 @@ import { PipesModule } from '../pipes/pipes.module';
     DataTableComponent,
     AutocompleteComponent,
     FloatingButtonsComponent,
+    LeafletModule,
     LoadingComponent,
     DataTablesModule,
     FullCalendarModule,

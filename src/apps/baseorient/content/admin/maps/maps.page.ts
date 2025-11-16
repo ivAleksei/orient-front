@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { DatePipe } from 'src/_shared/pipes/date.pipe';
 import { AlertsService } from 'src/_shared/services/alerts.service';
 import { HttpService } from 'src/_shared/services/http.service';
@@ -41,7 +42,7 @@ export class MapsPage implements OnInit {
       { title: 'Category', data: "category.name" },
       {
         title: 'Categories', data: "route.categories", render: (a, b, c) => {
-          return (c.route.categories || []).map(it => it.name).join(',')
+          return (c.route?.categories || []).map(it => it.name).join(',')
         }
       },
     ],
@@ -49,6 +50,7 @@ export class MapsPage implements OnInit {
     actions: {
       buttons: [
         { action: "map", tooltip: "Detail", class: "btn-light", icon: "mdi mdi-map" },
+        { action: "center_map", tooltip: "Detail", class: "btn-warning", icon: "mdi mdi-target" },
         { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
         { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
       ]
@@ -57,6 +59,7 @@ export class MapsPage implements OnInit {
 
   constructor(
     public i18n: I18nService,
+    private nav: NavController,
     private http: HttpService,
     private utils: UtilsService,
     private DatePipe: DatePipe,
@@ -197,6 +200,9 @@ export class MapsPage implements OnInit {
 
   handleTable(ev) {
     let map = {
+      center_map: () => {
+        this.nav.navigateForward(['/internal/admin/map-setup', ev.data._id])
+      },
       edit: () => {
         this.modalMap.present();
         setTimeout(() => {
