@@ -1,0 +1,53 @@
+.page-layout {
+    padding: 0;
+    margin: 0;
+    min-height: calc(100vh - 66px);
+}
+
+.inline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.info-section {
+    width: 40%;
+    .p-relative{
+        padding-top: 36px;
+    }
+    .card{
+        margin-top: 0;
+    }
+}
+
+.map-section {
+    width: 60%;
+    height: 100%;
+
+    >div {
+        min-height: calc(100vh - 58px);
+    }
+}
+
+
+.scroll {
+    max-height: 32vh;
+    overflow-y: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .inline {
+        flex-direction: column;
+    }
+
+
+    .info-section,.map-section{
+        width: 100%;
+    }
+
+     .info-section,
+    .map-section > div{
+        min-height: auto;
+        height: calc(50vh - 58px);
+    }
+}

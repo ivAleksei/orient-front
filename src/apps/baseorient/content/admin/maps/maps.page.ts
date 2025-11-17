@@ -178,9 +178,8 @@ export class MapsPage implements OnInit {
     }
     if (type == 'category') {
       let route = (this.arr_routes || []).find(it => it._race == obj._race && it.categories.find(c => c._id == obj._category));
-      console.log(obj, route);
-
-      this.MapForm.form.patchValue({ _route: route?._id || null });
+      if (route?._id)
+        this.MapForm.form.patchValue({ _route: route?._id || null });
     }
   }
 
@@ -244,18 +243,20 @@ export class MapsPage implements OnInit {
     this.loadingService.show();
     let obj = Object.assign({}, this.MapForm.value);
 
-    if (!this.file)
-      return this.alertsService.notify({ type: "warning", subtitle: this.i18n.lang.NO_FILE_SELECTED })
+    if (this.file){
 
-    // UPLOAD FILES
-    let url = [environment.API.storage, 'uploads', 'index.php'].join("/");
-    let payload: any = { _id: obj._event };
-
-    let data_upl = await this.http.post(url, {
-      id: payload._id, folder: 'baseorient_maps'
-    }, { arquivo: this.file });
-
-    obj.file = data_upl;
+      // return this.alertsService.notify({ type: "warning", subtitle: this.i18n.lang.NO_FILE_SELECTED })
+      
+      // UPLOAD FILES
+      let url = [environment.API.storage, 'uploads', 'index.php'].join("/");
+      let payload: any = { _id: obj._event };
+      
+      let data_upl = await this.http.post(url, {
+        id: payload._id, folder: 'baseorient_maps'
+      }, { arquivo: this.file });
+      
+      obj.file = data_upl;
+    }
 
     this.mapsService.saveMap(obj)
       .then(data => {

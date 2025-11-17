@@ -1,9 +1,11 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import moment from 'moment';
 import { AlertsService } from 'src/_shared/services/alerts.service';
 import { I18nService } from 'src/_shared/services/i18n.service';
 import { LoadingService } from 'src/_shared/services/loading.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
 import { EventRacesService } from 'src/apps/baseorient/_shared/providers/event-races.service';
+import { EventsService } from 'src/apps/baseorient/_shared/providers/events.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 
 @Component({
@@ -15,6 +17,7 @@ export class EventRacesPage implements OnInit {
   @Output() public reloadTable: EventEmitter<any> = new EventEmitter();
   @ViewChild("modalEventRace") modalEventRace: any;
   @ViewChild('EventRaceForm') EventRaceForm: any;
+  list_events: any[] = [];
   list_eventRaces: any[] = [];
 
   tableInfo: any = {
@@ -39,6 +42,7 @@ export class EventRacesPage implements OnInit {
     public i18n: I18nService,
     private utils: UtilsService,
     private loadingService: LoadingService,
+    private eventsService: EventsService,
     private eventRacesService: EventRacesService,
     private alertsService: AlertsService
   ) { }
@@ -51,6 +55,16 @@ export class EventRacesPage implements OnInit {
   }
 
   getData() {
+    this.getEvents();
+  }
+
+  async getEvents() {
+    let data = await this.eventsService.getEvents({}, `
+      _id
+      dt_start
+      name
+    `);
+    this.list_events = (data || []).sort((a: any, b: any) => b.dt_start > a.dt_start ? 1 : -1);
   }
 
   handleTable(ev) {
@@ -58,7 +72,10 @@ export class EventRacesPage implements OnInit {
       edit: () => {
         this.modalEventRace.present();
         setTimeout(() => {
-          this.EventRaceForm.form.patchValue(ev.data);
+          let obj = Object.assign({}, ev.data);
+          obj.time_start = moment(obj?.dt_start).format('HH:mm');
+          obj.dt_start = moment(obj?.dt_start).format('YYYY-MM-DD');
+          this.EventRaceForm.form.patchValue(obj || {});
         }, 400);
       },
       new: () => {
@@ -83,6 +100,9 @@ export class EventRacesPage implements OnInit {
   saveForm() {
     this.loadingService.show();
     let obj = Object.assign({}, this.EventRaceForm.value);
+    obj.dt_start = [obj.dt_start, obj.time_start].join(' ');
+    delete obj.time_start;
+
     this.eventRacesService.saveEventRace(obj)
       .then(data => {
         this.loadingService.hide();

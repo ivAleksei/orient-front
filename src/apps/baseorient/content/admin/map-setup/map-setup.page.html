@@ -80,6 +80,10 @@
             </ng-template>
           </tbody>
         </table>
+        <div class="inline" *ngIf="sync_ok && !raceMap?._route">
+          <ion-button (click)="savePoints()">Salvar PCs</ion-button>
+          <ion-button (click)="setState('add_pc')" [disabled]="state == 'add_pc'">Add PCs</ion-button>
+        </div>
         <table class="table dataTable" *ngIf="sync_ok && !raceMap?._route">
           <thead>
             <tr>
@@ -113,10 +117,6 @@
               </ng-template>
             </tbody>
           </table>
-        </div>
-        <div class="inline" *ngIf="sync_ok && !raceMap?._route">
-          <ion-button (click)="savePoints()">Salvar PCs</ion-button>
-          <ion-button (click)="setState('add_pc')" [disabled]="state == 'add_pc'">Add PCs</ion-button>
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
 <ion-content [fullscreen]="true">
   <div class="page-layout">
-    <h3 class="page-title">{{i18n.lang.EVENT_RACES}}<br>
-      <small>{{i18n.lang.EVENT_RACES_REGISTERED_TO_APP}}</small>
+    <h3 class="page-title">{{i18n.lang.CATEGORIES}}<br>
+      <small>{{i18n.lang.CATEGORIES_REGISTERED_TO_APP}}</small>
     </h3>
     <ion-button class="btn-add" (click)="handleTable({action: 'new'})">
       <i class="mdi mdi-plus"></i>
-      <span class="text"> {{i18n.lang.NEW_EVENT_RACE}}</span>
+      <span class="text"> {{i18n.lang.NEW_CATEGORY}}</span>
     </ion-button>
     <div class="content">
       <div class="card">
@@ -18,7 +18,7 @@
   </div>
 </ion-content>
 
-<ion-modal id="modalEventRace" #modalEventRace>
+<ion-modal id="modalCategory" #modalCategory>
   <ng-template>
     <ion-header>
       <ion-toolbar>
@@ -27,14 +27,15 @@
         </ion-buttons>
         <ion-buttons slot="end">
           <ion-button (click)="saveForm()" [strong]="true"
-            [disabled]="!EventRaceForm.valid">{{i18n.lang.CONFIRM}}</ion-button>
+            [disabled]="!CategoryForm.valid">{{i18n.lang.CONFIRM}}</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
-      <form #EventRaceForm="ngForm" novalidate>
-        <!-- <pre>{{EventRaceForm.value | json}}</pre> -->
+      <form #CategoryForm="ngForm" novalidate>
+        <!-- <pre>{{CategoryForm.value | json}}</pre> -->
         <input type="hidden" name="_id" ngModel #_id="ngModel">
+        <input type="hidden" name="_event" ngModel #_event="ngModel">
         <div class="section">
           <h4 class="section-title">{{i18n.lang.BASIC_DATA}}</h4>
           <div class="section-body">
@@ -45,25 +46,12 @@
                   <ion-input type="text" name="name" ngModel required #name="ngModel"></ion-input>
                 </ion-item>
               </ion-col>
-              <ion-col size-xs="12" size-lg="6">
-                <ion-item>
-                  <ion-label for="dt_start" position="stacked">{{i18n.lang.DT_START}}*</ion-label>
-                  <ion-input type="date" name="dt_start" ngModel required #dt_start="ngModel"></ion-input>
-                </ion-item>
-              </ion-col>
-              <ion-col size-xs="12" size-lg="6">
-                <ion-item>
-                  <ion-label for="time_start" position="stacked">{{i18n.lang.TIME_START}}*</ion-label>
-                  <ion-input type="time" name="time_start" ngModel required #time_start="ngModel"></ion-input>
-                </ion-item>
-
-              </ion-col>
               <ion-col size-xs="12">
                 <ion-item class="old-select">
-                  <label for="_event" position="stacked">{{i18n.lang.EVENT}}*</label>
-                  <select name="_event" ngModel #_event="ngModel" required>
+                  <label for="_race" position="stacked">{{i18n.lang.EVENT_RACE}}*</label>
+                  <select name="_race" ngModel #_race="ngModel" required (change)="setRace()">
                     <option value="">Selecione uma opção...</option>
-                    <ng-template ngFor let-it [ngForOf]="list_events">
+                    <ng-template ngFor let-it [ngForOf]="list_races">
                       <option value="{{it._id}}">{{it.dt_start | date}} - {{it.name}}</option>
                     </ng-template>
                   </select>

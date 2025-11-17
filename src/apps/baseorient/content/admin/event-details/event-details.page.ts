@@ -34,7 +34,7 @@ export class EventDetailsPage implements OnInit {
     data: [],
     actions: {
       buttons: [
-        { action: "detail", tooltip: "Detalhes", class: "btn-light", icon: "mdi mdi-newspaper" },
+        // { action: "detail", tooltip: "Detalhes", class: "btn-light", icon: "mdi mdi-newspaper" },
         // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
         // { action: "remove", tooltip: "Remover", class: "btn-danger", icon: "mdi mdi-close" }, // TODO
       ]
@@ -53,7 +53,7 @@ export class EventDetailsPage implements OnInit {
           return Object.values(c.routes || {}).map((r: any) => r.name).join(', ');
         }
       },
-      { title: 'N. Subs', data: "n_subs"},
+      { title: 'N. Subs', data: "n_subs" },
     ],
     data: [],
     actions: {
@@ -98,7 +98,7 @@ export class EventDetailsPage implements OnInit {
       { title: 'Dist', data: "dist" },
       { title: 'Climb', data: "climb" },
       { title: 'Num PCs', data: "n_pcs" },
-      { title: 'N. Subs', data: "n_subs"},
+      { title: 'N. Subs', data: "n_subs" },
       {
         title: 'Categories', data: "categories", render: (a, b, c) => {
           return (c.categories || []).map(it => {
@@ -114,9 +114,9 @@ export class EventDetailsPage implements OnInit {
     data: [],
     actions: {
       buttons: [
+        { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
         { action: "map_open", tooltip: "Abrir Mapa", class: "btn-warning", icon: "mdi mdi-map", conditional: args => args.map?._id },
         { action: "replay_route", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play" },
-        // { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" }, // TODO
         // { action: "remove", tooltip: "Remover", class: "btn-danger", icon: "mdi mdi-close" }, // TODO
       ]
     }
@@ -175,6 +175,7 @@ export class EventDetailsPage implements OnInit {
     window.addEventListener('resize', () => {
       this.mobile = innerWidth <= 768;
     })
+    this.reloadTable.next(true);
   }
   ionViewWillLeave() {
     window.removeEventListener('resize', null);
@@ -314,6 +315,7 @@ export class EventDetailsPage implements OnInit {
         }
       }),
       sync: () => this.personsService.syncHelga({ _id: ev.data._person }),
+      edit: args => this.nav.navigateForward(['/internal/admin/route-setup', ev.data._id]),
       result: args => this.nav.navigateForward(['/internal/admin/result', ev.data._id]),
       "detail-athlete": () => {
         this.nav.navigateForward(['/internal/admin/person/', ev.data._person]);

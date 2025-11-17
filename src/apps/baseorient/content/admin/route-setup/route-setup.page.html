@@ -1,0 +1,132 @@
+<ion-content [fullscreen]="true">
+  <div class="page-layout">
+    <div class="inline">
+
+      <div class="map-section">
+        <div id="map"></div>
+      </div>
+      <div class="info-section">
+        <form #RouteForm="ngForm" novalidate>
+          <div class="card">
+            <div class="card-body">
+              <div class="p-relative">
+                <ion-button class="btn-add" (click)="saveData()">
+                  <i class="mdi mdi-content-save"></i>
+                  <span class="text">{{i18n.lang.SAVE_DATA}}</span>
+                </ion-button>
+                <div class="section">
+                  <h4 class="section-title">{{i18n.lang.BASIC_DATA}}</h4>
+                  <div class="section-body">
+                    <input type="hidden" name="_id" ngModel #_id="ngModel">
+                    <ion-row>
+                      <ion-col size="12">
+                        <ion-item>
+                          <ion-label for="name" position="stacked">{{i18n.lang.NAME}}*</ion-label>
+                          <ion-input type="text" name="name" ngModel required #name="ngModel"></ion-input>
+                        </ion-item>
+                      </ion-col>
+                      <ion-col size-xs="12" size-lg="4">
+                        <ion-item>
+                          <ion-label for="dist" position="stacked">{{i18n.lang.DIST}}*</ion-label>
+                          <ion-input type="number" name="dist" ngModel required #dist="ngModel"></ion-input>
+                        </ion-item>
+                      </ion-col>
+                      <ion-col size-xs="12" size-lg="4">
+                        <ion-item>
+                          <ion-label for="climb" position="stacked">{{i18n.lang.CLIMB}}*</ion-label>
+                          <ion-input type="number" name="climb" ngModel required #climb="ngModel"></ion-input>
+                        </ion-item>
+
+                      </ion-col>
+                      <ion-col size-xs="12" size-lg="4">
+                        <ion-item>
+                          <ion-label for="n_pcs" position="stacked">{{i18n.lang.N_PCS}}*</ion-label>
+                          <ion-input type="number" name="n_pcs" ngModel required #n_pcs="ngModel"></ion-input>
+                        </ion-item>
+
+                      </ion-col>
+                    </ion-row>
+                  </div>
+                </div>
+
+                <div class="section">
+                  <h4 class="section-title">{{i18n.lang.CATEGORIES}}</h4>
+                  <div class="section-body">
+                    <ion-row>
+                      <ion-col size="12">
+                        <app-autocomplete [data]="raw_categories" [ionlabel]="i18n.lang.SEARCH_CATEGORY+'*'"
+                          [label]="'name'" [_id]="'_id'" (chooseEvent)="setCategory($event)"
+                          [clear]="clearEventCategories">
+                        </app-autocomplete>
+                      </ion-col>
+                    </ion-row>
+                    <table class="table dataTable">
+                      <thead>
+                        <tr>
+                          <th>{{i18n.lang.CATEGORY}}</th>
+                          <th>{{i18n.lang.ACTIONS}}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngIf="!routeData?.categories?.length">
+                          <td colspan="2">{{i18n.lang.EMPTY_TABLE}}</td>
+                        </tr>
+                        <ng-template ngFor let-it [ngForOf]="routeData?.categories || []">
+                          <tr>
+                            <td>{{it.name}}</td>
+                            <td class="td-actions">
+                              <button class="btn btn-danger" (click)="rmCategory(it)"><i
+                                  class="mdi mdi-close"></i></button>
+                            </td>
+                          </tr>
+                        </ng-template>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div class="section">
+                  <h4 class="section-title">{{i18n.lang.EVENT_PCS}}</h4>
+                  <div class="section-body">
+                    <ion-row>
+                      <ion-col size="12">
+                        <app-autocomplete [data]="raw_pcs" [ionlabel]="i18n.lang.SEARCH_PC+'*'" [label]="'num_base'"
+                          [_id]="'num_base'" (chooseEvent)="setPC($event)" [clear]="clearEventPCs">
+                        </app-autocomplete>
+                      </ion-col>
+                    </ion-row>
+                    <div class="scroll">
+                      <table class="table dataTable">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>{{i18n.lang.BASE}}</th>
+                            <th>{{i18n.lang.ACTIONS}}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngIf="!routeData?.pcs?.length">
+                            <td colspan="3">{{i18n.lang.EMPTY_TABLE}}</td>
+                          </tr>
+                          <ng-template ngFor let-it [ngForOf]="routeData?.pcs || []">
+                            <tr>
+                              <td>{{it.index}}</td>
+                              <td>{{it.num_base}}</td>
+                              <td class="td-actions">
+                                <button class="btn btn-danger" (click)="rmPC(it)"><i class="mdi mdi-close"></i></button>
+                              </td>
+                            </tr>
+                          </ng-template>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- {{routeData|json}} -->
+      </div>
+    </div>
+  </div>
+</ion-content>

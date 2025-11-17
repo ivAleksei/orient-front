@@ -91,6 +91,10 @@ const routes: Routes = [
     loadChildren: () => import('src/apps/baseorient/content/admin/maps/maps.module').then(m => m.MapsPageModule)
   },
   {
+    path: 'categories',
+    loadChildren: () => import('src/apps/baseorient/content/admin/categories/categories.module').then(m => m.CategoriesPageModule)
+  },
+  {
     path: 'pcs',
     loadChildren: () => import('src/apps/baseorient/content/admin/event-pcs/event-pcs.module').then(m => m.EventPcsPageModule)
   },
@@ -101,6 +105,10 @@ const routes: Routes = [
   {
     path: 'map-setup/:id',
     loadChildren: () => import('src/apps/baseorient/content/admin/map-setup/map-setup.module').then(m => m.MapSetupPageModule)
+  },
+  {
+    path: 'route-setup/:id',
+    loadChildren: () => import('src/apps/baseorient/content/admin/route-setup/route-setup.module').then(m => m.RouteSetupPageModule)
   },
   {
     path: 'result/:id',

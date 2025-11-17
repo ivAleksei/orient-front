@@ -166,7 +166,7 @@ export class MapSetupPage implements OnInit {
       this.centerMap = this.raceMap.center;
       return;
     }
-    
+
     let location = null;
     if (!location && this.raceMap._race) {
       let race = await this.racesService.getEventRaceById({ _id: this.raceMap._race }, `
@@ -412,7 +412,7 @@ export class MapSetupPage implements OnInit {
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      minZoom: 9,
+      minZoom: 14,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.leafletMap);
 

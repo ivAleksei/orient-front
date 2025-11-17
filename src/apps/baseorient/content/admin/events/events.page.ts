@@ -6,6 +6,8 @@ import { UtilsService } from 'src/_shared/services/utils.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { EventsService } from 'src/apps/baseorient/_shared/providers/events.service';
 import { NavController } from '@ionic/angular';
+import moment from 'moment';
+import { EventRacesService } from 'src/apps/baseorient/_shared/providers/event-races.service';
 
 @Component({
   selector: 'app-events',
@@ -27,14 +29,13 @@ export class EventsPage implements OnInit {
       { title: 'name', data: "name" },
       { title: '_helga', data: "_helga" },
     ],
-    ajax: {
-      url: `${environment.API.orient}/server_side/events`,
-    },
+    data: [],
     actions: {
       buttons: [
         { action: "sync", tooltip: "sync", class: "btn-warning", icon: "mdi mdi-sync" },
         { action: "detail", tooltip: "Detalhes", class: "btn-light", icon: "mdi mdi-newspaper" },
         { action: "edit", tooltip: "Editar", class: "btn-info", icon: "mdi mdi-pencil" },
+        { action: "newrace", tooltip: "Criar Prova", class: "btn-danger", icon: "mdi mdi-flag-checkered", conditional: args => !args.n_races },
         { action: "del", tooltip: "Remove", class: "btn-danger", icon: "mdi mdi-close" }
       ]
     }
@@ -45,6 +46,7 @@ export class EventsPage implements OnInit {
     private nav: NavController,
     private utils: UtilsService,
     private loadingService: LoadingService,
+    private eventRacesService: EventRacesService,
     private eventsService: EventsService,
     private alertsService: AlertsService
   ) { }
@@ -57,6 +59,19 @@ export class EventsPage implements OnInit {
   }
 
   getData() {
+    this.getEvents();
+  }
+
+
+  async getEvents() {
+    let data = await this.eventsService.getEvents({}, `
+      dt_start
+      name
+      _helga
+      n_races
+    `);
+    this.tableInfo.data = data || [];
+    this.reloadTable.next(true)
   }
 
 
@@ -66,13 +81,31 @@ export class EventsPage implements OnInit {
       edit: () => {
         this.modalEvent.present();
         setTimeout(() => {
-          this.EventForm.form.patchValue(ev.data);
+          let obj = Object.assign({}, ev.data);
+          obj.time_start = moment(obj?.dt_start).format('HH:mm');
+          obj.dt_start = moment(obj?.dt_start).format('YYYY-MM-DD');
+          this.EventForm.form.patchValue(obj || {});
         }, 400);
       },
       new: () => {
         this.modalEvent.present();
       },
       sync: () => this.eventsService.syncHelga(ev.data._helga),
+      newrace: async () => {
+        let confirm = await this.alertsService.askConfirmation(this.i18n.lang.NEW_EVENT_RACE, '...');
+        if (confirm == 'false') return;
+
+        console.log('cria prova');
+        await this.eventRacesService.saveEventRace({ _event: ev.data._id, name: ev.data.name, dt_start: ev.data.dt_start })
+          .then(data => {
+            this.loadingService.hide();
+            if (data?.status != 'success')
+              return this.alertsService.notify({ type: "error", subtitle: this.i18n.lang.CRUD_UPDATE_ERR });
+
+            this.clearEventForm();
+            return this.alertsService.notify({ type: "success", subtitle: this.i18n.lang.CRUD_UPDATE_SUCCESS });
+          });
+      },
       detail: () => {
         this.nav.navigateForward(['/internal/admin/event/', ev.data._id]);
       },
@@ -104,7 +137,7 @@ export class EventsPage implements OnInit {
     let obj = Object.assign({}, this.EventForm.value);
     obj.dt_start = [obj.dt_start, obj.time_start].join(' ');
     delete obj.time_start;
-    
+
     this.eventsService.saveEvent(obj)
       .then(data => {
         this.loadingService.hide();

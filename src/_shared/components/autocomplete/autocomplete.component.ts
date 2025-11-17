@@ -119,6 +119,8 @@ export class AutocompleteComponent implements OnInit {
       // EMIT VALUE
       this.chooseEvent.emit(it);
     }
+    console.log(this.data, this.filter_data);
+    
   }
 
   rmArr(it) {
