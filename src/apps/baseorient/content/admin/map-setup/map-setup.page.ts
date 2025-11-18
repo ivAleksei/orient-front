@@ -3,7 +3,7 @@ import { AlertsService } from 'src/_shared/services/alerts.service';
 import { I18nService } from 'src/_shared/services/i18n.service';
 import { LoadingService } from 'src/_shared/services/loading.service';
 import { UtilsService } from 'src/_shared/services/utils.service';
-import { latLng, marker, tileLayer } from 'leaflet';
+import { latLng, marker, polyline, tileLayer } from 'leaflet';
 import 'leaflet-imageoverlay-rotated';
 import { MapsService } from 'src/apps/baseorient/_shared/providers/maps.service';
 import { ActivatedRoute } from '@angular/router';
@@ -14,6 +14,7 @@ import { EventsService } from 'src/apps/baseorient/_shared/providers/events.serv
 import { EventRacesService } from 'src/apps/baseorient/_shared/providers/event-races.service';
 import { environment } from 'src/apps/baseorient/environments/environment';
 import { HttpService } from 'src/_shared/services/http.service';
+import gpx_model from 'src/assets/baseorient/json/gpx_model.json';
 declare var L: any;
 
 @Component({
@@ -412,7 +413,7 @@ export class MapSetupPage implements OnInit {
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      minZoom: 14,
+      minZoom: 6,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.leafletMap);
 
@@ -430,7 +431,6 @@ export class MapSetupPage implements OnInit {
 
     return Promise.resolve(null);
   }
-
 
   /**
    * Renderiza o mapa com marcadores e sobreposição de mapa
@@ -475,6 +475,13 @@ export class MapSetupPage implements OnInit {
         this.arr_markers.push(marker)
       }
     }
+
+
+    // for (let k of Object.keys(this.obj_gpx_athletes || {})) {
+    //   if (!this.obj_gpx_athletes[k].polyline)
+    //     this.obj_gpx_athletes[k].polyline = L.polyline(this.obj_gpx_athletes[k].points, { color: 'red', weight: 3, opacity: 0.8 }).addTo(this.leafletMap)
+    // }
+
 
     // 5) Se estiver usando Leaflet com overlay rotacionado, por exemplo:
     this.overlayMap?.remove();

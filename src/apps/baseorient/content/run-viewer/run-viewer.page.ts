@@ -328,7 +328,7 @@ export class RunViewerPage implements OnInit {
 
   filterCategory() {
     for (let it of this.raw_ranking)
-        it.hide = this._category && it._category != this._category;
+      it.hide = this._category && it._category != this._category;
 
     this.setupRanking();
   }
@@ -451,5 +451,26 @@ export class RunViewerPage implements OnInit {
     })
     this.data_position_race_graph = graph;
   }
+
+
+  obj_gpx_athletes = {
+    'a': {
+      data: {},
+      polyline: null,
+      points: [
+
+      ]
+    },
+    'b': {
+      data: {},
+      polyline: null,
+      points: []
+    },
+    'c': {
+      data: {},
+      polyline: null,
+      points: []
+    }
+  };
 
 }

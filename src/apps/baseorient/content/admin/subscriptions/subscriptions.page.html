@@ -34,14 +34,27 @@
       <form #SubscriptionForm="ngForm" novalidate>
         <!-- <pre>{{SubscriptionForm.value | json}}</pre> -->
         <input type="hidden" name="_id" ngModel #_id="ngModel">
+        <input type="hidden" name="_event" ngModel #_event="ngModel">
         <div class="section">
           <h4 class="section-title">{{i18n.lang.BASIC_DATA}}</h4>
           <div class="section-body">
             <ion-row>
               <ion-col size="12">
                 <ion-item>
-                  <ion-label for="slug" position="stacked">{{i18n.lang.NAME}}*</ion-label>
-                  <ion-input type="text" name="slug" ngModel required #slug="ngModel"></ion-input>
+                  <ion-label for="_race" position="stacked">{{i18n.lang.EVENT_RACE}}*</ion-label>
+                  <ion-input type="text" name="_race" ngModel required #_race="ngModel"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label for="_person" position="stacked">{{i18n.lang.PERSON}}*</ion-label>
+                  <ion-input type="text" name="_person" ngModel required #_person="ngModel"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size="12">
+                <ion-item>
+                  <ion-label for="_category" position="stacked">{{i18n.lang.CATEGORY}}*</ion-label>
+                  <ion-input type="text" name="_category" ngModel required #_category="ngModel"></ion-input>
                 </ion-item>
               </ion-col>
             </ion-row>

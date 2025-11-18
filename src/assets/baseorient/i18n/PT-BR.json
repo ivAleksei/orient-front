@@ -74,6 +74,8 @@
     "CLUB_CGC": "CNPJ",
     "NO_SPLIT_FOUND": "Nenhuma parcial encontrada pra este percurso",
     "PACE": "Ritmo",
+    "PRINT": "Imprimir",
+    "GENERATE_ROUTE": "Gerar rota",
     "BASE": "Base",
     "TIME_PARTIAL": "Tempo Parcial",
     "RACE_RESUME": "Resumo Geral da Prova",

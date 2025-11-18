@@ -19,6 +19,10 @@ const routes: Routes = [
       {
         path: 'admin',
         loadChildren: () => import('src/apps/baseorient/content/admin/admin.module').then(m => m.AdminModule)
+      },
+      {
+        path: 'gameroute',
+        loadChildren: () => import('src/apps/baseorient/content/admin/game-routes/game-routes.module').then(m => m.GameRoutesPageModule)
       }
     ]
   }

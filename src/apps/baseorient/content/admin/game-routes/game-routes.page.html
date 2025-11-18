@@ -1,0 +1,104 @@
+<ion-content [fullscreen]="true">
+  <div class="page-layout">
+    <!-- <div class="inline"> -->
+    <div class="map-section">
+      <div id="map"></div>
+    </div>
+    <div class="info-section no-print">
+      <form #GameRouteForm="ngForm" novalidate>
+        <div class="card">
+          <div class="card-body">
+            <div class="p-relative">
+              <div class="inline-btns">
+                <ion-button class="btn-add" (click)="generateRoute()" [disabled]="!GameRouteForm.valid">
+                  <i class="mdi mdi-content-save"></i>
+                  <span class="text">{{i18n.lang.GENERATE_ROUTE}}</span>
+                </ion-button>
+                <ion-button class="btn-add" (click)="saveData()" [disabled]="!GameRouteForm.valid || !route?.length">
+                  <i class="mdi mdi-content-save"></i>
+                  <span class="text">{{i18n.lang.SAVE_DATA}}</span>
+                </ion-button>
+                <ion-button class="btn-add" (click)="print()">
+                  <i class="mdi mdi-printer"></i>
+                  <span class="text">{{i18n.lang.PRINT}}</span>
+                </ion-button>
+              </div>
+              <div class="section">
+                <h4 class="section-title">{{i18n.lang.BASIC_DATA}}</h4>
+                <div class="section-body">
+                  <input type="hidden" name="_id" ngModel #_id="ngModel">
+                  <ion-row>
+                    <ion-col size-xs="12" size-lg="4">
+                      <ion-item>
+                        <ion-label for="dist" position="stacked">{{i18n.lang.DIST}}*</ion-label>
+                        <ion-input type="number" name="dist" ngModel required #dist="ngModel"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size-xs="12" size-lg="4">
+                      <ion-item>
+                        <ion-label for="n_pcs" position="stacked">{{i18n.lang.N_PCS}}*</ion-label>
+                        <ion-input type="number" name="n_pcs" ngModel required #n_pcs="ngModel"></ion-input>
+                      </ion-item>
+                    </ion-col>
+                  </ion-row>
+                </div>
+              </div>
+              <div class="section">
+                <h4 class="section-title">Área de Treino<br><small>Duplo clique no mapa pra adicionar um novo ponto</small></h4>
+                <div class="section-body">
+                  <table class="table dataTable">
+                    <thead>
+                      <tr>
+                        <th>PC</th>
+                        <th>Coords</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-template ngFor let-it let-i="index" [ngForOf]="polygon || []">
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>({{it.lat}},{{it.lng}})</td>
+                          <td>
+                            <button class="btn btn-danger" (click)="rmPcPolygon(it)"><i
+                                class="mdi mdi-close"></i></button>
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="section">
+                <h4 class="section-title">PCs</h4>
+                <div class="section-body">
+                  <table class="table dataTable">
+                    <thead>
+                      <tr>
+                        <th>PC</th>
+                        <th>Coords</th>
+                        <th>Dist Leg</th>
+                        <th>Dist Acum</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-template ngFor let-it [ngForOf]="route || []">
+                        <tr>
+                          <td>{{it.index}}</td>
+                          <td>({{it.lat}},{{it.lng}})</td>
+                          <td>{{it.dist_leg | decimal: 0}}</td>
+                          <td>{{it.dist_acum | decimal: 0}}</td>
+                        </tr>
+                      </ng-template>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <!-- </div> -->
+    </div>
+  </div>
+</ion-content>
