@@ -107,8 +107,6 @@ export class GameRoutesPage implements OnInit {
 
   // RENDERIZAÇÃO E CONFIGS NO MAPA
   async renderMap() {
-    console.log('renderMap');
-
     if (!this.leafletMap) {
       // MONTA CAMADAS DO MAPA
       this.leafletMap = L.map('map', {
@@ -183,9 +181,6 @@ export class GameRoutesPage implements OnInit {
       this.markers.push(it.marker)
     }
 
-    if (this.polygon?.length >= 3)
-      this.leafletMap.fitBounds(this.polygonMap.getBounds());
-
     return Promise.resolve(null);
   }
 
@@ -208,6 +203,9 @@ export class GameRoutesPage implements OnInit {
   }
 
   renderRoute(route: any) {
+    for (let it of (this.route || []))
+      it.marker.remove();
+
     let sum = 0;
     this.route = (route || []).map((it, i) => {
       it.index = i;
@@ -232,6 +230,7 @@ export class GameRoutesPage implements OnInit {
       _person: _user,
       dist: obj.dist,
       n_pcs: obj.n_pcs,
+      center: this.center,
       polygon: this.polygon.map(it => { return { lat: it.lat, lng: it.lng } }),
       pcs: this.route.map(it => {
         return { index: String(it.index), latLng: { lat: it.lat, lng: it.lng } }
