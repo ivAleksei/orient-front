@@ -105,6 +105,8 @@ export class GameRoutesPage implements OnInit {
     this.renderMap();
   }
 
+  polyline: any;
+
   // RENDERIZAÇÃO E CONFIGS NO MAPA
   async renderMap() {
     if (!this.leafletMap) {
@@ -137,9 +139,16 @@ export class GameRoutesPage implements OnInit {
 
     // POLYGON MARKERS
     if (this.polygonMap) {
-      this.polygonMap.remove();
+      this.polygonMap?.remove();
       this.polygonMap = null;
     }
+
+    if (this.polyline) {
+      this.polyline?.remove();
+      this.polyline = null;
+    }
+
+
     this.polygonMap = L.polygon(this.polygon, { color: 'red' }).addTo(this.leafletMap);
     for (let it of this.polygon) {
       if (it.marker) it.marker.remove();
@@ -157,6 +166,8 @@ export class GameRoutesPage implements OnInit {
       });
     }
 
+
+
     // zoom the map to the polygon
     for (let it of (this.route || [])) {
       if (it.marker) it.marker.remove();
@@ -166,7 +177,7 @@ export class GameRoutesPage implements OnInit {
           className: "custom-text-marker",
           html: it.index,
           iconSize: [30, 30],    // tamanho do container
-          iconAnchor: [15, 15]   // centraliza o texto
+          iconAnchor: [0, 30]   // centraliza o texto
         })
       }).addTo(this.leafletMap);
 
@@ -181,6 +192,8 @@ export class GameRoutesPage implements OnInit {
       this.markers.push(it.marker)
     }
 
+    this.polyline = L.polyline((this.route || []).map(it => [it.lat, it.lng]), { color: "#BE3F9D" }).addTo(this.leafletMap);
+
     return Promise.resolve(null);
   }
 
@@ -191,8 +204,6 @@ export class GameRoutesPage implements OnInit {
 
     let url = [environment.API.orient, 'tmp', 'game_route'].join('/');
 
-    console.log(obj);
-
     this.loadingService.show();
     let data = await this.http.post(url, obj);
     this.loadingService.hide();
@@ -202,7 +213,7 @@ export class GameRoutesPage implements OnInit {
     }
   }
 
-  renderRoute(route: any) {
+  async renderRoute(route: any) {
     for (let it of (this.route || []))
       it.marker.remove();
 
@@ -219,6 +230,7 @@ export class GameRoutesPage implements OnInit {
 
       return it;
     });
+
     this.renderMap();
 
   }
