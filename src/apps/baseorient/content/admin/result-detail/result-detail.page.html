@@ -7,7 +7,7 @@
         <small><i class="mdi mdi-pin"></i> {{result?.event?.location}}</small><br>
       </h3>
       <h3 class="page-title t-right name">{{result?.name}}<br>
-        <span class="badge light">#{{result?.startnumber}}</span>
+        <span class="badge light">#{{result?.startnumber || result?.controlcard}}</span>
         <span class="badge light">{{result?.category}}</span>
       </h3>
     </div>

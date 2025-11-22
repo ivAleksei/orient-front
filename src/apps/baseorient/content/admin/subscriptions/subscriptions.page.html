@@ -26,35 +26,59 @@
           <ion-button (click)="closeModal()">{{i18n.lang.CANCEL}}</ion-button>
         </ion-buttons>
         <ion-buttons slot="end">
-          <ion-button (click)="saveForm()" [strong]="true" [disabled]="!SubscriptionForm.valid">{{i18n.lang.CONFIRM}}</ion-button>
+          <ion-button (click)="saveForm()" [strong]="true"
+            [disabled]="!SubscriptionForm.valid">{{i18n.lang.CONFIRM}}</ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
       <form #SubscriptionForm="ngForm" novalidate>
-        <!-- <pre>{{SubscriptionForm.value | json}}</pre> -->
+        <pre>{{SubscriptionForm.value | json}}</pre>
         <input type="hidden" name="_id" ngModel #_id="ngModel">
         <input type="hidden" name="_event" ngModel #_event="ngModel">
         <div class="section">
           <h4 class="section-title">{{i18n.lang.BASIC_DATA}}</h4>
           <div class="section-body">
             <ion-row>
-              <ion-col size="12">
-                <ion-item>
-                  <ion-label for="_race" position="stacked">{{i18n.lang.EVENT_RACE}}*</ion-label>
-                  <ion-input type="text" name="_race" ngModel required #_race="ngModel"></ion-input>
+              <ion-col size-xs="12">
+                <ion-item class="old-select">
+                  <label for="_race" position="stacked">{{i18n.lang.EVENT_RACE}}*</label>
+                  <select name="_race" ngModel #_race="ngModel" required (change)="setRace()">
+                    <option value="">Selecione uma opção...</option>
+                    <ng-template ngFor let-it [ngForOf]="list_races">
+                      <option [value]="it._id">{{it.dt_start | date:"DD/MM/YYYY HH:mm"}} - {{it.name}}</option>
+                    </ng-template>
+                  </select>
                 </ion-item>
               </ion-col>
-              <ion-col size="12">
-                <ion-item>
-                  <ion-label for="_person" position="stacked">{{i18n.lang.PERSON}}*</ion-label>
-                  <ion-input type="text" name="_person" ngModel required #_person="ngModel"></ion-input>
+              <ion-col size-xs="12">
+                <input type="hidden" name="category" ngModel #category="ngModel">
+                <ion-item class="old-select">
+                  <label for="_category" position="stacked">{{i18n.lang.CATEGORY}}*</label>
+                  <select name="_category" ngModel #_category="ngModel" required (change)="setCategory()">
+                    <option value="">Selecione uma opção...</option>
+                    <ng-template ngFor let-it [ngForOf]="arr_categories">
+                      <option [value]="it._id">{{it.name}}</option>
+                    </ng-template>
+                  </select>
                 </ion-item>
               </ion-col>
-              <ion-col size="12">
+              <ion-col size-xs="12">
                 <ion-item>
-                  <ion-label for="_category" position="stacked">{{i18n.lang.CATEGORY}}*</ion-label>
-                  <ion-input type="text" name="_category" ngModel required #_category="ngModel"></ion-input>
+                  <ion-label for="name" position="stacked">{{i18n.lang.PERSON}}*</ion-label>
+                  <ion-input type="text" name="name" ngModel required #name="ngModel"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="12" size-lg="6">
+                <ion-item>
+                  <ion-label for="startnumber" position="stacked">{{i18n.lang.STARTNUMBER}}*</ion-label>
+                  <ion-input type="text" name="startnumber" ngModel #startnumber="ngModel"></ion-input>
+                </ion-item>
+              </ion-col>
+              <ion-col size-xs="12" size-lg="6">
+                <ion-item>
+                  <ion-label for="controlcard" position="stacked">{{i18n.lang.CONTROLCARD}}*</ion-label>
+                  <ion-input type="text" name="controlcard" ngModel #controlcard="ngModel"></ion-input>
                 </ion-item>
               </ion-col>
             </ion-row>

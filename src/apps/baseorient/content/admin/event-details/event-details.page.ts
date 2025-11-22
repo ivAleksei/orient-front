@@ -85,9 +85,9 @@ export class EventDetailsPage implements OnInit {
     actions: {
       buttons: [
         { action: "replay_sub", tooltip: "Replay", class: "btn-info", icon: "mdi mdi-play" }, // TODO
-        { action: "sync", tooltip: "sync", class: "btn-warning", icon: "mdi mdi-sync" },
         { action: "result", tooltip: "Extrato", class: "btn-warning", icon: "mdi mdi-file-document" }, // TODO
-        { action: "detail-athlete", tooltip: "Ficha Pessoal", class: "btn-light", icon: "mdi mdi-account" }, // TODO
+        { action: "sync", tooltip: "sync", class: "btn-warning", icon: "mdi mdi-sync", conditional: args => args._person },
+        { action: "detail-athlete", tooltip: "Ficha Pessoal", class: "btn-light", icon: "mdi mdi-account", conditional: args => args._person }, // TODO
       ]
     }
   }

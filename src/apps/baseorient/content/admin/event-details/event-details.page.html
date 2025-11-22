@@ -22,6 +22,9 @@
         <button [ngClass]="{active: tab == 'subscriptions'}" (click)="setTab('subscriptions')">
           <i class="mdi mdi-account-group"></i> {{i18n.lang.SUBSCRIPTIONS}}
         </button>
+        <button [ngClass]="{active: tab == 'clubs'}" (click)="setTab('clubs')">
+          <i class="mdi mdi-tshirt-v"></i> {{i18n.lang.CLUBS}}
+        </button>
         <button [ngClass]="{active: tab == 'audit'}" (click)="setTab('audit')">
           <i class="mdi mdi-playlist-check"></i> {{i18n.lang.AUDIT}}
         </button>
