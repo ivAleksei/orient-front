@@ -59,6 +59,9 @@ export class RouteSetupPage implements OnInit {
     let data = await this.eventRoutesService.getEventRouteById({ _id: this._id }, `
       _event
       _race
+      race{
+        location
+      }
       name
       dist
       climb
@@ -147,12 +150,12 @@ export class RouteSetupPage implements OnInit {
   async setPC(ev: any) {
     if (!ev) return;
 
-    this.routeData.pcs = [...(this.routeData?.pcs || []), { index: (this.routeData?.pcs||[])?.length, num_base: ev.num_base }];
+    this.routeData.pcs = [...(this.routeData?.pcs || []), { index: (this.routeData?.pcs || [])?.length, num_base: ev.num_base }];
     this.clearEventPCs.next(true);
   }
 
   async rmPC(it: any) {
-    
+
     this.routeData.pcs = (this.routeData?.pcs || []).filter(c => c.num_base != it.num_base);
   }
 
@@ -192,8 +195,20 @@ export class RouteSetupPage implements OnInit {
   async renderMap() {
     if (this.leafletMap) return;
 
+    let center = this.raceMap?.center || null;
+    if (!center) {
+
+      let query = { location: this.routeData?.race?.location }
+      let url = [environment.API.orient, 'ws', 'coords'].join('/') + '?' + Object.keys(query).map(k => `${k}=${query[k]}`);
+      let data = await this.http.get(url);
+      center = {
+        lat: +data.lat,
+        lng: +data.lon
+      }
+    }
+
     // MONTA CAMADAS DO MAPA
-    this.leafletMap = L.map('map').setView(latLng(this.raceMap?.center?.lat || null, this.raceMap?.center?.lng || null), 16);
+    this.leafletMap = L.map('map').setView(latLng(center?.lat || null, center?.lng || null), 16);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -205,7 +220,8 @@ export class RouteSetupPage implements OnInit {
       let coords = Object.assign({}, ev?.latlng);
       coords.lat = +coords.lat.toFixed(6);
       coords.lng = +coords.lng.toFixed(6);
-      // this.setPair('latLng', coords)
+
+      this.setPair(coords)
     })
 
 
@@ -244,4 +260,11 @@ export class RouteSetupPage implements OnInit {
     }).addTo(this.leafletMap);
   }
 
+  setLatLng(it) {
+    console.log('setLatLng', it);
+  }
+
+  setPair(coords) {
+    console.log('setPair', coords);
+  }
 }

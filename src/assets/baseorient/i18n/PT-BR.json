@@ -25,6 +25,7 @@
     "CRUD_UPDATE_ERR": "Registro não foi atualizado",
     "CRUD_UPDATE_SUCCESS": "Registro atualizado com sucesso",
     "DESCRIPTION": "Descrição",
+    "GEOLOCATION": "Coordenadas",
     "DT_END": "Data Fim",
     "DT_START": "Data Início",
     "FEDERATION": "Federação",

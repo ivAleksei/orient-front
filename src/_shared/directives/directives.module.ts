@@ -11,7 +11,7 @@ import { HasPermissionDirective } from './has-permission';
     UiSortableDirective,
   ],
   imports: [
-    CommonModule,
+    CommonModule
   ],
   providers: [],
   exports: [

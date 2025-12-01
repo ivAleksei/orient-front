@@ -76,7 +76,7 @@ export class EventDetailsPage implements OnInit {
       { title: 'Control', data: "controlcard" },
       {
         title: 'Pos', data: "pos", render: (a, b, c) => {
-          return c.pos || c.status;
+          return c.pos || this.StatusPipe.transform(c.status);
         }
       },
       { title: 'Time', data: "time", datatype: 'pipe', pipe: "TimePipe" },
@@ -140,6 +140,7 @@ export class EventDetailsPage implements OnInit {
     private StatusPipe: StatusPipe,
     private route: ActivatedRoute,
     private utils: UtilsService,
+    private statusPipe: StatusPipe,
     private loadingService: LoadingService,
     private personsService: PersonsService,
     private eventsService: EventsService,

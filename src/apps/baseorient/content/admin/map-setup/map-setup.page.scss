@@ -13,6 +13,11 @@
 .info-section {
     flex-grow: 1;
 }
+.scroll {
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
 
 .map-section {
     width: 100%;
@@ -24,11 +29,6 @@
     }
 }
 
-
-.scroll{
-    max-height: 50vh;
-    overflow-y: auto;
-}
 
 .zoom-container {
     width: 100%;
@@ -51,16 +51,6 @@
 
 .zoom-content {
     transform-origin: 0 0;
-}
-
-.zoom-controls {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    margin-top: 8px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
 }
 
 @media screen and (max-width: 768px) {

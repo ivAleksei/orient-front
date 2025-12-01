@@ -29,7 +29,7 @@ export class EventsService {
   async syncHelga(_helga) {
     if (!_helga) return null;
 
-    let query = { _lauf: _helga }
+    let query = { sync_lauf: _helga }
     let url = [environment.API.orient, 'tmp', 'helga'].join('/') + '?' + Object.keys(query).map(k => `${k}=${query[k]}`);
     return this.http.get(url);
   }

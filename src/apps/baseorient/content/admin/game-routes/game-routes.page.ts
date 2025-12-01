@@ -177,7 +177,7 @@ export class GameRoutesPage implements OnInit {
           className: "custom-text-marker",
           html: it.index,
           iconSize: [30, 30],    // tamanho do container
-          iconAnchor: [0, 30]   // centraliza o texto
+          iconAnchor: [15, 15]   // centraliza o texto
         })
       }).addTo(this.leafletMap);
 
