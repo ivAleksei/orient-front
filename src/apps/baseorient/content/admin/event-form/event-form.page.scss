@@ -1,0 +1,15 @@
+
+.file-place {
+  border: 8px dashed #ccc;
+  margin: 8px;
+  overflow: hidden;
+  background: #ddd;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  &.i512 {
+    width: 512px;
+    height: 362px;
+  }
+}

@@ -65,8 +65,9 @@ export class EventsPage implements OnInit {
 
   async getEvents() {
     let data = await this.eventsService.getEvents({}, `
-      dt_start
       name
+      dt_start
+      location
       _helga
       n_races
     `);
@@ -82,8 +83,8 @@ export class EventsPage implements OnInit {
         this.modalEvent.present();
         setTimeout(() => {
           let obj = Object.assign({}, ev.data);
-          obj.time_start = moment(obj?.dt_start).format('HH:mm');
-          obj.dt_start = moment(obj?.dt_start).format('YYYY-MM-DD');
+          obj.time_start = moment(obj?.dt_start, this.utils.formatsDate).format('HH:mm');
+          obj.dt_start = moment(obj?.dt_start, this.utils.formatsDate).format('YYYY-MM-DD');
           this.EventForm.form.patchValue(obj || {});
         }, 400);
       },
@@ -153,7 +154,7 @@ export class EventsPage implements OnInit {
     this.ImportForm?.form.reset();
     this.EventForm?.form.reset();
     this.closeModal();
-    this.reloadTable.next(true);
+    this.getEvents();
   }
 
   closeModal() {

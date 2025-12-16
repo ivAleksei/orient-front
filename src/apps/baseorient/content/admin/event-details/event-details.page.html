@@ -34,9 +34,15 @@
           <app-event-form [_id]="_id"></app-event-form>
         </div>
         <div class="card" *ngIf="tab == 'races'">
-          <div class="card-body">
-            <data-table [id]="tableInfoRaces?.id"  [tableInfo]="tableInfoRaces" [reload]="reloadTable"
-              (clickEvent)="handleTable($event)"></data-table>
+          <div class="p-relative">
+            <ion-button class="btn-add" (click)="handleTable({action: 'import_helga'})">
+              <i class="mdi mdi-sync"></i>
+              <span class="text"> {{i18n.lang.IMPORT_FROM_HELGA}}</span>
+            </ion-button>
+            <div class="card-body">
+              <data-table [id]="tableInfoRaces?.id" [tableInfo]="tableInfoRaces" [reload]="reloadTable"
+                (clickEvent)="handleTable($event)"></data-table>
+            </div>
           </div>
         </div>
         <div class="card" *ngIf="tab == 'categories'">
